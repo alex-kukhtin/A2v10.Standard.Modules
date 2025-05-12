@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>disable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="A2v10.AppRuntimeBuilder" Version="10.1.8289" />
+		<PackageReference Include="A2v10.Platform" Version="10.1.8288" />
+		<PackageReference Include="A2v10.Web.Assets" Version="10.1.8287" />
+		<PackageReference Include="A2v10.ReportEngine.Pdf" Version="10.1.8288" />
+	</ItemGroup>
+</Project>

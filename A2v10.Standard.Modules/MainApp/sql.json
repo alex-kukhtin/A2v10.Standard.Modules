@@ -1,0 +1,13 @@
+﻿[
+	{
+		"$schema": "@schemas/sql-json-schema.json#",
+		"outputFile": "_sqlscripts/main.sql",
+		"inputFiles": [
+			"@sql/a2v10_platform.sql",
+			"_sql/_schemas.sql",
+			"_sql/_tables.sql",
+			"_sql/_tabletypes.sql",
+			"_sql/_ui.sql"
+		]
+	}
+]

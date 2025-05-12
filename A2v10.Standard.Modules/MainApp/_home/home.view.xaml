@@ -1,0 +1,6 @@
+﻿<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
+	 Title="Home">
+    <EmptyPanel>
+        Yet not implemented
+    </EmptyPanel>
+</Page>
