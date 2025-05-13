@@ -11,6 +11,7 @@
 @DataModel=Data model
 @Profiling=Profiling
 @Profile=Profile
+@License=License
 @ChangePassword=Change password
 @SubstUser=Change user
 @User=User
@@ -85,6 +86,7 @@
 @Memo=Memo
 ;
 @Confirm=Confirm
+@PasswordAgain=Password again
 @ConfirmDeleteDocument=Delete document?
 @DocumentSaved=Document saved successfully
 ;

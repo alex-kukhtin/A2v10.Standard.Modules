@@ -13,7 +13,7 @@
 		<PackageId>A2v10.Module.Workflow</PackageId>
 		<Authors>Oleksandr Kukthin</Authors>
 		<Company>Oleksandr Kukthin</Company>
-		<Description>A2v10 Platform Application Metadata Builder</Description>
+		<Description>A2v10 Platform Application Workflow UI</Description>
 		<Copyright>Copyright © 2025 Oleksandr Kukthin. All rights reserved.</Copyright>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/alex-kukhtin/A2v10.Standard.Modules</RepositoryUrl>
@@ -24,9 +24,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="A2v10.App.Assets" Version="10.1.8282" />
-		<PackageReference Include="A2v10.Sql.MSBuild" Version="10.1.8102" />
-		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.4.4">
+		<PackageReference Include="A2v10.App.Assets" Version="10.1.8541" />
+		<PackageReference Include="A2v10.Sql.MSBuild" Version="10.1.8105" />
+		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.8.3">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -41,7 +41,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="_sqlscripts\" />
 		<Folder Include="_sqlscripts\" />
 	</ItemGroup>
 

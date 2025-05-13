@@ -1,0 +1,26 @@
+﻿Common
+-------
+1. Monospace class for all GUIDs
+
+Catalog
+-------
+2. Нельзя запускать если NeedPublish = true
+3. Удаление всех экземпляров и самого процесса
+4. CheckSyntax
+
+Instance
+-------
+2. Index.Filters
+3. Instance Variables dialog
+4. Show Variables (Target)
+5. Unlock
+6. Log Dialog - добавить Pager
+
+
+-- AutoStart
+1. Create
+
+
+README.md
+---------
+1. Написать про планировщик в WebApp.csproj, Startup.cs, appsettings.json

@@ -1,0 +1,12 @@
+﻿[
+	{
+		"$schema": "@schemas/sql-json-schema.json#",
+		"outputFile": "_sqlscripts/wfmodule_main.sql",
+		"inputFiles": [
+			"_sql/_schemas.sql",
+			"catalog/catalog.sql",
+			"instance/instance.sql",
+			"autostart/autostart.sql"
+		]
+	}
+]

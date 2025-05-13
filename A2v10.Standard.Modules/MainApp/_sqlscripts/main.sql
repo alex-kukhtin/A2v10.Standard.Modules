@@ -863,10 +863,10 @@ go
 
 
 /*
-Copyright © 2008-2023 Oleksandr Kukhtin
+Copyright © 2008-2024 Oleksandr Kukhtin
 
-Last updated : 06 sep 2023
-module version : 8152
+Last updated : 23 aug 2024
+module version : 8339
 */
 ------------------------------------------------
 drop procedure if exists a2ui.[Menu.Merge];
@@ -887,7 +887,6 @@ create type a2ui.[Menu.TableType] as table
 	IsDevelopment bit
 );
 go
-
 ------------------------------------------------
 create or alter procedure a2ui.[Menu.Merge]
 @TenantId int,
@@ -913,14 +912,14 @@ begin
 		t.[Order] = s.[Order],
 		t.ClassName = s.ClassName,
 		t.CreateUrl= s.CreateUrl,
-		t.CreateName = s.CreateName
-	when not matched by target then insert(Module, Tenant, Id, Parent, [Name], [Url], Icon, [Order], ClassName, CreateUrl, CreateName) values 
-		(@ModuleId, @TenantId, Id, Parent, [Name], [Url], Icon, [Order], ClassName, CreateUrl, CreateName)
+		t.CreateName = s.CreateName,
+		t.IsDevelopment = isnull(s.IsDevelopment, 0)
+	when not matched by target then insert(Module, Tenant, Id, Parent, [Name], [Url], Icon, [Order], ClassName, CreateUrl, CreateName, IsDevelopment) values 
+		(@ModuleId, @TenantId, Id, Parent, [Name], [Url], Icon, [Order], ClassName, CreateUrl, CreateName, isnull(IsDevelopment, 0))
 	when not matched by source and t.Tenant = @TenantId and t.Module = @ModuleId then
 		delete;
 end
 go
-
 ------------------------------------------------
 create or alter procedure a2ui.[Menu.User.Load]
 @TenantId int = 1,
@@ -950,8 +949,23 @@ begin
 		m.[Name], m.Url, m.Icon, m.ClassName, m.CreateUrl, m.CreateName
 	from RT 
 		inner join a2ui.Menu m on m.Tenant = @TenantId and RT.Id=m.Id
-	where IsDevelopment = 0 or IsDevelopment = @isDevelopment
+	where IsDevelopment = 0 or IsDevelopment is null or IsDevelopment = @isDevelopment
 	order by RT.[Level], m.[Order], RT.[Id];
+
+	-- system parameters
+	select [SysParams!TParam!Object]= null, [AppTitle], [AppSubTitle]
+	from (select [Name], [Value]=StringValue from a2sys.SysParams) as s
+		pivot (min([Value]) for [Name] in ([AppTitle], [AppSubTitle])) as p;
+end
+go
+------------------------------------------------
+create or alter procedure a2ui.[MenuSP.User.Load]
+@TenantId int = 1,
+@UserId bigint = null
+as
+begin
+	set nocount on;
+	set transaction isolation level read uncommitted;
 
 	-- system parameters
 	select [SysParams!TParam!Object]= null, [AppTitle], [AppSubTitle]
@@ -1125,4 +1139,64 @@ go
 -- SCHEMAS
 -- TABLES
 -- TABLE TYPES
--- TABLE TYPES
+------------------------------------------------
+begin
+	set nocount on;
+
+	declare @moduleId uniqueidentifier = N'BC9B0145-1698-4ED6-9446-63E673430D9F';
+
+	exec a2ui.RegisterModule @ModuleId = @moduleId, @Name = N'Main'
+	exec a2ui.[Tenant.ConnectModule] @ModuleId = @moduleId, @TenantId = 1;
+
+	-- global
+	exec a2ui.RegisterInitProcedure @Module = @moduleId, @Procedure = N'a2ui.[Menu.Main.Create]';
+
+	declare @title nvarchar(255) = N'A2v10 Standard Modules'
+	if not exists(select * from a2sys.SysParams where [Name] = N'AppTitle')
+		insert into a2sys.SysParams ([Name], StringValue) values (N'AppTitle', @title);
+	else
+		update a2sys.SysParams set StringValue = @title where [Name] = N'AppTitle';
+end
+go
+
+------------------------------------------------
+create or alter procedure a2ui.[Menu.Main.Create]
+@TenantId int = 1,
+@ModuleId uniqueidentifier
+as
+begin
+	set nocount on;
+	set transaction isolation level read uncommitted;
+
+	declare @menu a2ui.[Menu.TableType];
+
+	--select newid(), newid(), newid()
+
+	insert into @menu(Id, Parent, [Order], [Name], [Url], CreateName, CreateUrl, Icon, ClassName) 
+	values
+	(N'00000000-0000-0000-0000-000000000000', null,  
+		0, N'Main', null, null, null, null, null),
+	(N'4A39BAC4-B35C-47D7-901A-CF775AA6CB6F', N'00000000-0000-0000-0000-000000000000',  
+		100, N'General', null, null, null,  N'grid', null),
+
+	(N'6632D12B-326F-4EFF-81BC-82A6A78EDE82', N'4A39BAC4-B35C-47D7-901A-CF775AA6CB6F',
+		20, N'@[BProcesses]',     null, null, null, null, null),
+
+	-- Business Processes
+	(N'4B78939D-986C-4B50-81F9-61407B7B6968', N'6632D12B-326F-4EFF-81BC-82A6A78EDE82', 
+		10, N'@[WfAdm.Catalog]',   N'page:/$workflow/catalog/index/0', null, null, null, null),
+	(N'B1EF5C47-6606-46DF-B75C-8258275FEBA4', N'6632D12B-326F-4EFF-81BC-82A6A78EDE82', 
+		20, N'@[WfAdm.Instances]',   N'page:/$workflow/instance/index/0', null, null, null, null),
+	(N'DBAD2EF1-476D-4869-8D13-E82959F0F331', N'6632D12B-326F-4EFF-81BC-82A6A78EDE82', 
+		30, N'@[WfAdm.Autostart]',   N'page:/$workflow/autostart/index/0', null, null, null, null);
+
+
+	exec a2ui.[Menu.Merge] @TenantId, @menu, @ModuleId;
+end
+go
+
+------------------------------------------------
+exec a2ui.[InvokeInitProcedures] @TenantId = 1;
+go
+
+

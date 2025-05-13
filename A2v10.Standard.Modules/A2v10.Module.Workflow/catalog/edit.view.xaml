@@ -1,0 +1,21 @@
+﻿<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
+	  Title="{Bind Workflow.Name}" Background="White">
+	<Page.Toolbar>
+		<Toolbar CssClass="bg-primary">
+			<Button Icon="SaveOutline" Command="{BindCmd Execute, CommandName=save}"/>
+			<Separator />
+			<Button Icon="EditUndo" Command="{BindCmd Execute, CommandName=undo}"/>
+			<Button Icon="EditRedo" Command="{BindCmd Execute, CommandName=redo}"/>
+			<Separator/>
+			<Button Icon="Check" Tip="Перевірити помилки" Command="{BindCmd Execute, CommandName=checkSyntax, SaveRequired=True}"/>
+			<Separator/>
+			<InlineTextBox Size="Large" MinWidth="20rem" MaxWidth="30rem"
+				Value="{Bind Workflow.Name}" Margin="0,0,0,1rem" />
+		</Toolbar>
+	</Page.Toolbar>
+	<Block CssClass="bpmn-container">
+		<Block CssClass="bpmn-canvas"></Block>
+		<Block CssClass="bpmn-props-panel open"></Block>
+		<Button CssClass="bpmn-pp-toggle" Icon="PaneRight" Command="{BindCmdExec togglePanel}" Style="Toolbar"/>
+	</Block>
+</Page>

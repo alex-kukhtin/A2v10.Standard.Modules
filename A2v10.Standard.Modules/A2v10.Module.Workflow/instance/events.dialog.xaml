@@ -1,0 +1,23 @@
+﻿<Dialog xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
+	  Title="@[WfAdm.Events]" Width="55rem">
+	<Dialog.Buttons>
+		<Button Content="@[Close]" Command="{BindCmd Close}" />
+	</Dialog.Buttons>
+	<Dialog.CollectionView>
+		<CollectionView ItemsSource="{Bind Events}" RunAt="Server" />
+	</Dialog.CollectionView>
+	<Grid Rows="Auto,1*" Height="100%">
+		<Toolbar>
+			<Button Icon="Reload" Command="{BindCmd Reload}"/>
+		</Toolbar>
+		<DataGrid Grid.Row="2" Grid.Col="1" Sort="False"
+				ItemsSource="{Bind Parent.ItemsSource}" FixedHeader="True" Height="30rem">
+			<DataGridColumn Header="Kind" Content="{Bind Kind}" Wrap="NoWrap" Fit="True"/>
+			<DataGridColumn Header="Event" Content="{Bind Event}" Wrap="NoWrap" Fit="True"/>
+			<DataGridColumn Header="Name" Content="{Bind Name}"/>
+			<DataGridColumn Header="Text" Content="{Bind Text}"/>
+			<DataGridColumn Header="Pending" Content="{Bind Pending, DataType=DateTime2}" Role="Date"
+					Sort="False"/>
+		</DataGrid>
+	</Grid>
+</Dialog>

@@ -11,9 +11,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="A2v10.App.Assets" Version="10.1.8282" />
-		<PackageReference Include="A2v10.Sql.MSBuild" Version="10.1.8102" />
-		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.4.4">
+		<PackageReference Include="A2v10.App.Assets" Version="10.1.8541" />
+		<PackageReference Include="A2v10.Sql.MSBuild" Version="10.1.8105" />
+		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.8.3">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

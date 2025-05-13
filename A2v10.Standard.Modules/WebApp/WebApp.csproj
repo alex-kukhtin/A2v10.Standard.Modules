@@ -5,12 +5,14 @@
 		<Nullable>enable</Nullable>
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>disable</ImplicitUsings>
+		<UserSecretsId>591d2b81-4eaf-4ee7-98be-0ee8cc34a937</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="A2v10.AppRuntimeBuilder" Version="10.1.8289" />
-		<PackageReference Include="A2v10.Platform" Version="10.1.8288" />
-		<PackageReference Include="A2v10.Web.Assets" Version="10.1.8287" />
-		<PackageReference Include="A2v10.ReportEngine.Pdf" Version="10.1.8288" />
+		<PackageReference Include="A2v10.Platform" Version="10.1.8546" />
+		<PackageReference Include="A2v10.Web.Assets" Version="10.1.8546" />
+		<PackageReference Include="A2v10.Workflow.WebAssets" Version="10.1.8112" />
+		<PackageReference Include="A2v10.Workflow.Engine" Version="10.1.8222" />
+		<PackageReference Include="A2v10.Scheduling" Version="10.1.8535" />
 	</ItemGroup>
 </Project>

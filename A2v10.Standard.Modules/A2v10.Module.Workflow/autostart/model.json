@@ -1,0 +1,12 @@
+﻿{
+	"$schema": "../../@schemas/model-json-schema.json#",
+	"schema": "wfadm",
+	"model": "AutoStart",
+	"actions": {
+		"index": {
+			"index": true,
+			"template": "index.template",
+			"view": "index.view"
+		}
+	}
+}

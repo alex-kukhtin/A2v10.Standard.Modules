@@ -11,6 +11,7 @@
 @DataModel=Model danych
 @Profiling=Profilowanie
 @Profile=Profil
+@License=Licencja
 @ChangePassword=Zmień hasło
 @SubstUser=Zmień użytkownika
 @AllUsers=Wszyscy użytkownicy
@@ -85,6 +86,7 @@
 @Memo=Notatka
 ;
 @Confirm=Potwierdzenie
+@PasswordAgain=Potwierdzenie
 @ConfirmDeleteDocument=Usunąć dokument?
 @DocumentSaved=Dokument został pomyślnie zapisany
 ;

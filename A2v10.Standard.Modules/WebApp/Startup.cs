@@ -1,32 +1,38 @@
-﻿// Copyright © 2024 Oleksandr Kukhtin. All rights reserved.
+﻿// Copyright © 2025 Oleksandr Kukhtin. All rights reserved.
 
-using A2v10.ReportEngine.Pdf;
+using A2v10.Infrastructure;
+using A2v10.Scheduling;
+using A2v10.Workflow.Engine;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace WebApp
+namespace WebApp;
+
+public class Startup(IConfiguration configuration)
 {
-    public class Startup(IConfiguration configuration)
+    public IConfiguration Configuration { get; } = configuration;
+
+    public void ConfigureServices(IServiceCollection services)
     {
-        public IConfiguration Configuration { get; } = configuration;
+        services.UsePlatform(Configuration);
 
-        public void ConfigureServices(IServiceCollection services)
+        services.AddWorkflowEngineScoped()
+        .AddInvokeTargets(a =>
         {
-            services.UseAppRuntimeBuilder(); // Before platform!
+            a.RegisterEngine<WorkflowInvokeTarget>("Workflow", InvokeScope.Scoped);
+        });
 
-            services.UsePlatform(Configuration);
-
-            services.AddReportEngines(factory =>
-            {
-                factory.RegisterEngine<PdfReportEngine>("pdf");
-            });
-        }
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        services.UseScheduling(Configuration, factory =>
         {
-            app.ConfigurePlatform(env, Configuration);
-        }
+            // job handlers
+            factory.RegisterJobHandler<WorkflowPendingJobHandler>("WorkflowPending");
+        });
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        app.ConfigurePlatform(env, Configuration);
     }
 }

@@ -4,8 +4,24 @@
 	"model": "Instance",
 	"actions": {
 		"index": {
+			"index": true,
 			"template": "index.template",
 			"view": "index.view"
+		}
+	},
+	"dialogs": {
+		"log": {
+			"model": "Instance.Log",
+			"view": "log.dialog"
+		},
+		"show": {
+			"model": "Instance.Show",
+			"template": "view.template",
+			"view": "view.dialog"
+		},
+		"events": {
+			"model": "Instance.Events",
+			"view": "events.dialog"
 		}
 	}
 }

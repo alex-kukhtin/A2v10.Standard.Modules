@@ -1,0 +1,10 @@
+﻿; Commands
+@WfAdm.Run=Запустити
+@WfAdm.Publish=Опублікувати
+; Menu
+@WfAdm.Autostart=Автозапуск
+@WfAdm.Instances=Екземпляри
+@WfAdm.Instance=Екземпляр
+@WfAdm.Catalog=Каталог
+@WfAdm.Model=Модель
+@WfAdm.Events=Події

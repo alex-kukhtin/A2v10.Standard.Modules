@@ -1,0 +1,19 @@
+﻿<Dialog xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml" 
+		Title="Перегляд бізнес-процесу"
+		Maximize="True" Padding="1rem">
+	<Dialog.Buttons>
+		<Button Content="@[Close]" Command="{BindCmd Close}" />
+	</Dialog.Buttons>
+
+	<Grid Columns="1*,1px,20rem" Height="100%" Padding="0" AlignItems="Top">
+		<Block CssClass="bpmn-canvas" Grid.Col="1"></Block>
+		<GridDivider Grid.Col="2"/>
+		<!--
+		<DataGrid Grid.Col="3" ItemsSource="{Bind Instance.UserTrack}" Compact="True"
+							HeadersVisibility="None" GridLines="Horizontal">
+			<DataGridColumn Content="{Bind Date, DataType=DateTime}" Role="Date"/>
+			<DataGridColumn Content="{Bind Message}"/>
+		</DataGrid>
+		-->
+	</Grid>
+</Dialog>
