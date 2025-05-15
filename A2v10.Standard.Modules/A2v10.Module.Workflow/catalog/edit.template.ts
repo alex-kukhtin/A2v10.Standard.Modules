@@ -82,13 +82,18 @@ async function modelLoad() {
 		async exec(this: any) {
 			let ctrl: IController = this.$ctrl;
 
-			let { xml, svg } = await assets.saveXmlAndSvg(modeler);
+			let { xml, svg, zoom } = await assets.saveXmlAndSvg(modeler);
 
 			this.Workflow.Body = xml;
 			this.Workflow.Svg = svg;
+			this.Workflow.Zoom = Math.ceil(zoom * 100) / 100;
 
 			await ctrl.$save();
+			ctrl.$nodirty(async () => {
+				this.Workflow.Svg = svg; // for preview in index
+			})
 			ctrl.$emitGlobal('g.workflow.saved', this.Workflow);
+
 		}
 	}
 }

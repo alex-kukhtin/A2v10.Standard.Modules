@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainApp", "A2v10.Standard.M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A2v10.Module.Workflow", "A2v10.Standard.Modules\A2v10.Module.Workflow\A2v10.Module.Workflow.csproj", "{64BD9BDB-8BDE-BB87-68CA-366FEB74BB91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A2v10.Module.Metadata", "A2v10.Module.Metadata\A2v10.Module.Metadata.csproj", "{EACACF7C-A522-4EBD-96D3-103AEB646471}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A2v10.Module.Metadata", "A2v10.Standard.Modules\A2v10.Module.Metadata\A2v10.Module.Metadata.csproj", "{7131DC51-4FA6-7E65-73C3-90528FD8592A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{64BD9BDB-8BDE-BB87-68CA-366FEB74BB91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64BD9BDB-8BDE-BB87-68CA-366FEB74BB91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64BD9BDB-8BDE-BB87-68CA-366FEB74BB91}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EACACF7C-A522-4EBD-96D3-103AEB646471}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EACACF7C-A522-4EBD-96D3-103AEB646471}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EACACF7C-A522-4EBD-96D3-103AEB646471}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EACACF7C-A522-4EBD-96D3-103AEB646471}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7131DC51-4FA6-7E65-73C3-90528FD8592A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7131DC51-4FA6-7E65-73C3-90528FD8592A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7131DC51-4FA6-7E65-73C3-90528FD8592A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7131DC51-4FA6-7E65-73C3-90528FD8592A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

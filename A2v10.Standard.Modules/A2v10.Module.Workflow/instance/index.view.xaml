@@ -19,10 +19,10 @@
 		</Toolbar>
 		<DataGrid Grid.Row="2" Grid.Col="1" Sort="True"
 				ItemsSource="{Bind Parent.ItemsSource}" FixedHeader="True">
-			<DataGridColumn Header="@[Id]" SortProperty="Id" Wrap="NoWrap" Fit="True">
+			<DataGridColumn Header="@[WfAdm.Id]" SortProperty="Id" Wrap="NoWrap" Fit="True">
 				<Span Content="{Bind Id}" CssClass="monospace"/>
 			</DataGridColumn>
-			<DataGridColumn Header="@[Name]" Content="{Bind Name}" Sort="False"/>
+			<DataGridColumn Header="@[WfAdm.Process]" Content="{Bind Name}" Sort="False" />
 			<DataGridColumn Header="@[Version]" Content="{BindNumber Version}" Role="Number" Fit="True"
 							Sort="False"/>
 			<DataGridColumn Header="@[State]" Content="{Bind ExecutionStatus}" Wrap="NoWrap"/>

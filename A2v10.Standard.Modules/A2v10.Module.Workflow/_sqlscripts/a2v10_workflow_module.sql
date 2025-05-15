@@ -10,6 +10,13 @@ grant execute on schema::wfadm to public;
 go
 
 
+-- MIGRATIONS
+------------------------------------------------
+if not exists(select * from INFORMATION_SCHEMA.COLUMNS where TABLE_SCHEMA = N'a2wf' and TABLE_NAME = N'Catalog' and COLUMN_NAME = N'Zoom')
+	alter table a2wf.[Catalog] add Zoom float constraint DF_Catalog_Zoom default(1) with values;
+go
+
+
 -- CATALOG
 ------------------------------------------------
 create or alter procedure wfadm.[Catalog.Index]
@@ -27,7 +34,7 @@ begin
 	group by Id;
 
 	select [Workflows!TWorkflow!Array] = null, [Id!!Id] = w.Id, w.[Name], t.[Version],
-		[DateCreated!!Utc] = w.DateCreated, w.Svg,
+		[DateCreated!!Utc] = w.DateCreated, w.Svg, w.Zoom,
 		NeedPublish = cast(case when w.[Hash] = x.[Hash] then 0 else 1 end as bit),
 		[Arguments!TArg!Array] = null
 	from a2wf.[Catalog] w left join @wftable t on w.Id = t.Id
@@ -53,7 +60,7 @@ begin
 	select @hash = Hash from a2wf.Workflows where Id = @Id and [Version] = @version;
 
 	select [Workflow!TWorkflow!Object] = null, [Id!!Id] = Id, [Name!!Name] = [Name], [Body],
-		[Svg] = cast(null as nvarchar(max)), [Version] = @version, 
+		[Svg] = cast(null as nvarchar(max)), [Version] = @version,  Zoom,
 		[DateCreated!!Utc] = DateCreated,
 		NeedPublish = cast(case when [Hash] = @hash then 0 else 1 end as bit)
 	from a2wf.[Catalog] 
@@ -72,7 +79,8 @@ create type wfadm.[Catalog.TableType] as table
 	Id nvarchar(64),
 	[Name] nvarchar(255),
 	[Body] nvarchar(max),
-	Svg nvarchar(max)
+	Svg nvarchar(max),
+	Zoom float
 );
 go
 ------------------------------------------------
@@ -105,13 +113,14 @@ begin
 		t.[Name] = s.[Name],
 		t.[Body] = s.[Body],
 		t.Svg = s.Svg,
+		t.Zoom = round(s.Zoom, 2),
 		t.[Hash] = hashbytes(N'SHA2_256', s.Body)
 	when not matched then insert 
 		(Id, 
-			[Name], [Body], Svg, [Format], [Hash]) values
+			[Name], [Body], Svg, Zoom, [Format], [Hash]) values
 		(upper(cast(newid() as nvarchar(64))), 
-			s.[Name], s.[Body], s.Svg, N'text/xml', hashbytes(N'SHA2_256', s.Body))
-	output inserted.Id into @rtable(Id);
+			s.[Name], s.[Body], s.Svg, round(s.Zoom, 2), N'text/xml', hashbytes(N'SHA2_256', s.Body))
+ 	output inserted.Id into @rtable(Id);
 	select @wfid = Id from @rtable;
 
 	exec wfadm.[Catalog.Load] @UserId = @UserId, @Id = @wfid;
@@ -288,7 +297,8 @@ begin
 	set nocount on;
 	set transaction isolation level read uncommitted;
 
-	select [Instance!TEvent!Array] = null, [Id!!Id] = i.Id, 
+	select [Instance!TInstance!Object] = null, [Id!!Id] = i.Id, 
+		[State!!Json] = [State],
 		Variables = cast(null as nvarchar(max))
 	from a2wf.Instances i
 	where i.Id = @Id;

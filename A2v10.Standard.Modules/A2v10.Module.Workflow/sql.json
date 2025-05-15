@@ -4,6 +4,7 @@
 		"outputFile": "_sqlscripts/a2v10_workflow_module.sql",
 		"inputFiles": [
 			"_sql/_schemas.sql",
+			"_sql/_migrations.sql",
 			"catalog/catalog.sql",
 			"instance/instance.sql",
 			"autostart/autostart.sql"

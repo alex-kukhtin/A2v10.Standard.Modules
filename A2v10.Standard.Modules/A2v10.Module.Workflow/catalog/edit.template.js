@@ -64,10 +64,14 @@ define(["require", "exports"], function (require, exports) {
             canExec() { return this.$dirty; },
             async exec() {
                 let ctrl = this.$ctrl;
-                let { xml, svg } = await assets.saveXmlAndSvg(modeler);
+                let { xml, svg, zoom } = await assets.saveXmlAndSvg(modeler);
                 this.Workflow.Body = xml;
                 this.Workflow.Svg = svg;
+                this.Workflow.Zoom = Math.ceil(zoom * 100) / 100;
                 await ctrl.$save();
+                ctrl.$nodirty(async () => {
+                    this.Workflow.Svg = svg;
+                });
                 ctrl.$emitGlobal('g.workflow.saved', this.Workflow);
             }
         };

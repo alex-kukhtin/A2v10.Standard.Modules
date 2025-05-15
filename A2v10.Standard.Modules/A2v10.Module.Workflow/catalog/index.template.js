@@ -8,13 +8,20 @@ define(["require", "exports"], function (require, exports) {
         },
         properties: {
             'TWorkflow.$Mark'() { return this.NeedPublish ? 'warning' : ''; },
+            'TWorkflow.$PopupStyle'() { return `zoom: ${this.Zoom};`; },
         },
         events: {
             'g.workflow.saved': handleSaved
         },
         commands: {
-            publish,
-            start,
+            publish: {
+                exec: publish,
+                canExec: a => a.NeedPublish
+            },
+            start: {
+                exec: start,
+                canExec: a => !a.NeedPublish
+            },
             startWorkflow
         }
     };

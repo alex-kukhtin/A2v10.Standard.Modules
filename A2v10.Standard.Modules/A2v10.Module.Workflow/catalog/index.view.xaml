@@ -1,5 +1,5 @@
 ﻿<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
-	  Title="@[Catalog]">
+	  Title="@[WfAdm.Catalog]">
 	<Page.CollectionView>
 		<CollectionView ItemsSource="{Bind Workflows}" RunAt="ServerUrl">
 
@@ -22,19 +22,26 @@
 		<DataGrid Grid.Row="2" Grid.Col="1" Mark="{Bind $Mark}" MarkerStyle="Row"
 				ItemsSource="{Bind Parent.ItemsSource}" FixedHeader="True"
 				DoubleClick="{BindCmd OpenSelected, Argument={Bind Parent.ItemsSource}, Url='/$workflow/catalog/edit'}">
-			<DataGridColumn Header="@[Id]" Content="{Bind Id}" Wrap="NoWrap" Fit="True"/>
-			<DataGridColumn Header="@[Name]">
+			<DataGridColumn Header="@[WfAdm.Id]" Content="{Bind Id}" Wrap="NoWrap" Fit="True"/>
+			<DataGridColumn Header="@[WfAdm.Process]">
 				<Popover Text="{Bind Name}" ShowOnHover="True" Background="White"
 						 Placement="RightBottom" Underline="Disable">
-					<StackPanel Padding="1rem">
-						<Html Content="{Bind Svg}" CssClass="z-5"/>
+					<StackPanel Padding="6">
+						<HtmlElement TagName="span">
+							<Html Content="{Bind Svg}"/>
+							<HtmlElement.Attributes>
+								<HtmlAttribute Name="style" Value="{Bind $PopupStyle}"/>
+							</HtmlElement.Attributes>
+						</HtmlElement>
 					</StackPanel>
 				</Popover>
 			</DataGridColumn>
 			<DataGridColumn Content="{Bind DateCreated, DataType=DateTime}" Header="@[Created]" />
 			<DataGridColumn Content="{BindNumber Version}" Header="@[Version]" Role="Number"/>
 			<DataGridColumn Content="{Bind Memo}" LineClamp="2"/>
-			<DataGridColumn Content="{Bind NeedPublish}" />
+			<!--
+			<DataGridColumn Content="{Bind NeedPublish}" Header="NeedPublish"/>
+			-->
 		</DataGrid>
 	</Grid>
 

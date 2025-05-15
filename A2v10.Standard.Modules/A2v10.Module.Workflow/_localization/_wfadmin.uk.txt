@@ -8,3 +8,7 @@
 @WfAdm.Catalog=Каталог
 @WfAdm.Model=Модель
 @WfAdm.Events=Події
+@WfAdm.Variables=Змінні
+; Columns	
+@WfAdm.Id=Ідентифікатор
+@WfAdm.Process=Процес

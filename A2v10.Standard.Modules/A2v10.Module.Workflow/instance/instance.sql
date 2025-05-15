@@ -168,7 +168,8 @@ begin
 	set nocount on;
 	set transaction isolation level read uncommitted;
 
-	select [Instance!TEvent!Array] = null, [Id!!Id] = i.Id, 
+	select [Instance!TInstance!Object] = null, [Id!!Id] = i.Id, 
+		[State!!Json] = [State],
 		Variables = cast(null as nvarchar(max))
 	from a2wf.Instances i
 	where i.Id = @Id;
