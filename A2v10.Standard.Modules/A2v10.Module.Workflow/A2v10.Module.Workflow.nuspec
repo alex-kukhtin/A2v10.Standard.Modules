@@ -1,0 +1,23 @@
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+	<metadata>
+		<id>A2v10.Module.Workflow</id>
+		<version>10.1.1029</version>
+		<authors>Oleksandr Kukthin</authors>
+		<description>A2v10 Platform Application Workflow UI</description>
+		<copyright>Copyright © 2025 Oleksandr Kukthin. All rights reserved.</copyright>
+		<tags>A2v10 Platform Business WebApp BPMN</tags>
+		<repository type="git" url="https://github.com/alex-kukhtin/A2v10.Standard.Modules" branch="master"/>
+		<license type="expression">MIT</license>
+		<readme>.\README.md</readme>
+		<dependencies>
+			<group targetFramework="net8.0" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="bin\Release\net8.0\A2v10.Module.Workflow.dll" target="lib\net8.0" />
+		<file src="bin\Release\net8.0\A2v10.Module.Workflow.pdb" target="lib\net8.0" />
+		<file src="_sqlScripts\a2v10_workflow_module.sql" target="contentFiles\sql\a2v10_workflow_module.sql" />
+		<file src="A2v10.Module.Workflow.targets" target="build\A2v10.Module.Workflow.targets" />
+		<file src=".\README.md" target="\" />
+	</files>
+</package>

@@ -2,6 +2,7 @@
 
 using A2v10.Infrastructure;
 using A2v10.Scheduling;
+using A2v10.Services;
 using A2v10.Workflow.Engine;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,6 +17,7 @@ public class Startup(IConfiguration configuration)
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddSingleton<ILicenseManager, NullLicenseManager>();
         services.UsePlatform(Configuration);
 
         services.AddWorkflowEngineScoped()

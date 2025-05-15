@@ -2,14 +2,13 @@
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
-		<Version>10.1.1000</Version>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<LangVersion>Latest</LangVersion>
 		<OutputType>Library</OutputType>
 		<NoWarn>$(NoWarn);MSB3245</NoWarn>
 		<NoWin32Manifest>true</NoWin32Manifest>
-		<IsPackable>true</IsPackable>
+		<IsPackable>True</IsPackable>
 		<PackageId>A2v10.Module.Workflow</PackageId>
 		<Authors>Oleksandr Kukthin</Authors>
 		<Company>Oleksandr Kukthin</Company>
@@ -20,11 +19,13 @@
 		<PackageTags>A2v10 Platform</PackageTags>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<IncludeContentInPack>False</IncludeContentInPack>
+		<NuspecFile>A2v10.Module.Workflow.nuspec</NuspecFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="A2v10.App.Assets" Version="10.1.8541" />
+		<PackageReference Include="A2v10.App.Assets" Version="10.1.8547" />
+		<PackageReference Include="A2v10.AppCompiler" Version="10.1.8118" />
 		<PackageReference Include="A2v10.Sql.MSBuild" Version="10.1.8105" />
 		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.8.3">
 			<PrivateAssets>all</PrivateAssets>
@@ -33,16 +34,24 @@
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Remove="**\*.js" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Update="**\*.json" CopyToPublishDirectory="Never" CopyToOutputDirectory="Never" Pack="false" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AdditionalFiles Include="$(ProjectPath)" />
+	</ItemGroup>
+
 	<PropertyGroup>
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<Folder Include="_sqlscripts\" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="README.md" Pack="true" PackagePath="\" />

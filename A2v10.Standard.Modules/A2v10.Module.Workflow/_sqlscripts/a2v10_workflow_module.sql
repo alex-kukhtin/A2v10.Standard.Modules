@@ -1,4 +1,4 @@
-﻿/* _sqlscripts/wfmodule_main.sql */
+﻿/* _sqlscripts/a2v10_workflow_module.sql */
 
 -- SCHEMAS
 ------------------------------------------------
@@ -277,7 +277,23 @@ begin
 	order by e.Pending;
 end
 go
+------------------------------------------------
+create or alter procedure wfadm.[Instance.Variables.Load]
+@UserId bigint,
+@Id nvarchar(64) = null,
+@Offset int = 0,
+@PageSize int = 20
+as
+begin
+	set nocount on;
+	set transaction isolation level read uncommitted;
 
+	select [Instance!TEvent!Array] = null, [Id!!Id] = i.Id, 
+		Variables = cast(null as nvarchar(max))
+	from a2wf.Instances i
+	where i.Id = @Id;
+end
+go
 
 -- AUTOSTART
 ------------------------------------------------

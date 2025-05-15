@@ -20,6 +20,10 @@ Instance
 -- AutoStart
 1. Create
 
+NuGet
+------------
+1. Проверить content при установке пакета.
+
 
 README.md
 ---------

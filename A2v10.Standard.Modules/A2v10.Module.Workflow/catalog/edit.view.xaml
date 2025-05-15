@@ -7,7 +7,7 @@
 			<Button Icon="EditUndo" Command="{BindCmd Execute, CommandName=undo}"/>
 			<Button Icon="EditRedo" Command="{BindCmd Execute, CommandName=redo}"/>
 			<Separator/>
-			<Button Icon="Check" Tip="Перевірити помилки" Command="{BindCmd Execute, CommandName=checkSyntax, SaveRequired=True}"/>
+			<Button Icon="CodeCheck" Tip="Перевірити помилки" Command="{BindCmd Execute, CommandName=checkSyntax, SaveRequired=True}"/>
 			<Separator/>
 			<InlineTextBox Size="Large" MinWidth="20rem" MaxWidth="30rem"
 				Value="{Bind Workflow.Name}" Margin="0,0,0,1rem" />

@@ -22,6 +22,10 @@
 		"events": {
 			"model": "Instance.Events",
 			"view": "events.dialog"
+		},
+		"variables": {
+			"model": "Instance.Variables",
+			"view": "variables.dialog"
 		}
 	}
 }
