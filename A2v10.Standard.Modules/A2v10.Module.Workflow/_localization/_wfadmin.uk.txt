@@ -2,6 +2,7 @@
 @WfAdm.Run=Запустити
 @WfAdm.Publish=Опублікувати
 ; Menu
+@WfAdm.BProcesses=Процеси BPMN 2.0
 @WfAdm.Autostart=Автозапуск
 @WfAdm.Instances=Екземпляри
 @WfAdm.Instance=Екземпляр
@@ -9,6 +10,14 @@
 @WfAdm.Model=Модель
 @WfAdm.Events=Події
 @WfAdm.Variables=Змінні
+@WfAdm.Filters=Фільтри
 ; Columns	
 @WfAdm.Id=Ідентифікатор
-@WfAdm.Process=Процес
+@WfAdm.Workflow=Процес
+@WfAdm.Created=Створений
+@WfAdm.Started=Запущений
+@WfAdm.Modified=Змінений
+@WfAdm.State=Стан
+@WfAdm.StartAt=Запустити в
+; Placeholders
+@WfAdm.Workflow.All=Всі процеси

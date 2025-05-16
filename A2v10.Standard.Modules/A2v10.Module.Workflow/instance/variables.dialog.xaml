@@ -4,9 +4,7 @@
 		<Button Content="@[Close]" Command="{BindCmd Close}" />
 	</Dialog.Buttons>
 
-	<Grid MinHeight="25rem" Rows="1*">
-		<Code Multiline="True" Content="{Bind Instance.State.Variables}"
-			  Bold="True" Height="100%">
-		</Code>
-	</Grid>
+	<JsonView Source="{Bind Instance.State.Variables}"
+			Height="25rem" Margin="1rem">
+	</JsonView>
 </Dialog>

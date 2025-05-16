@@ -2,7 +2,12 @@
 	  Title="@[WfAdm.Instances]">
 	<Page.CollectionView>
 		<CollectionView ItemsSource="{Bind Instances}" RunAt="ServerUrl">
-
+			<CollectionView.Filter>
+				<FilterDescription>
+					<FilterItem Property="Workflow" DataType="Object"/>
+					<FilterItem Property="State" />
+				</FilterDescription>
+			</CollectionView.Filter>
 		</CollectionView>
 	</Page.CollectionView>
 	<Grid Rows="Auto,1*,Auto" Height="100%">
@@ -11,27 +16,28 @@
 			<Button Icon="Log" Command="{BindCmd Dialog, Action=ShowSelected, Argument={Bind Instances}, Url='/$workflow/instance/log'}"/>
 			<Button Icon="Variable" Command="{BindCmd Dialog, Action=ShowSelected, Argument={Bind Instances}, Url='/$workflow/instance/variables'}"/>
 			<Button Icon="Energy" Command="{BindCmd Dialog, Action=ShowSelected, Argument={Bind Instances}, Url='/$workflow/instance/events'}"/>
+			<Button Render="Hide" Icon="Bookmark" Command="{BindCmd Dialog, Action=ShowSelected, Argument={Bind Instances}, Url='/$workflow/instance/bookmarks'}"/>
 			<Separator />
-			<Button Icon="UnlockOutline" />
+			<Button Icon="UnlockOutline" Command="{BindCmd ExecuteSelected, CommandName=unlock, Argument={Bind Instances}}"/>
 			<Button Icon="Delete" Command="{BindCmd DbRemoveSelected, Argument={Bind Instances}, Confirm='@[Confirm.Delete.Element]'}"/>
 			<Separator />
 			<Button Icon="Reload" Command="{BindCmd Reload}"/>
 		</Toolbar>
 		<DataGrid Grid.Row="2" Grid.Col="1" Sort="True"
 				ItemsSource="{Bind Parent.ItemsSource}" FixedHeader="True">
-			<DataGridColumn Header="@[WfAdm.Id]" SortProperty="Id" Wrap="NoWrap" Fit="True">
-				<Span Content="{Bind Id}" CssClass="monospace"/>
+			<DataGridColumn Header="@[WfAdm.Id]" Content="{Bind Id}" Wrap="NoWrap" Fit="True"
+					CssClass="monospace">
 			</DataGridColumn>
-			<DataGridColumn Header="@[WfAdm.Process]" Content="{Bind Name}" Sort="False" />
+			<DataGridColumn Header="@[WfAdm.Workflow]" Content="{Bind Name}" Sort="False" />
 			<DataGridColumn Header="@[Version]" Content="{BindNumber Version}" Role="Number" Fit="True"
 							Sort="False"/>
-			<DataGridColumn Header="@[State]" Content="{Bind ExecutionStatus}" Wrap="NoWrap"/>
+			<DataGridColumn Header="@[WfAdm.State]" Content="{Bind ExecutionStatus}" Wrap="NoWrap"/>
 			<DataGridColumn Header="Inbox" Sort="False" Fit="True">
-				<TagLabel If="{Bind Inboxes.Count}" Content="Inbox" Style="Olive" />
+				<TagLabel If="{Bind Inboxes.Count}" Content="Inbox" Style="Olive" Outline="True"/>
 			</DataGridColumn>
-			<DataGridColumn Content="{Bind DateCreated, DataType=DateTime}" Header="@[DateCreated]" Role="Date"/>
-			<DataGridColumn Content="{Bind DateModified, DataType=DateTime}" Header="@[DateModified]" Role="Date"/>
-			<DataGridColumn Content="{Bind CorrelationId}" Header="@[Model]" Align="Right" Fit="True"/>
+			<DataGridColumn Content="{Bind DateCreated, DataType=DateTime}" Header="@[WfAdm.Created]" Role="Date"/>
+			<DataGridColumn Content="{Bind DateModified, DataType=DateTime}" Header="@[WfAdm.Modified]" Role="Date"/>
+			<DataGridColumn Content="{Bind CorrelationId}" Header="@[WfAdm.Model]" Align="Right" Fit="True"/>
 			<DataGridColumn Header="Lock">
 				<StackPanel>
 					<Span If="{Bind Lock}">Locked</Span>
@@ -45,6 +51,7 @@
 					<Button Icon="Log" Command="{BindCmd Dialog, Action=Show, Argument={Bind}, Url='/$workflow/instance/log'}"/>
 					<Button Icon="Variable" Command="{BindCmd Dialog, Action=Show, Argument={Bind}, Url='/$workflow/instance/variables'}"/>
 					<Button Icon="Energy" Command="{BindCmd Dialog, Action=Show, Argument={Bind}, Url='/$workflow/instance/events'}"/>
+					<Button Render="Hide" Icon="Bookmark" Command="{BindCmd Dialog, Action=Show, Argument={Bind}, Url='/$workflow/instance/bookmarks'}"/>
 				</CommandBar>
 			</DataGridColumn>
 		</DataGrid>
@@ -52,11 +59,20 @@
 	</Grid>
 	<Page.Taskpad>
 		<Taskpad Collapsible="True">
-			<Panel Header="@[Filters]">
-				<Paragraph>TODO: Filters panel</Paragraph>				
+			<Panel Header="@[WfAdm.Filters]" Style="Transparent" Collapsible="True">
+				<SelectorSimple Label="@[WfAdm.Workflow]"
+					Value="{Bind Parent.Filter.Workflow}" Url="/$workflow/catalog"
+						ShowClear="True" Highlight="True" Placeholder="@[WfAdm.Workflow.All]"/>
+				<ComboBox Label="@[WfAdm.State]" Value="{Bind Parent.Filter.State}">
+					<ComboBoxItem Content="All States" Value=""/>
+					<ComboBoxItem Content="Init" Value="Init"/>
+					<ComboBoxItem Content="Idle" Value="Idle"/>
+					<ComboBoxItem Content="Complete" Value="Complete"/>
+					<ComboBoxItem Content="Faulted" Value="Faulted"/>
+				</ComboBox>
 			</Panel>
 			<Slot Scope="{Bind Instances.$selected}">
-				<Panel Header="Inbox" If="{Bind Inboxes.Count}">
+				<Panel Header="Inbox" If="{Bind Inboxes.Count}" Style="Transparent" Collapsible="True">
 					<Repeater ItemsSource="{Bind Inboxes}">
 						<StackPanel>
 							<Static Label="Id" Value="{Bind Id}"/>
@@ -66,6 +82,17 @@
 							<TextBox Label="Answer" Value="{Bind Root.Answer.Answer}"/>
 							<Button Style="Primary" Content="Resume" 
 									Command="{BindCmdExec resume, Argument={Bind}}"
+									Width="12rem"/>
+							<Line />
+						</StackPanel>
+					</Repeater>
+				</Panel>
+				<Panel Header="Bookmarks" If="{Bind Bookmarks.Count}" Style="Transparent" Collapsible="True">
+					<Repeater ItemsSource="{Bind Bookmarks}">
+						<StackPanel>
+							<Static Label="Bookmark" Value="{Bind Bookmark}"/>
+							<Button Style="Primary" Content="Resume" 
+									Command="{BindCmdExec resumeBookmark, Argument={Bind}}"
 									Width="12rem"/>
 							<Line />
 						</StackPanel>

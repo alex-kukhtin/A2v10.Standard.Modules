@@ -39,7 +39,7 @@ begin
 		100, N'General', null, null, null,  N'grid', null),
 
 	(N'6632D12B-326F-4EFF-81BC-82A6A78EDE82', N'4A39BAC4-B35C-47D7-901A-CF775AA6CB6F',
-		20, N'@[BProcesses]',     null, null, null, null, null),
+		20, N'@[WfAdm.BProcesses]',     null, null, null, null, null),
 
 	-- Business Processes
 	(N'4B78939D-986C-4B50-81F9-61407B7B6968', N'6632D12B-326F-4EFF-81BC-82A6A78EDE82', 

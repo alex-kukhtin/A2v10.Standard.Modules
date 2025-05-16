@@ -8,7 +8,12 @@ const template: Template = {
 	events: {
 	},
 	commands: {
-		resume
+		resume,
+		resumeBookmark,
+		unlock: {
+			exec: unlock,
+			canExec: (inst) => !!inst.Lock
+		}
 	}
 }
 
@@ -23,10 +28,28 @@ async function resume(inbox) {
 		Reply: {
 			Answer: this.Answer.Answer
 		}
-	}, '/workflow');
+	}, '/$workflow/instance');
 
 	let resMsg = `InstanceId: ${res.InstanceId}, Result: ${JSON.stringify(res.Result)}`;
 	ctrl.$msg(resMsg, "Result", CommonStyle.info);
 
 	ctrl.$reload();
+}
+
+async function resumeBookmark(bookmark) {
+	const ctrl: IController = this.$ctrl;
+	let res = await ctrl.$invoke('resume', {
+		InstanceId: bookmark.Instance,
+		Bookmark: bookmark.Bookmark
+	}, '/$workflow/instance');
+
+	let resMsg = `InstanceId: ${res.InstanceId}, Result: ${JSON.stringify(res.Result)}`;
+	ctrl.$msg(resMsg, "Result", CommonStyle.info);
+
+	ctrl.$reload();
+}
+
+async function unlock() {
+	const ctrl: IController = this.$ctrl;
+	alert("Unlocking instance...");
 }

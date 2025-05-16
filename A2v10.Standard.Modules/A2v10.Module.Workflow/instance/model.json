@@ -27,5 +27,11 @@
 			"model": "Instance.Variables",
 			"view": "variables.dialog"
 		}
+	},
+	"commands": {
+		"resume": {
+			"type": "invokeTarget",
+			"target": "Workflow.Resume"
+		}
 	}
 }

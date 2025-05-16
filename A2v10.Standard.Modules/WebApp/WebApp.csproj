@@ -9,8 +9,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="A2v10.Platform" Version="10.1.8547" />
-		<PackageReference Include="A2v10.Web.Assets" Version="10.1.8547" />
+	  <Content Remove="compilerconfig.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="compilerconfig.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="A2v10.Platform" Version="10.1.8548" />
+		<PackageReference Include="A2v10.Web.Assets" Version="10.1.8548" />
 		<PackageReference Include="A2v10.Workflow.WebAssets" Version="10.1.8115" />
 		<PackageReference Include="A2v10.Workflow.Engine" Version="10.1.8223" />
 		<PackageReference Include="A2v10.Scheduling" Version="10.1.8547" />

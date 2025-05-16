@@ -13,6 +13,12 @@
 			"view": "edit.view"
 		}
 	},
+	"dialogs": {
+		"browse": {
+			"index": true,
+			"view": "browse.dialog"
+		}
+	},
 	"commands": {
 		"publish": {
 			"type": "invokeTarget",
@@ -25,6 +31,10 @@
 		"checkSyntax": {
 			"type": "invokeTarget",
 			"target": "Workflow.CheckSyntax"
+		},
+		"fetch": {
+			"type": "sql",
+			"procedure": "Workflow.Fetch"
 		}
 	}
 }

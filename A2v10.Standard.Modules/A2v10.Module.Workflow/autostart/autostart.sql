@@ -2,7 +2,7 @@
 ------------------------------------------------
 create or alter procedure wfadm.[AutoStart.Index]
 @UserId bigint,
-@Id nvarchar(64) = null,
+@Id uniqueidentifier = null,
 @Offset int = 0,
 @PageSize int = 20,
 @Order nvarchar(255) = N'id',
@@ -51,14 +51,84 @@ begin
 	select [AutoStart!TAutoStart!Array] = null, [Id!!Id] = a.Id, a.[Version],
 		[StartAt!!Utc] = a.StartAt, a.Lock, a.InstanceId, a.CorrelationId,
 		[DateCreated!!Utc] = a.DateCreated, [DateStarted!!Utc] = a.DateStarted,
-		[WorkflowName] = w.[Name],
+		[WorkflowName] = c.[Name],
 		[!!RowCount] = t.rowcnt
 	from a2wf.AutoStart a inner join @inst t on a.Id = t.Id
-		left join a2wf.Workflows w on try_cast(a.WorkflowId as uniqueidentifier) = w.Id and a.[Version] = w.[Version]
+		left join a2wf.[Catalog] c on a.WorkflowId = c.Id
 	order by t.rowno;
 
 	select [!$System!] = null, [!AutoStart!Offset] = @Offset, [!AutoStart!PageSize] = @PageSize, 
 		[!AutoStart!SortOrder] = @Order, [!AutoStart!SortDir] = @Dir;
+end
+go
+------------------------------------------------
+create or alter procedure wfadm.[AutoStart.Load]
+@UserId bigint,
+@Id bigint = null
+as
+begin
+	set nocount on;
+	set transaction isolation level read uncommitted;
+
+	select [AutoStart!TAutoStart!Object] = null, [Id!!Id] = a.Id, a.[Version],
+		[StartAt!!Utc] = StartAt, CorrelationId, a.Params, 
+		[Workflow!TWorkflow!RefId] = a.WorkflowId,
+		[DateCreated!!Utc] = a.DateCreated, [DateStarted!!Utc] = a.DateStarted,
+		[WorkflowName] = c.[Name]
+	from a2wf.AutoStart a
+		inner join a2wf.[Catalog] c on a.WorkflowId = c.Id
+	where a.Id = @Id;
+
+	select [!TWorkflow!Map] = null, [Id!!Id] = c.Id, [Name!!Name] = c.[Name]
+	from a2wf.[Catalog] c
+		inner join a2wf.AutoStart a on a.WorkflowId = c.[Id]
+	where a.Id = @Id;
+end
+go
+------------------------------------------------
+drop procedure if exists wfadm.[AutoStart.Metadata];
+drop procedure if exists wfadm.[AutoStart.Update];
+drop type if exists wfadm.[AutoStart.TableType];
+go
+------------------------------------------------
+create type wfadm.[AutoStart.TableType] as table (
+	Workflow nvarchar(255),
+	StartAt datetime,
+	CorrelationId nvarchar(255)
+);
+go
+------------------------------------------------
+create or alter procedure wfadm.[AutoStart.Metadata]
+as
+begin
+	set nocount on;
+	set transaction isolation level read uncommitted;
+
+	declare @AutoStart wfadm.[AutoStart.TableType];
+	select [AutoStart!AutoStart!Metadata] = null, * from @AutoStart;
+end
+go
+------------------------------------------------
+create or alter procedure wfadm.[AutoStart.Update]
+@UserId bigint,
+@AutoStart wfadm.[AutoStart.TableType] readonly
+as
+begin
+	set nocount on;
+	set transaction isolation level read committed;
+
+	declare @mins int;
+	set @mins = datediff(minute,getdate(),getutcdate());
+
+	declare @rtable table(Id bigint)
+	insert into a2wf.AutoStart (WorkflowId, CorrelationId, StartAt)
+	output inserted.Id into @rtable(Id)
+	select upper(Workflow), CorrelationId, dateadd(minute, @mins, StartAt)
+	from @AutoStart;
+
+	declare @Id bigint;
+	select @Id = Id from @rtable;
+	exec wfadm.[AutoStart.Load] @UserId, @Id;
 end
 go
 

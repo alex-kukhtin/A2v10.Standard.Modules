@@ -16,6 +16,10 @@ if not exists(select * from INFORMATION_SCHEMA.COLUMNS where TABLE_SCHEMA = N'a2
 	alter table a2wf.[Catalog] add Zoom float constraint DF_Catalog_Zoom default(1) with values;
 go
 
+------------------------------------------------
+if not exists(select * from INFORMATION_SCHEMA.COLUMNS where TABLE_SCHEMA = N'a2wf' and TABLE_NAME = N'Catalog' and COLUMN_NAME = N'DateModified')
+	alter table a2wf.[Catalog] add DateModified datetime constraint DF_Catalog_DateModified default(getutcdate()) with values;
+go
 
 -- CATALOG
 ------------------------------------------------
@@ -34,7 +38,8 @@ begin
 	group by Id;
 
 	select [Workflows!TWorkflow!Array] = null, [Id!!Id] = w.Id, w.[Name], t.[Version],
-		[DateCreated!!Utc] = w.DateCreated, w.Svg, w.Zoom,
+		[DateCreated!!Utc] = w.DateCreated, [DateModified!!Utc] = w.DateModified,
+		w.Svg, w.Zoom, w.Memo,
 		NeedPublish = cast(case when w.[Hash] = x.[Hash] then 0 else 1 end as bit),
 		[Arguments!TArg!Array] = null
 	from a2wf.[Catalog] w left join @wftable t on w.Id = t.Id
@@ -61,7 +66,7 @@ begin
 
 	select [Workflow!TWorkflow!Object] = null, [Id!!Id] = Id, [Name!!Name] = [Name], [Body],
 		[Svg] = cast(null as nvarchar(max)), [Version] = @version,  Zoom,
-		[DateCreated!!Utc] = DateCreated,
+		[DateCreated!!Utc] = DateCreated, [DateModified!!Utc] = DateModified,
 		NeedPublish = cast(case when [Hash] = @hash then 0 else 1 end as bit)
 	from a2wf.[Catalog] 
 	where Id = @Id
@@ -114,7 +119,8 @@ begin
 		t.[Body] = s.[Body],
 		t.Svg = s.Svg,
 		t.Zoom = round(s.Zoom, 2),
-		t.[Hash] = hashbytes(N'SHA2_256', s.Body)
+		t.[Hash] = hashbytes(N'SHA2_256', s.Body),
+		t.DateModified = getutcdate()
 	when not matched then insert 
 		(Id, 
 			[Name], [Body], Svg, Zoom, [Format], [Hash]) values
@@ -127,6 +133,23 @@ begin
 end
 go
 
+------------------------------------------------
+create or alter procedure wfadm.[Workflow.Fetch]
+@UserId bigint,
+@Text nvarchar(255)
+as
+begin
+	set nocount on;
+	set transaction isolation level read uncommitted;
+	
+	declare @fr nvarchar(255) = N'%' + @Text + N'%';
+	select [Workflows!TWorkflow!Array] = null, [Id!!Id] = c.Id, [Name!!Name] = c.[Name]
+	from a2wf.[Catalog] c
+	where (@fr is null or c.[Name] like @fr)
+		and c.Id in (select Id from a2wf.Workflows);
+end
+go
+
 -- INSTANCE
 ------------------------------------------------
 create or alter procedure wfadm.[Instance.Index]
@@ -135,7 +158,9 @@ create or alter procedure wfadm.[Instance.Index]
 @Offset int = 0,
 @PageSize int = 20,
 @Order nvarchar(255) = N'datemodified',
-@Dir nvarchar(20) = N'desc'
+@Dir nvarchar(20) = N'desc',
+@Workflow nvarchar(255) = null,
+@State nvarchar(32) = null
 as
 begin
 	set nocount on;
@@ -143,6 +168,9 @@ begin
 
 	set @Order = lower(@Order);
 	set @Dir = lower(@Dir);
+	set @Workflow = upper(@Workflow);
+
+	set @State = nullif(@State, N'');
 
 	declare @inst table (Id uniqueidentifier, rowno int identity(1,1), rowcnt int);
 
@@ -150,6 +178,9 @@ begin
 	select i.Id,
 		count(*) over()
 	from a2wf.Instances i
+		inner join a2wf.[Workflows] w on i.WorkflowId = w.Id and i.[Version] = w.[Version]
+	where (@Workflow is null or w.Id = @Workflow)
+		and (@State is null or i.[ExecutionStatus] = @State)
 	order by 
 		case when @Dir = N'asc' then
 			case @Order 
@@ -189,24 +220,34 @@ begin
 	select [Instances!TInstance!Array] = null, [Id!!Id] = i.Id, w.[Name], i.[Version],
 		i.ExecutionStatus, Lock, [LockDate!!Utc] = LockDate, i.CorrelationId,
 		[DateCreated!!Utc] = i.DateCreated, [DateModified!!Utc] = i.DateModified,
-		[Inboxes!TInbox!Array] = null,
+		[Inboxes!TInbox!Array] = null, [Bookmarks!TBookmark!Array] = null,
 		[!!RowCount] = t.rowcnt
 	from a2wf.Instances i inner join @inst t on i.Id = t.Id
 		inner join a2wf.[Workflows] w on i.WorkflowId = w.Id and i.[Version] = w.[Version]
 	order by t.rowno;
 
-	/*
+	-- Inbox MUST be created
 	select [!TInbox!Array] = null, [Id!!Id] = i.Id, 
 		Bookmark, [DateCreated!!Utc] = DateCreated, i.[Text], i.[User], i.[Role], i.[Url], i.[State],
 		[Instance!TInstance.Inboxes!ParentId] = InstanceId
 	from a2wf.Inbox i inner join @inst t on i.InstanceId = t.Id
 	where i.Void = 0;
-	*/
+
+	select [!TBookmark!Array] = null, i.Bookmark,
+		[Instance!TInstance.Bookmarks!ParentId] = InstanceId
+	from a2wf.InstanceBookmarks i inner join @inst t on i.InstanceId = t.Id;
 
 	select [Answer!TAnswer!Object] = null, [Answer] = cast(null as nvarchar(255));
 
+	select [!TWorkflow!Map] = null, [Id!!Id] = Id, [Name!!Name] = [Name]
+	from a2wf.Workflows
+	where Id = @Workflow;
+
+
 	select [!$System!] = null, [!Instances!Offset] = @Offset, [!Instances!PageSize] = @PageSize, 
-		[!Instances!SortOrder] = @Order, [!Instances!SortDir] = @Dir;
+		[!Instances!SortOrder] = @Order, [!Instances!SortDir] = @Dir,
+		[!Instances.Workflow.TWorkflow.RefId!Filter] = @Workflow, 
+		[!Instances.State!Filter] = isnull(@State, N'');
 end
 go
 ------------------------------------------------
@@ -261,10 +302,15 @@ begin
 	set transaction isolation level read uncommitted;
 
 	select [Records!TRecord!Array] = null, [Id!!Id] = t.Id, t.Activity, t.[Message],
-		[EventTime!!Utc] = t.EventTime, t.Kind, t.RecordNumber, t.[Action]
+		[EventTime!!Utc] = t.EventTime, t.Kind, t.RecordNumber, t.[Action],
+		[!!RowCount] = count(*) over()
 	from a2wf.InstanceTrack t
 	where t.InstanceId = @Id and [Action] <> 0 -- skip start
-	order by t.EventTime, RecordNumber;
+	order by t.EventTime desc, RecordNumber
+	offset @Offset rows fetch next @PageSize rows only
+	option (recompile);
+
+	select [!$System!] = null, [!Records!Offset] = @Offset, [!Records!PageSize] = @PageSize;
 end
 go
 
@@ -309,7 +355,7 @@ go
 ------------------------------------------------
 create or alter procedure wfadm.[AutoStart.Index]
 @UserId bigint,
-@Id nvarchar(64) = null,
+@Id uniqueidentifier = null,
 @Offset int = 0,
 @PageSize int = 20,
 @Order nvarchar(255) = N'id',
@@ -358,14 +404,84 @@ begin
 	select [AutoStart!TAutoStart!Array] = null, [Id!!Id] = a.Id, a.[Version],
 		[StartAt!!Utc] = a.StartAt, a.Lock, a.InstanceId, a.CorrelationId,
 		[DateCreated!!Utc] = a.DateCreated, [DateStarted!!Utc] = a.DateStarted,
-		[WorkflowName] = w.[Name],
+		[WorkflowName] = c.[Name],
 		[!!RowCount] = t.rowcnt
 	from a2wf.AutoStart a inner join @inst t on a.Id = t.Id
-		left join a2wf.Workflows w on try_cast(a.WorkflowId as uniqueidentifier) = w.Id and a.[Version] = w.[Version]
+		left join a2wf.[Catalog] c on a.WorkflowId = c.Id
 	order by t.rowno;
 
 	select [!$System!] = null, [!AutoStart!Offset] = @Offset, [!AutoStart!PageSize] = @PageSize, 
 		[!AutoStart!SortOrder] = @Order, [!AutoStart!SortDir] = @Dir;
+end
+go
+------------------------------------------------
+create or alter procedure wfadm.[AutoStart.Load]
+@UserId bigint,
+@Id bigint = null
+as
+begin
+	set nocount on;
+	set transaction isolation level read uncommitted;
+
+	select [AutoStart!TAutoStart!Object] = null, [Id!!Id] = a.Id, a.[Version],
+		[StartAt!!Utc] = StartAt, CorrelationId, a.Params, 
+		[Workflow!TWorkflow!RefId] = a.WorkflowId,
+		[DateCreated!!Utc] = a.DateCreated, [DateStarted!!Utc] = a.DateStarted,
+		[WorkflowName] = c.[Name]
+	from a2wf.AutoStart a
+		inner join a2wf.[Catalog] c on a.WorkflowId = c.Id
+	where a.Id = @Id;
+
+	select [!TWorkflow!Map] = null, [Id!!Id] = c.Id, [Name!!Name] = c.[Name]
+	from a2wf.[Catalog] c
+		inner join a2wf.AutoStart a on a.WorkflowId = c.[Id]
+	where a.Id = @Id;
+end
+go
+------------------------------------------------
+drop procedure if exists wfadm.[AutoStart.Metadata];
+drop procedure if exists wfadm.[AutoStart.Update];
+drop type if exists wfadm.[AutoStart.TableType];
+go
+------------------------------------------------
+create type wfadm.[AutoStart.TableType] as table (
+	Workflow nvarchar(255),
+	StartAt datetime,
+	CorrelationId nvarchar(255)
+);
+go
+------------------------------------------------
+create or alter procedure wfadm.[AutoStart.Metadata]
+as
+begin
+	set nocount on;
+	set transaction isolation level read uncommitted;
+
+	declare @AutoStart wfadm.[AutoStart.TableType];
+	select [AutoStart!AutoStart!Metadata] = null, * from @AutoStart;
+end
+go
+------------------------------------------------
+create or alter procedure wfadm.[AutoStart.Update]
+@UserId bigint,
+@AutoStart wfadm.[AutoStart.TableType] readonly
+as
+begin
+	set nocount on;
+	set transaction isolation level read committed;
+
+	declare @mins int;
+	set @mins = datediff(minute,getdate(),getutcdate());
+
+	declare @rtable table(Id bigint)
+	insert into a2wf.AutoStart (WorkflowId, CorrelationId, StartAt)
+	output inserted.Id into @rtable(Id)
+	select upper(Workflow), CorrelationId, dateadd(minute, @mins, StartAt)
+	from @AutoStart;
+
+	declare @Id bigint;
+	select @Id = Id from @rtable;
+	exec wfadm.[AutoStart.Load] @UserId, @Id;
 end
 go
 

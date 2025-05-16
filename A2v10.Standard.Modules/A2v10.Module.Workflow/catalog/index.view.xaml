@@ -22,8 +22,9 @@
 		<DataGrid Grid.Row="2" Grid.Col="1" Mark="{Bind $Mark}" MarkerStyle="Row"
 				ItemsSource="{Bind Parent.ItemsSource}" FixedHeader="True"
 				DoubleClick="{BindCmd OpenSelected, Argument={Bind Parent.ItemsSource}, Url='/$workflow/catalog/edit'}">
-			<DataGridColumn Header="@[WfAdm.Id]" Content="{Bind Id}" Wrap="NoWrap" Fit="True"/>
-			<DataGridColumn Header="@[WfAdm.Process]">
+			<DataGridColumn Header="@[WfAdm.Id]" Content="{Bind Id}" Wrap="NoWrap" Fit="True" 
+							CssClass="monospace"/>
+			<DataGridColumn Header="@[WfAdm.Workflow]">
 				<Popover Text="{Bind Name}" ShowOnHover="True" Background="White"
 						 Placement="RightBottom" Underline="Disable">
 					<StackPanel Padding="6">
@@ -36,9 +37,10 @@
 					</StackPanel>
 				</Popover>
 			</DataGridColumn>
-			<DataGridColumn Content="{Bind DateCreated, DataType=DateTime}" Header="@[Created]" />
 			<DataGridColumn Content="{BindNumber Version}" Header="@[Version]" Role="Number"/>
-			<DataGridColumn Content="{Bind Memo}" LineClamp="2"/>
+			<DataGridColumn Content="{Bind DateCreated, DataType=DateTime}" Header="@[WfAdm.Created]" Role="Date"/>
+			<DataGridColumn Content="{Bind DateModified, DataType=DateTime}" Header="@[WfAdm.Modified]" Role="Date"/>
+			<DataGridColumn Header="@[Memo]" Content="{Bind Memo}" LineClamp="2" />
 			<!--
 			<DataGridColumn Content="{Bind NeedPublish}" Header="NeedPublish"/>
 			-->

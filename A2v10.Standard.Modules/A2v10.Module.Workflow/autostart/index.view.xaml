@@ -1,24 +1,28 @@
 ﻿<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
-	  Title="@[AutoStart]">
+	  Title="@[WfAdm.Autostart]">
 	<Page.CollectionView>
 		<CollectionView ItemsSource="{Bind AutoStart}" RunAt="ServerUrl" />
 	</Page.CollectionView>
 	<Grid Rows="Auto,1*,Auto" Height="100%">
 		<Toolbar>
-			<Button Icon="Plus" Command="{BindCmd Reload}" />
+			<Button Icon="Plus" Command="{BindCmd Dialog, Action=Append, 
+				Argument={Bind AutoStart}, Url='/$workflow/autostart/add'}" />
 			<Separator />
 			<Button Icon="Reload" Command="{BindCmd Reload}"/>
 		</Toolbar>
 		<DataGrid Grid.Row="2" Grid.Col="1"
 				ItemsSource="{Bind Parent.ItemsSource}" FixedHeader="True">
 			<DataGridColumn Header="@[Id]" Content="{Bind Id}" Role="Id" />
-			<DataGridColumn Header="@[Workflow]" Content="{Bind WorkflowName}" />
-			<DataGridColumn Header="@[Version]" Content="{Bind Version}" Role="Number" />
-			<DataGridColumn Header="@[WfAdm.Instance]" Content="{Bind InstanceId}" Wrap="NoWrap" Fit="True"/>
+			<DataGridColumn Header="@[WfAdm.Workflow]" Content="{Bind WorkflowName}" />
+			<DataGridColumn Header="@[Version]" Content="{BindNumber Version}" Role="Number" />
+			<DataGridColumn Content="{Bind StartAt, DataType=DateTime}" Header="@[WfAdm.StartAt]" Role="Date"/>
 			<DataGridColumn Content="{Bind CorrelationId}" Header="@[WfAdm.Model]" Align="Right" Fit="True"/>
-			<DataGridColumn Content="{Bind DateCreated, DataType=DateTime}" Header="@[DateCreated]" Role="Date"/>
-			<DataGridColumn Content="{Bind DateStarted, DataType=DateTime}" Header="@[DateStarted]" Role="Date"/>
-			<DataGridColumn Content="{Bind Lock}" Header="Lock" Fit="True" Wrap="NoWrap"/>
+			<DataGridColumn Header="@[WfAdm.Instance]" Content="{Bind InstanceId}" Wrap="NoWrap" Fit="True"
+					CssClass="monospace"/>
+			<DataGridColumn Content="{Bind DateCreated, DataType=DateTime}" Header="@[WfAdm.Created]" Role="Date"/>
+			<DataGridColumn Content="{Bind DateStarted, DataType=DateTime}" Header="@[WfAdm.Started]" Role="Date"/>
+			<DataGridColumn Content="{Bind Lock}" Header="Lock" Fit="True" Wrap="NoWrap"
+							CssClass="monospace"/>
 		</DataGrid>
 		<Pager Source="{Bind Parent.Pager}"/>
 	</Grid>

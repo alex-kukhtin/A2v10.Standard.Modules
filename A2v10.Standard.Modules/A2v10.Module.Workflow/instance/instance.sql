@@ -6,7 +6,9 @@ create or alter procedure wfadm.[Instance.Index]
 @Offset int = 0,
 @PageSize int = 20,
 @Order nvarchar(255) = N'datemodified',
-@Dir nvarchar(20) = N'desc'
+@Dir nvarchar(20) = N'desc',
+@Workflow nvarchar(255) = null,
+@State nvarchar(32) = null
 as
 begin
 	set nocount on;
@@ -14,6 +16,9 @@ begin
 
 	set @Order = lower(@Order);
 	set @Dir = lower(@Dir);
+	set @Workflow = upper(@Workflow);
+
+	set @State = nullif(@State, N'');
 
 	declare @inst table (Id uniqueidentifier, rowno int identity(1,1), rowcnt int);
 
@@ -21,6 +26,9 @@ begin
 	select i.Id,
 		count(*) over()
 	from a2wf.Instances i
+		inner join a2wf.[Workflows] w on i.WorkflowId = w.Id and i.[Version] = w.[Version]
+	where (@Workflow is null or w.Id = @Workflow)
+		and (@State is null or i.[ExecutionStatus] = @State)
 	order by 
 		case when @Dir = N'asc' then
 			case @Order 
@@ -60,24 +68,34 @@ begin
 	select [Instances!TInstance!Array] = null, [Id!!Id] = i.Id, w.[Name], i.[Version],
 		i.ExecutionStatus, Lock, [LockDate!!Utc] = LockDate, i.CorrelationId,
 		[DateCreated!!Utc] = i.DateCreated, [DateModified!!Utc] = i.DateModified,
-		[Inboxes!TInbox!Array] = null,
+		[Inboxes!TInbox!Array] = null, [Bookmarks!TBookmark!Array] = null,
 		[!!RowCount] = t.rowcnt
 	from a2wf.Instances i inner join @inst t on i.Id = t.Id
 		inner join a2wf.[Workflows] w on i.WorkflowId = w.Id and i.[Version] = w.[Version]
 	order by t.rowno;
 
-	/*
+	-- Inbox MUST be created
 	select [!TInbox!Array] = null, [Id!!Id] = i.Id, 
 		Bookmark, [DateCreated!!Utc] = DateCreated, i.[Text], i.[User], i.[Role], i.[Url], i.[State],
 		[Instance!TInstance.Inboxes!ParentId] = InstanceId
 	from a2wf.Inbox i inner join @inst t on i.InstanceId = t.Id
 	where i.Void = 0;
-	*/
+
+	select [!TBookmark!Array] = null, i.Bookmark,
+		[Instance!TInstance.Bookmarks!ParentId] = InstanceId
+	from a2wf.InstanceBookmarks i inner join @inst t on i.InstanceId = t.Id;
 
 	select [Answer!TAnswer!Object] = null, [Answer] = cast(null as nvarchar(255));
 
+	select [!TWorkflow!Map] = null, [Id!!Id] = Id, [Name!!Name] = [Name]
+	from a2wf.Workflows
+	where Id = @Workflow;
+
+
 	select [!$System!] = null, [!Instances!Offset] = @Offset, [!Instances!PageSize] = @PageSize, 
-		[!Instances!SortOrder] = @Order, [!Instances!SortDir] = @Dir;
+		[!Instances!SortOrder] = @Order, [!Instances!SortDir] = @Dir,
+		[!Instances.Workflow.TWorkflow.RefId!Filter] = @Workflow, 
+		[!Instances.State!Filter] = isnull(@State, N'');
 end
 go
 ------------------------------------------------
@@ -132,10 +150,15 @@ begin
 	set transaction isolation level read uncommitted;
 
 	select [Records!TRecord!Array] = null, [Id!!Id] = t.Id, t.Activity, t.[Message],
-		[EventTime!!Utc] = t.EventTime, t.Kind, t.RecordNumber, t.[Action]
+		[EventTime!!Utc] = t.EventTime, t.Kind, t.RecordNumber, t.[Action],
+		[!!RowCount] = count(*) over()
 	from a2wf.InstanceTrack t
 	where t.InstanceId = @Id and [Action] <> 0 -- skip start
-	order by t.EventTime, RecordNumber;
+	order by t.EventTime desc, RecordNumber
+	offset @Offset rows fetch next @PageSize rows only
+	option (recompile);
+
+	select [!$System!] = null, [!Records!Offset] = @Offset, [!Records!PageSize] = @PageSize;
 end
 go
 

@@ -1,5 +1,5 @@
 ﻿{
-	"$schema": "../../@schemas/model-json-schema.json#",
+	"$schema": "../@schemas/model-json-schema.json#",
 	"schema": "wfadm",
 	"model": "AutoStart",
 	"actions": {
@@ -8,5 +8,11 @@
 			"template": "index.template",
 			"view": "index.view"
 		}
-	}
+	},
+	"dialogs": {
+		"add": {
+			"template": "add.template",
+			"view": "add.dialog"
+		}
+	},
 }
