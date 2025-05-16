@@ -4,7 +4,7 @@
 ; Menu
 @WfAdm.BProcesses=Processes BPMN 2.0
 @WfAdm.Autostart=Autostart	
-@WfAdm.Instances=Intances
+@WfAdm.Instances=Instances
 @WfAdm.Instance=Instance
 @WfAdm.Catalog=Catalog
 @WfAdm.Model=Model

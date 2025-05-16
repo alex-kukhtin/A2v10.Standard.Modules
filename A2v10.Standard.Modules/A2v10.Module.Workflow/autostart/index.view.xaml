@@ -12,7 +12,7 @@
 		</Toolbar>
 		<DataGrid Grid.Row="2" Grid.Col="1"
 				ItemsSource="{Bind Parent.ItemsSource}" FixedHeader="True">
-			<DataGridColumn Header="@[Id]" Content="{Bind Id}" Role="Id" />
+			<DataGridColumn Header="@[WfAdm.Id]" Content="{Bind Id}" Role="Id" />
 			<DataGridColumn Header="@[WfAdm.Workflow]" Content="{Bind WorkflowName}" />
 			<DataGridColumn Header="@[Version]" Content="{BindNumber Version}" Role="Number" />
 			<DataGridColumn Content="{Bind StartAt, DataType=DateTime}" Header="@[WfAdm.StartAt]" Role="Date"/>
