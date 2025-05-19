@@ -1,0 +1,54 @@
+﻿{
+	"$schema": "../@schemas/model-json-schema.json#",
+	"schema": "wfadm",
+	"model": "Catalog",
+	"actions": {
+		"index": {
+			"index": true,
+			"template": "index.template",
+			"view": "index.view"
+		},
+		"edit": {
+			"template": "edit.template",
+			"view": "edit.view"
+		}
+	},
+	"dialogs": {
+		"browse": {
+			"index": true,
+			"view": "browse.dialog"
+		}
+	},
+	"commands": {
+		"publish": {
+			"type": "invokeTarget",
+			"target": "Workflow.Publish"
+		},
+		"start": {
+			"type": "invokeTarget",
+			"target": "Workflow.Start"
+		},
+		"checkSyntax": {
+			"type": "invokeTarget",
+			"target": "Workflow.CheckSyntax"
+		},
+		"fetch": {
+			"type": "sql",
+			"procedure": "Workflow.Fetch"
+		},
+		"delete": {
+			"type": "sql",
+			"procedure": "Workflow.Delete"
+		}
+	},
+	"files": {
+		"download": {
+			"type": "text",
+			"model": "Workflow.Download"
+		},
+		"upload": {
+			"type": "sql",
+			"model": "Workflow.Upload"
+		}
+	}
+}

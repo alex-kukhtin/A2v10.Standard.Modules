@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "A2v10.Module.Admin": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:61090;http://localhost:61091"
+    }
+  }
+}
