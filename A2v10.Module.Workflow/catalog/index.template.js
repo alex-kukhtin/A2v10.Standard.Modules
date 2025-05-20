@@ -43,7 +43,7 @@ define(["require", "exports"], function (require, exports) {
     async function publish(wf) {
         const ctrl = this.$ctrl;
         let res = await ctrl.$invoke('publish', { WorkflowId: wf.Id }, '/$workflow/catalog');
-        ctrl.$toast(`@[Published]. @[Version]: ${res.Version}`, "success");
+        ctrl.$toast(`@[WfAdm.Published]. @[Version]: ${res.Version}`, "success");
         ctrl.$reload();
     }
     async function start(wf) {

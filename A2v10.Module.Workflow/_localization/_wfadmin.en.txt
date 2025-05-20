@@ -24,3 +24,5 @@
 ; Text
 @WfAdm.Upload=Upload workflow
 @WfAdm.Download=Download workflow
+@WfAdm.Published=Published
+

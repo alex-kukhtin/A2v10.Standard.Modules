@@ -60,6 +60,8 @@ begin
 	set nocount on;
 	set transaction isolation level read uncommitted;
 
+	set @Id = upper(@Id);
+
 	declare @version int, @hash varbinary(64);
 	select @version = max([Version]) from a2wf.Workflows where Id = @Id;
 	select @hash = Hash from a2wf.Workflows where Id = @Id and [Version] = @version;
@@ -69,7 +71,7 @@ begin
 		[DateCreated!!Utc] = DateCreated, [DateModified!!Utc] = DateModified,
 		NeedPublish = cast(case when [Hash] = @hash then 0 else 1 end as bit)
 	from a2wf.[Catalog] 
-	where Id = @Id
+	where Id = @Id collate SQL_Latin1_General_CP1_CI_AI
 	order by Id;
 end
 go
@@ -113,7 +115,7 @@ begin
 
 	merge a2wf.[Catalog] as t
 	using @Workflow as s
-	on t.Id = s.Id
+	on t.Id = s.Id collate SQL_Latin1_General_CP1_CI_AI
 	when matched then update set
 		t.[Name] = s.[Name],
 		t.[Body] = s.[Body],

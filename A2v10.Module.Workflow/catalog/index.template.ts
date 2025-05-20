@@ -45,7 +45,7 @@ function handleSaved(wf) {
 async function publish(wf) {
 	const ctrl: IController = this.$ctrl;
 	let res = await ctrl.$invoke('publish', { WorkflowId: wf.Id }, '/$workflow/catalog');
-	ctrl.$toast(`@[Published]. @[Version]: ${res.Version}`, CommonStyle.success);
+	ctrl.$toast(`@[WfAdm.Published]. @[Version]: ${res.Version}`, CommonStyle.success);
 	ctrl.$reload();
 }
 

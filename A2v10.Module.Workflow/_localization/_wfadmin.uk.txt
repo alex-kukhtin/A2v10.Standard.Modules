@@ -26,3 +26,4 @@
 @WfAdm.Download=Вивантажити процес
 ; Errors
 @WfAdm.Error.WorkflowUsed=Процес неможливо видалити. Він використовуюється.
+@WfAdm.Published=Опубліковано
