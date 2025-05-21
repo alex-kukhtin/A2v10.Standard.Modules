@@ -1,0 +1,10 @@
+﻿[
+	{
+		"$schema": "@schemas/sql-json-schema.json#",
+		"outputFile": "_sqlscripts/a2v10_admin_module.sql",
+		"inputFiles": [
+			"_sql/_schemas.sql",
+			"user/user.sql"
+		]
+	}
+]

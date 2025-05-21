@@ -1,0 +1,23 @@
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+	<metadata>
+		<id>A2v10.Module.Admin</id>
+		<version>10.1.1020</version>
+		<authors>Oleksandr Kukthin</authors>
+		<description>A2v10 Platform Application Admin UI</description>
+		<copyright>Copyright © 2025 Oleksandr Kukthin. All rights reserved.</copyright>
+		<tags>A2v10 Platform Admin</tags>
+		<repository type="git" url="https://github.com/alex-kukhtin/A2v10.Standard.Modules" branch="master"/>
+		<license type="expression">MIT</license>
+		<readme>.\README.md</readme>
+		<dependencies>
+			<group targetFramework="net8.0" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="bin\Release\net8.0\A2v10.Module.Admin.dll" target="lib\net8.0" />
+		<file src="bin\Release\net8.0\A2v10.Module.Admin.pdb" target="lib\net8.0" />
+		<file src="_sqlScripts\a2v10_admin_module.sql" target="contentFiles\sql\a2v10_admin_module.sql" />
+		<file src="A2v10.Module.Admin.targets" target="build\A2v10.Module.Admin.targets" />
+		<file src=".\README.md" target="\" />
+	</files>
+</package>

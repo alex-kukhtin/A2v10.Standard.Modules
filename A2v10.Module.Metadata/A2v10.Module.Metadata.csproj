@@ -43,4 +43,8 @@
 	<ItemGroup>
 		<None Include="README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="_sql\" />
+	</ItemGroup>
 </Project>
