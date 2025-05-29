@@ -9,6 +9,7 @@
 @WfAdm.Catalog=Catalog
 @WfAdm.Model=Model
 @WfAdm.Events=Events
+@WfAdm.Log=Log
 @WfAdm.Variables=Variables
 @WfAdm.Filters=Filters
 ; Columns	

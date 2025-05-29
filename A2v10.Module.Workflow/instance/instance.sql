@@ -108,8 +108,10 @@ begin
 	set transaction isolation level read committed;
 	set xact_abort on;
 	begin tran;
-	--delete from a2wf.Inbox where InstanceId = @Id;
+	
+	delete from a2wf.Inbox where InstanceId = @Id;
 	exec a2wf.[Instance.Delete] @UserId = @UserId, @Id = @Id;
+
 	commit tran;
 end
 go
@@ -130,12 +132,22 @@ begin
 	from a2wf.Instances i inner join a2wf.Workflows w on i.WorkflowId = w.Id and i.[Version] = w.[Version]
 	where i.Id = @Id;
 
-	select [!TTrack!Array] = null, Activity, [EventTime!!Utc] = max(EventTime),
-		[!TInstance.Track!ParentId] = InstanceId 
-	from a2wf.InstanceTrack where InstanceId = @Id 
-		and [Kind] = 0 /*activity*/ and [Action] = 1 /*execute*/
-	group by Activity, InstanceId
-	order by max(EventTime);
+	with TE as(
+		select InstanceId, Activity
+		from a2wf.InstanceTrack where InstanceId = @Id
+			and [Kind] = 0 /*activity*/ and [Action] in (
+				1 /*execute*/, 7 /*inbox*/, 4 /* Event */)
+		group by InstanceId, Activity
+	)
+	select [!TTrack!Array] = null, TE.Activity,
+		IsIdle = cast(
+			case when b.Bookmark is not null or e.[Event] is not null
+			then 1 else 0 end as bit
+		),
+		[!TInstance.Track!ParentId] = TE.InstanceId 
+	from TE
+		left join a2wf.InstanceBookmarks b on TE.Activity = b.Activity
+		left join a2wf.InstanceEvents e on TE.Activity = e.[Event];
 end
 go
 ------------------------------------------------
@@ -154,7 +166,7 @@ begin
 		[!!RowCount] = count(*) over()
 	from a2wf.InstanceTrack t
 	where t.InstanceId = @Id and [Action] <> 0 -- skip start
-	order by t.EventTime desc, RecordNumber
+	order by Id desc
 	offset @Offset rows fetch next @PageSize rows only
 	option (recompile);
 
@@ -196,5 +208,17 @@ begin
 		Variables = cast(null as nvarchar(max))
 	from a2wf.Instances i
 	where i.Id = @Id;
+end
+go
+------------------------------------------------
+create or alter procedure wfadm.[Instance.Unlock]
+@UserId bigint,
+@Id uniqueidentifier
+as
+begin
+	set nocount on;
+	set transaction isolation level read committed;
+
+	update a2wf.Instances set Lock = null, LockDate = null where Id = @Id;
 end
 go

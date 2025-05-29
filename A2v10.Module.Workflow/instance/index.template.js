@@ -6,6 +6,9 @@ define(["require", "exports"], function (require, exports) {
             noDirty: true,
             persistSelect: ["Instances"]
         },
+        properties: {
+            'TInstance.$Mark'() { return this.Lock ? 'red' : undefined; }
+        },
         events: {},
         commands: {
             resume,
@@ -40,8 +43,10 @@ define(["require", "exports"], function (require, exports) {
         ctrl.$msg(resMsg, "Result", "info");
         ctrl.$reload();
     }
-    async function unlock() {
+    async function unlock(inst) {
         const ctrl = this.$ctrl;
-        alert("Unlocking instance...");
+        await ctrl.$invoke('unlock', { Id: inst.Id }, '/$workflow/instance');
+        inst.Lock = '';
+        inst.LockDate = null;
     }
 });

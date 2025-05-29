@@ -32,6 +32,10 @@
 		"resume": {
 			"type": "invokeTarget",
 			"target": "Workflow.Resume"
+		},
+		"unlock": {
+			"type": "sql",
+			"procedure": "Instance.Unlock"
 		}
 	}
 }

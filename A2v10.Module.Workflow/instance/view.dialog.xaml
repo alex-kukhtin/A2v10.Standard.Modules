@@ -5,15 +5,20 @@
 		<Button Content="@[Close]" Command="{BindCmd Close}" />
 	</Dialog.Buttons>
 
-	<Grid Columns="1*,1px,20rem" Height="100%" Padding="0" AlignItems="Top">
+
+	<Dialog.Taskpad>
+		<Taskpad>
+			<Toolbar Border="Bottom">
+				<Button Icon="Log" Command="{BindCmd Dialog, Action=Show, Argument={Bind Instance}, Url='/$workflow/instance/log'}"/>
+				<Button Icon="Variable" Command="{BindCmd Dialog, Action=Show, Argument={Bind Instance}, Url='/$workflow/instance/variables'}"/>
+				<Button Icon="Energy" Command="{BindCmd Dialog, Action=Show, Argument={Bind Instance}, Url='/$workflow/instance/events'}"/>
+			</Toolbar>
+			<Grid Padding="1rem,0">
+				<Static Label="@[WfAdm.State]" Value="{Bind Instance.ExecutionStatus}" />
+			</Grid>
+		</Taskpad>
+	</Dialog.Taskpad>
+	<Grid Columns="1*" Height="100%" Padding="0" AlignItems="Stretch">
 		<Block CssClass="bpmn-canvas" Grid.Col="1"></Block>
-		<GridDivider Grid.Col="2"/>
-		<!--
-		<DataGrid Grid.Col="3" ItemsSource="{Bind Instance.UserTrack}" Compact="True"
-							HeadersVisibility="None" GridLines="Horizontal">
-			<DataGridColumn Content="{Bind Date, DataType=DateTime}" Role="Date"/>
-			<DataGridColumn Content="{Bind Message}"/>
-		</DataGrid>
-		-->
 	</Grid>
 </Dialog>

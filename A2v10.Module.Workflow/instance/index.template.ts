@@ -5,6 +5,9 @@ const template: Template = {
 		noDirty: true,
 		persistSelect: ["Instances"]
 	},
+	properties: {
+		'TInstance.$Mark'() { return this.Lock ? 'red' : undefined; }
+	},
 	events: {
 	},
 	commands: {
@@ -49,7 +52,9 @@ async function resumeBookmark(bookmark) {
 	ctrl.$reload();
 }
 
-async function unlock() {
+async function unlock(inst) {
 	const ctrl: IController = this.$ctrl;
-	alert("Unlocking instance...");
+	await ctrl.$invoke('unlock', { Id: inst.Id }, '/$workflow/instance');
+	inst.Lock = '';	
+	inst.LockDate = null;
 }

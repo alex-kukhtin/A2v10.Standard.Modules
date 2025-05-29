@@ -1,5 +1,5 @@
 ﻿<Dialog xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
-	  Title="@[Log]" Width="65rem">
+	  Title="@[WfAdm.Log]" Width="65rem">
 	<Dialog.Buttons>
 		<Button Content="@[Close]" Command="{BindCmd Close}" />
 	</Dialog.Buttons>
@@ -18,7 +18,7 @@
 			<DataGridColumn Header="Action" Content="{Bind Action}"/>
 			<DataGridColumn Header="EventTime" Content="{Bind EventTime, DataType=DateTime2}" Role="Date" Fit="True"
 							Sort="False"/>
-			<DataGridColumn Header="Activity">
+			<DataGridColumn Header="Message">
 				<Code Content="{Bind Message}"/>
 			</DataGridColumn>
 		</DataGrid>

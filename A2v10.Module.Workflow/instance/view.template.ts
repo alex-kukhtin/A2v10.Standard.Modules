@@ -27,13 +27,14 @@ async function modelLoad() {
 	let modl = viewer.get('modeling');
 	let registry = viewer.get('elementRegistry');
 
-	let complete = this.Instance.ExecutionStatus != 'Idle';
-	let arr = this.Instance.Track.map((x, i, a) => { return { last: !complete && i == a.length - 1, activity: registry.get(x.Activity) }; });
+	let arr = this.Instance.Track.map((x, i, a) => { return { idle: x.IsIdle, activity: registry.get(x.Activity) }; });
+
+	console.dir(arr);
 
 	arr.forEach(act => {
 		modl.setColor(act.activity, {
-			fill: act.last ? '#e0f6de' : '#defbff',
-			stroke: act.last ? '#4e995a' : '#1E90FF'
+			fill: act.idle ? '#e0f6de' : '#defbff',
+			stroke: act.idle ? '#4e995a' : '#1E90FF'
 		});
 	});
 }

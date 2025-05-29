@@ -9,6 +9,7 @@
 @WfAdm.Catalog=Каталог
 @WfAdm.Model=Модель
 @WfAdm.Events=Події
+@WfAdm.Log=Журнал
 @WfAdm.Variables=Змінні
 @WfAdm.Filters=Фільтри
 ; Columns	

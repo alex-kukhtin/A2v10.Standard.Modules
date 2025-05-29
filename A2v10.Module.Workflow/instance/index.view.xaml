@@ -23,7 +23,7 @@
 			<Separator />
 			<Button Icon="Reload" Command="{BindCmd Reload}"/>
 		</Toolbar>
-		<DataGrid Grid.Row="2" Grid.Col="1" Sort="True"
+		<DataGrid Grid.Row="2" Grid.Col="1" Sort="True" Mark="{Bind $Mark}" MarkerStyle="Row"
 				ItemsSource="{Bind Parent.ItemsSource}" FixedHeader="True">
 			<DataGridColumn Header="@[WfAdm.Id]" Content="{Bind Id}" Wrap="NoWrap" Fit="True"
 					CssClass="monospace">

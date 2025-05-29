@@ -1225,6 +1225,8 @@ begin
 
 	(N'6632D12B-326F-4EFF-81BC-82A6A78EDE82', N'4A39BAC4-B35C-47D7-901A-CF775AA6CB6F',
 		20, N'@[WfAdm.BProcesses]',     null, null, null, null, null),
+	(N'461AD415-956E-4885-94BF-D629E7501412', N'4A39BAC4-B35C-47D7-901A-CF775AA6CB6F',
+		20, N'@[Adm.Administrator]',     null, null, null, null, null),
 
 	-- Business Processes
 	(N'4B78939D-986C-4B50-81F9-61407B7B6968', N'6632D12B-326F-4EFF-81BC-82A6A78EDE82', 
@@ -1232,8 +1234,12 @@ begin
 	(N'B1EF5C47-6606-46DF-B75C-8258275FEBA4', N'6632D12B-326F-4EFF-81BC-82A6A78EDE82', 
 		20, N'@[WfAdm.Instances]',   N'page:/$workflow/instance/index/0', null, null, null, null),
 	(N'DBAD2EF1-476D-4869-8D13-E82959F0F331', N'6632D12B-326F-4EFF-81BC-82A6A78EDE82', 
-		30, N'@[WfAdm.Autostart]',   N'page:/$workflow/autostart/index/0', null, null, null, null);
+		30, N'@[WfAdm.Autostart]',   N'page:/$workflow/autostart/index/0', null, null, null, null),
+	-- Administrator
+	(N'A0DDA379-7346-4558-88AC-CC5AAB5A25F4', N'461AD415-956E-4885-94BF-D629E7501412', 
+		10, N'@[Adm.Users]',   N'page:/$admin/user/index/0', null, null, null, null);
 
+	--select newid(), newid()
 
 	exec a2ui.[Menu.Merge] @TenantId, @menu, @ModuleId;
 end
