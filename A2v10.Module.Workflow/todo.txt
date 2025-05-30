@@ -1,5 +1,18 @@
 ﻿Common
 -------
+4. Connect scripts in *MainApp/_layout/scripts.html*:
+```html
+<script type="text/javascript" src="/scripts/bpmnfull.min.js?v=1.1.8112"></script>
+```
+Check the version of bpmnfull.min.js in your project. It should be the same as the package version.
+
+
+5. Connect stylesheet in *MainApp/_layout/styles.html*:
+```html
+<link rel="stylesheet" href="/css/bpmnfull.min.css?v=1.1.8112">
+```
+Check the version of bpmnfull.min.css in your project. It should be the same as the package version.
+
 
 Catalog
 -------
@@ -7,7 +20,6 @@ Catalog
 
 Instance
 -------
-5. Unlock
 8. Bookmarks dialog
 
 -- AutoStart
@@ -19,8 +31,8 @@ NuGet
 
 README.md
 ---------
-5. Available Endpoints
+
 
 Workflow Engine
 ---------------
-a2wf.Catalog - LastModified, Zoom
+1. 

@@ -91,6 +91,14 @@ begin
 	from a2wf.Workflows
 	where Id = @Workflow;
 
+	select [StartWorkflow!TStartWF!Object] = null, [Id!!Id] = Id,
+		[Arguments!TArg!Array] = null
+	from a2wf.[Catalog] where 0 <> 0;
+
+	select [!TArg!Array] = null, wa.[Name], wa.[Type], wa.[Value],
+		[!TStartWF.Arguments!ParentId] = wa.WorkflowId
+	from a2wf.WorkflowArguments wa
+	where 0 <> 0;
 
 	select [!$System!] = null, [!Instances!Offset] = @Offset, [!Instances!PageSize] = @PageSize, 
 		[!Instances!SortOrder] = @Order, [!Instances!SortDir] = @Dir,
@@ -146,8 +154,8 @@ begin
 		),
 		[!TInstance.Track!ParentId] = TE.InstanceId 
 	from TE
-		left join a2wf.InstanceBookmarks b on TE.Activity = b.Activity
-		left join a2wf.InstanceEvents e on TE.Activity = e.[Event];
+		left join a2wf.InstanceBookmarks b on TE.InstanceId = b.InstanceId and TE.Activity = b.Activity
+		left join a2wf.InstanceEvents e on TE.InstanceId = e.InstanceId and TE.Activity = e.[Event];
 end
 go
 ------------------------------------------------

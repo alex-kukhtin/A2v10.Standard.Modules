@@ -20,7 +20,6 @@ define(["require", "exports"], function (require, exports) {
         let modl = viewer.get('modeling');
         let registry = viewer.get('elementRegistry');
         let arr = this.Instance.Track.map((x, i, a) => { return { idle: x.IsIdle, activity: registry.get(x.Activity) }; });
-        console.dir(arr);
         arr.forEach(act => {
             modl.setColor(act.activity, {
                 fill: act.idle ? '#e0f6de' : '#defbff',

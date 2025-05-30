@@ -2,23 +2,9 @@
 
 const template: Template = {
 	options: {
-		noDirty: true,
-		persistSelect: ["Instances"]
 	},
 	properties: {
-		'TInstance.$Mark'() { return this.Lock ? 'red' : undefined; }
-	},
-	events: {
-	},
-	commands: {
-		resume,
-		resumeBookmark,
-		unlock: {
-			exec: unlock,
-			canExec: (inst) => !!inst.Lock
-		},
-		start,
-		startWorkflow
+		'TInstance.$Vars'() { return { Variables: this.State.Variables, LastResult: this.State.LastResult }; }
 	}
 }
 

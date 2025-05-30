@@ -1,5 +1,6 @@
 ﻿<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
-	  Title="@[WfAdm.Instances]">
+	  Title="@[WfAdm.Instances]"
+	  Components="{Components '../_components/workflow.components'}">
 	<Page.CollectionView>
 		<CollectionView ItemsSource="{Bind Instances}" RunAt="ServerUrl">
 			<CollectionView.Filter>
@@ -12,6 +13,8 @@
 	</Page.CollectionView>
 	<Grid Rows="Auto,1*,Auto" Height="100%">
 		<Toolbar>
+			<Button Icon="PlayOutline" Content="@[WfAdm.Run]" Command="{BindCmdExec start}"/>
+			<Separator />
 			<Button Icon="Workflow1" Command="{BindCmd Dialog, Action=ShowSelected, Argument={Bind Instances}, Url='/$workflow/instance/show'}"/>
 			<Button Icon="Log" Command="{BindCmd Dialog, Action=ShowSelected, Argument={Bind Instances}, Url='/$workflow/instance/log'}"/>
 			<Button Icon="Variable" Command="{BindCmd Dialog, Action=ShowSelected, Argument={Bind Instances}, Url='/$workflow/instance/variables'}"/>
@@ -57,8 +60,10 @@
 		</DataGrid>
 		<Pager Source="{Bind Parent.Pager}"/>
 	</Grid>
+	<Component Name="ProcessArguments" Scope="{Bind StartWorkflow}" />
 	<Page.Taskpad>
-		<Taskpad Collapsible="True">
+		<Taskpad Collapsible="True" Width="24rem" XamlStyle="{StyleResource TaskpadEmpty}">
+			<Grid AutoFlow="Row" Overflow="True" Padding="1rem" AlignItems="Top">
 			<Panel Header="@[WfAdm.Filters]" Style="Transparent" Collapsible="True">
 				<SelectorSimple Label="@[WfAdm.Workflow]"
 					Value="{Bind Parent.Filter.Workflow}" Url="/$workflow/catalog"
@@ -74,8 +79,8 @@
 			<Slot Scope="{Bind Instances.$selected}">
 				<Panel Header="Inbox" If="{Bind Inboxes.Count}" Style="Transparent" Collapsible="True">
 					<Repeater ItemsSource="{Bind Inboxes}">
-						<StackPanel>
-							<Static Label="Id" Value="{Bind Id}"/>
+						<StackPanel Gap=".5rem">
+							<Static Label="Id" Value="{Bind Id}" CssClass="input-code"/>
 							<Static Label="Bookmark" Value="{Bind Bookmark}"/>
 							<Static Label="Text" Value="{Bind Text}"/>
 							<Static Label="Url" Value="{Bind Url}"/>
@@ -89,7 +94,7 @@
 				</Panel>
 				<Panel Header="Bookmarks" If="{Bind Bookmarks.Count}" Style="Transparent" Collapsible="True">
 					<Repeater ItemsSource="{Bind Bookmarks}">
-						<StackPanel>
+						<StackPanel Gap=".5rem">
 							<Static Label="Bookmark" Value="{Bind Bookmark}"/>
 							<Button Style="Primary" Content="Resume" 
 									Command="{BindCmdExec resumeBookmark, Argument={Bind}}"
@@ -99,6 +104,7 @@
 					</Repeater>
 				</Panel>
 			</Slot>
+			</Grid>
 		</Taskpad>
 	</Page.Taskpad>
 </Page>

@@ -4,7 +4,7 @@
 		<Button Content="@[Close]" Command="{BindCmd Close}" />
 	</Dialog.Buttons>
 
-	<JsonView Source="{Bind Instance.State.Variables}"
+	<JsonView Source="{Bind Instance.$Vars}"
 			Height="25rem" Margin="1rem">
 	</JsonView>
 </Dialog>

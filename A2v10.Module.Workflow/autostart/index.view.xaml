@@ -5,7 +5,7 @@
 	</Page.CollectionView>
 	<Grid Rows="Auto,1*,Auto" Height="100%">
 		<Toolbar>
-			<Button Icon="Plus" Command="{BindCmd Dialog, Action=Append, 
+			<Button Icon="Plus" Content="@[Create]" Command="{BindCmd Dialog, Action=Append, 
 				Argument={Bind AutoStart}, Url='/$workflow/autostart/add'}" />
 			<Separator />
 			<Button Icon="Reload" Command="{BindCmd Reload}"/>

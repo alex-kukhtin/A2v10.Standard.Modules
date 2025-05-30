@@ -10,6 +10,8 @@ Workflow UI module for A2v10 application
 	<PackageReference Include="A2v10.Workflow.WebAssets" Version="10.1.8115" />
 	<PackageReference Include="A2v10.Workflow.Engine" Version="10.1.8227" />
 	<PackageReference Include="A2v10.Scheduling" Version="10.1.8547" />
+    <!-- This module  -->
+	<PackageReference Include="A2v10.Module.Workflow" Version="10.1.1035" />
 </ItemGroup>
 ```
 2. Add the Workflow engine to the service collection and register the engine target.
@@ -40,24 +42,20 @@ services.UseScheduling(Configuration, factory =>
 }
 ```
 
-4. Connect scripts in *MainApp/_layout/scripts.html*:
-```html
-<script type="text/javascript" src="/scripts/bpmnfull.min.js?v=1.1.8112"></script>
-```
-Check the version of bpmnfull.min.js in your project. It should be the same as the package version.
+4. Run the *WebApp/_assets/sql/a2v10_workflow.sql* script to create workflow tables, views, stored procedures, etc.
+5. Run the *WebApp/_assets/sql/a2v10_workflow_module.sql* script to create workflow UI assets.
 
+# Available UI Endpoints
 
-5. Connect stylesheet in *MainApp/_layout/styles.html*:
-```html
-<link rel="stylesheet" href="/css/bpmnfull.min.css?v=1.1.8112">
-```
-Check the version of bpmnfull.min.css in your project. It should be the same as the package version.
+- `page:/$workflow/catalog/index/0` - workflow catalog
+- `page:/$workflow/instance/index/0` - workflow instances
+- `page:/$workflow/autostart/index/0` - autostart catalog
 
-6. Run the *WebApp/_assets/sql/a2v10_workflow.sql* script to create workflow tables, views, stored procedures, etc.
-7. Run the *WebApp/_assets/sql/a2v10_workflow_module.sql* script to create workflow UI assets.
+# Available Dialogs
 
+- `/$workflow/instance/show/{id}` - show workflow instance
 
- # Feedback
+# Feedback
 
 **A2v10.Module.Workflow** is released as open source under the MIT license.
 Bug reports and contributions are welcome at the GitHub repository.

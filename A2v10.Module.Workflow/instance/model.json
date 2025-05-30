@@ -25,6 +25,7 @@
 		},
 		"variables": {
 			"model": "Instance.Variables",
+			"template": "variables.template",
 			"view": "variables.dialog"
 		}
 	},

@@ -2,23 +2,9 @@ define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     const template = {
-        options: {
-            noDirty: true,
-            persistSelect: ["Instances"]
-        },
+        options: {},
         properties: {
-            'TInstance.$Mark'() { return this.Lock ? 'red' : undefined; }
-        },
-        events: {},
-        commands: {
-            resume,
-            resumeBookmark,
-            unlock: {
-                exec: unlock,
-                canExec: (inst) => !!inst.Lock
-            },
-            start,
-            startWorkflow
+            'TInstance.$Vars'() { return { Variables: this.State.Variables, LastResult: this.State.LastResult }; }
         }
     };
     exports.default = template;
