@@ -62,7 +62,7 @@
 	</Grid>
 	<Component Name="ProcessArguments" Scope="{Bind StartWorkflow}" />
 	<Page.Taskpad>
-		<Taskpad Collapsible="True" Width="24rem" XamlStyle="{StyleResource TaskpadEmpty}">
+		<Taskpad Collapsible="True" Width="24rem" XamlStyle="{StyleResource Empty}">
 			<Grid AutoFlow="Row" Overflow="True" Padding="1rem" AlignItems="Top">
 			<Panel Header="@[WfAdm.Filters]" Style="Transparent" Collapsible="True">
 				<SelectorSimple Label="@[WfAdm.Workflow]"
