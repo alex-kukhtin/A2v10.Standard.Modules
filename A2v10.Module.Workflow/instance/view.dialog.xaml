@@ -7,15 +7,33 @@
 
 
 	<Dialog.Taskpad>
-		<Taskpad>
-			<Toolbar Border="Bottom">
-				<Button Icon="Log" Command="{BindCmd Dialog, Action=Show, Argument={Bind Instance}, Url='/$workflow/instance/log'}"/>
-				<Button Icon="Variable" Command="{BindCmd Dialog, Action=Show, Argument={Bind Instance}, Url='/$workflow/instance/variables'}"/>
-				<Button Icon="Energy" Command="{BindCmd Dialog, Action=Show, Argument={Bind Instance}, Url='/$workflow/instance/events'}"/>
-			</Toolbar>
-			<Grid Padding="1rem,0">
+		<Taskpad Collapsible="False" XamlStyle="{StyleResource Empty}" Padding="0"
+				 Width="24rem">
+			<StackPanel Padding="0,0,1rem,1rem" Gap=".5rem">
+				<Toolbar Border="Bottom">
+					<Button Icon="Log" Command="{BindCmd Dialog, Action=Show, Argument={Bind Instance}, Url='/$workflow/instance/log'}"/>
+					<Button Icon="Variable" Command="{BindCmd Dialog, Action=Show, Argument={Bind Instance}, Url='/$workflow/instance/variables'}"/>
+					<Button Icon="Energy" Command="{BindCmd Dialog, Action=Show, Argument={Bind Instance}, Url='/$workflow/instance/events'}"/>
+				</Toolbar>
 				<Static Label="@[WfAdm.State]" Value="{Bind Instance.ExecutionStatus}" />
-			</Grid>
+				<Group If="{Bind Root.$ActiveId}">
+					<Static Label="Actitity" Value="{Bind Root.$ActiveName}"/>
+					<DataGrid ItemsSource="{Bind Root.$ActiveLog}" Width="100%" Border="True"
+							XamlStyle="{StyleResource Empty}"
+							GridLines="Horizontal" Hover="True" Striped="True">
+						<DataGridColumn Header="Action" Content="{Bind Action}" Wrap="NoWrap"/>
+						<DataGridColumn Header="Time" Content="{Bind Time, DataType=DateTime2}" Role="Date"/>
+						<DataGridColumn Fit="True">
+							<CommandBar Visibility="Hover">
+								<Popover Icon="Eye" If="{Bind Message}" Width="22.5rem"
+										 Background="White" Placement="TopLeft" Margin="0,6,0,0">
+									<Code Content="{Bind Message}" Multiline="True" Padding="4,0,0,0"/>
+								</Popover>
+							</CommandBar>
+						</DataGridColumn>
+					</DataGrid>
+				</Group>
+			</StackPanel>
 		</Taskpad>
 	</Dialog.Taskpad>
 	<Grid Columns="1*" Height="100%" Padding="0" AlignItems="Stretch">

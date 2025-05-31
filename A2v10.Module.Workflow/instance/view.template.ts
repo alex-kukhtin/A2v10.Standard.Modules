@@ -3,6 +3,9 @@ declare var window;
 
 const template: Template = {
 	properties: {
+		'TRoot.$ActiveName': String,
+		'TRoot.$ActiveId': String,
+		'TRoot.$ActiveLog': activeLog
 	},
 	events: {
 		'Model.load': modelLoad
@@ -27,6 +30,21 @@ async function modelLoad() {
 	let modl = viewer.get('modeling');
 	let registry = viewer.get('elementRegistry');
 
+	let eventBus = viewer.get('eventBus');
+	eventBus.on('element.click', (ev) => {
+		let el = ev.element;
+		if (!el) return;
+		let bo = el.businessObject;
+		if (bo) {
+			this.$root.$ActiveId = bo.id;
+			this.$root.$ActiveName = bo.name || bo.id;
+		}
+		else {
+			this.$root.$ActiveName = '';
+			this.$root.$ActiveId = '';
+		}
+	});
+
 	let arr = this.Instance.Track.map((x, i, a) => { return { idle: x.IsIdle, activity: registry.get(x.Activity) }; });
 
 	arr.forEach(act => {
@@ -37,3 +55,19 @@ async function modelLoad() {
 	});
 }
 
+const activityMap = "Schedule,Execute,Bookmark,Resume,Event,HandleEvent,HandleMessage,Inbox".split(',');
+
+function activeLog() {
+	if (!this.$ActiveId) return [];
+	return this.Instance.FullTrack
+		.filter(x => x.Id === this.$ActiveId)
+		.map(x => {
+			let actionName = x.Action === 999 ? 'Exception' : activityMap[x.Action] || 'Unknown';
+			return {
+				Action: actionName,
+				Time: x.EventTime,
+				Message: x.Message || '',	
+			};
+		})
+		
+}
