@@ -1,0 +1,56 @@
+﻿<Partial xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml">
+	<Grid Rows="Auto,Auto,1*" AlignItems="Stretch" Height="500px">
+		<Toolbar>
+			<Button Icon="SaveOutline" Content="@[Save]" 
+				Command="{BindCmd Save}"/>
+			<Separator />
+			<Button Icon="Reload" Command="{BindCmd Reload}" />
+		</Toolbar>
+		<TabBar Value="{Bind Root.$$Tab}" Margin="0,0,0,10">
+			<TabButton Content="@[General]" />
+			<TabButton Content="@[Data]" ActiveValue="data"/>
+		</TabBar>
+		<Switch Expression="{Bind Root.$$Tab}">
+			<Case Value="">
+				<Grid AlignItems="Top" Padding="0,0,0,10" Height="100"
+					  Columns="20rem,15rem,1*" Gap=".5rem,1rem">
+					<TextBox Grid.Row="1" Label="@[Name]" Value="{Bind Table.Name}"/>
+				</Grid>
+			</Case>
+			<Case Value="data">
+				<Grid Rows="Auto,1*" Padding="0,0,0,10" AlignItems="Stretch">
+					<Toolbar>
+						<Button Icon="Add" Content="@[Add]"
+								Command="{BindCmd Append, Argument={Bind Table.Items}}"/>
+					</Toolbar>
+					<Table CellSpacing="Medium" ItemsSource="{Bind Table.Items}"
+						   StickyHeaders="True" Height="100%" Width="40rem"
+						   Columns="46,10rem,10rem,Fit,16px">
+						<Table.Header>
+							<TableRow>
+								<TableCell />
+								<TableCell Content="Key" MinWidth="10rem"/>
+								<TableCell Content="Label" MinWidth="10rem"/>
+								<TableCell Content="Inactive"/>
+							</TableRow>
+						</Table.Header>
+						<TableRow>
+							<CommandBar>
+								<Button Icon="ArrowUp" Command="{BindCmd Move, CommandName=up, Argument={Bind}}"/>
+								<Button Icon="ArrowDown"  Command="{BindCmd Move, CommandName=down, Argument={Bind}}"/>
+							</CommandBar>
+							<TextBox Value="{Bind Name}"/>
+							<TextBox Value="{Bind Label}" Placeholder="{Bind $LabelPlaceholder}"/>
+							<TableCell Align="Center" VAlign="Middle">
+								<CheckBox Value="{Bind Inactive}"/>
+							</TableCell>
+							<TableCell>
+								<Hyperlink Content="✕" Command="{BindCmd Remove, Confirm='Are you sure?'}"/>
+							</TableCell>
+						</TableRow>
+					</Table>
+				</Grid>
+			</Case>
+		</Switch>
+	</Grid>
+</Partial>

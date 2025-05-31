@@ -1,0 +1,26 @@
+﻿<Dialog xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
+		Title="Browse Kind" Width="20rem">
+	<Dialog.CollectionView>
+		<CollectionView ItemsSource="{Bind Kinds}" RunAt="Server"
+			Filter="Text">
+		</CollectionView>
+	</Dialog.CollectionView>
+	<Dialog.Buttons>
+		<Button Content="Select" Style="Primary"
+				Command="{BindCmd Select, Argument={Bind Kinds}}"/>
+		<Button Content="Cancel" Command="{BindCmd Close}"/>
+	</Dialog.Buttons>
+	<Grid Rows="Auto,Auto,1*" AlignItems="Stretch" Height="100%">
+		<Toolbar AlignItems="Baseline">
+			<Button Icon="Refresh"/>
+			<ToolbarAligner/>
+			<TextBox Value="{Bind Parent.Filter.Text}" ShowSearch="True" ShowClear="True"
+					 TabIndex="1" Placeholder="Search"/>
+		</Toolbar>
+		<DataGrid GridLines="Horizontal" FixedHeader="True" Height="10rem"
+				  ItemsSource="{Bind Parent.ItemsSource}"
+				  DoubleClick="{BindCmd Select, Argument={Bind Kinds}}">
+			<DataGridColumn Header="Name" Content="{Bind Name}" Wrap="NoWrap"/>
+		</DataGrid>
+	</Grid>
+</Dialog>

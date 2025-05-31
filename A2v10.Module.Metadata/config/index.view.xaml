@@ -1,0 +1,37 @@
+﻿<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
+		Title="Application Designer">
+	<Grid Columns="28rem,1*" Rows="Auto,1*" AlignItems="Stretch" Height="100%">
+		<Toolbar Grid.Row="1" Grid.Col="1">
+			<Button Icon="Add" Content="@[Create]">
+				<Button.DropDown>
+					<DropDownMenu>
+						<MenuItem Content="Enum" Command="{BindCmdExec addItem, Argument='enm.Enum.enum'}"/>
+						<MenuItem Content="@[Catalog]" Command="{BindCmdExec addItem, Argument='cat.Catalog.table'}"/>
+						<MenuItem Content="@[Document]" Command="{BindCmdExec addItem, Argument='doc.Document.table'}"/>
+						<MenuItem Content="@[OperationW]" Command="{BindCmdExec addItem, Argument='op.Operation.operation'}"/>
+						<MenuItem Content="@[Journal]" Command="{BindCmdExec addItem, Argument='jrn.Journal.table'}"/>
+						<MenuItem Content="@[Report]" Command="{BindCmdExec addItem, Argument='rep.Report.report'}"/>
+						<Separator />
+						<MenuItem Content="Details" Command="{BindCmdExec addDetails, Argument='details'}"/>
+						<Separator />
+						<MenuItem Content="@[MenuSection]" Command="{BindCmdExec addItem, Argument='ui.Menu.interface'}"/>
+					</DropDownMenu>
+				</Button.DropDown>
+			</Button>
+			<Button Icon="Delete"
+				Command="{BindCmd Command=ExecuteSelected, CommandName=deleteItem, Argument={Bind Elems}}"/>
+			<Separator />
+			<Button Icon="Database" Content="Deploy"
+					Command="{BindCmd Open, Url='/$meta/config/deploy/index', Argument=0}"/>
+			<Separator />
+			<Button Icon="Reload" Command="{BindCmd Reload}"/>
+		</Toolbar>
+		<TreeView Grid.Col="1" Grid.Row="2" Border="True" Background="White"
+				ItemsSource="{Bind Elems}" FolderSelect="True" AutoSelect="FirstItem">
+			<TreeViewItem ItemsSource="{Bind Items}" Label="{Bind Name}"
+				Icon="{Bind $Icon}" IsGroup="{Bind IsFolder}"/>
+		</TreeView>
+		<Include If="{Bind Root.$PartUrl}"
+			Grid.Col="2" Grid.RowSpan="2" Source="{Bind Root.$PartUrl}" FullHeight="True"/>
+	</Grid>
+</Page>

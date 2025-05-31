@@ -1,0 +1,47 @@
+﻿<Dialog xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
+		Title="Apply Mapping" Width="50rem">
+	<Dialog.Buttons>
+		<Button Content="Save &amp; Close" Style="Primary"
+				Command="{BindCmd SaveAndClose, ValidRequired=True}"/>
+		<Button Content="Cancel" Command="{BindCmd Close}"/>
+	</Dialog.Buttons>
+	<Grid Rows="Auto, 1*" AlignItems="Stretch" Height="100%">
+		<Toolbar>
+			<Button Icon="Add" Content="Add"
+				Command="{BindCmd Append, Argument={Bind Mapping}}"/>
+		</Toolbar>
+		<Table StickyHeaders="True" Height="30rem"
+			   ItemsSource="{Bind Mapping}" CellSpacing="Medium"
+			   Columns="Auto,Auto,Auto,Auto,28px">
+			<Table.Header>
+				<TableRow>
+					<TableCell Content="Source" ColSpan="2"/>
+					<TableCell Content="Target" ColSpan="2"/>
+					<TableCell RowSpan="2"/>
+				</TableRow>
+				<TableRow>
+					<TableCell Content="Table" MinWidth="12rem"/>
+					<TableCell Content="Column" MinWidth="6rem"/>
+					<TableCell Content="Table" MinWidth="12rem"/>
+					<TableCell Content="Column" MinWidth="6rem"/>
+				</TableRow>
+			</Table.Header>
+			<TableRow>
+				<ComboBox Value="{Bind SourceTable}"
+						 ItemsSource="{Bind $SourceTables}">
+					<ComboBoxItem Content="{Bind Name}" Value="{Bind}"/>
+				</ComboBox>
+				<ComboBox Value="{Bind Source}" ItemsSource="{Bind SourceTable.Columns}">
+					<ComboBoxItem Content="{Bind Name}" Value="{Bind}"/>
+				</ComboBox>
+				<Static Value="{Bind TargetTable.Name}" />
+				<ComboBox Value="{Bind Target}" ItemsSource="{Bind TargetTable.Columns}">
+					<ComboBoxItem Content="{Bind Name}" Value="{Bind}"/>
+				</ComboBox>
+				<TableCell>
+					<Hyperlink Icon="Delete" Command="{BindCmd Remove, Confirm='Are you sure?'}"/>
+				</TableCell>
+			</TableRow>
+		</Table>
+	</Grid>
+</Dialog>

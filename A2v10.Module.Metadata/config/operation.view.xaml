@@ -1,0 +1,90 @@
+﻿<Partial xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml">
+	<Grid Rows="Auto,Auto,1*" AlignItems="Stretch" Height="100%" Overflow="Auto">
+		<Toolbar>
+			<Button Icon="SaveOutline" Content="@[Save]" 
+				Command="{BindCmd Save, ValidRequired=True}"/>
+			<Separator />
+			<Button Icon="ArrowOpen" Content="@[Preview]" Command="{BindCmdExec preview}"/>
+			<Separator />
+			<Button Icon="Reload" Command="{BindCmd Reload}" />
+		</Toolbar>
+		<TabBar Value="{Bind Root.$$Tab}" Margin="0,0,0,10">
+			<TabButton Content="@[General]" />
+			<TabButton Content="Apply" ActiveValue="apply" />
+			<TabButton Content="@[Forms]" ActiveValue="forms" />
+		</TabBar>
+		<Switch Expression="{Bind Root.$$Tab}">
+			<Case Value="">
+				<Grid AlignItems="Top" Padding="0,0,0,10" Height="100%"
+					  Columns="20rem,15rem,1*" Gap=".5rem,1rem" Rows="Auto,Auto,Auto,Auto,1*">
+					<TextBox Grid.Row="1" Label="@[Name]" Value="{Bind Table.Name}"/>
+					<SelectorSimple Grid.Row="2" Label="Based On"
+						Value="{Bind Table.ParentTable}" Url="/$meta/config/document"/>
+					<TextBox Grid.Row="3" Label="Collection Label" Value="{Bind Table.ItemsLabel}"/>
+					<TextBox Grid.Row="4" Label="Element Label" Value="{Bind Table.ItemLabel}"/>
+
+					<ComboBox Grid.Row="1" Grid.Col="2" Label="Edit With"
+								  Value="{Bind Table.EditWith}">
+						<ComboBoxItem Content="Dialog" Value="Dialog"/>
+						<ComboBoxItem Content="Page" Value="Page"/>
+					</ComboBox>
+
+					<TextBox Grid.Row="2" Grid.Col="2" Value="{Bind Table.Type}" Label="Category" />
+				</Grid>
+			</Case>
+			<Case Value="apply">
+				<Grid Rows="Auto,1*" Padding="0,0,0,10" AlignItems="Stretch">
+					<Toolbar>
+						<Button Icon="Add" Content="@[Add]"
+								Command="{BindCmd Append, Argument={Bind Table.Apply}}"/>
+					</Toolbar>
+					<Table CellSpacing="Medium" ItemsSource="{Bind Table.Apply}"
+						   StickyHeaders="True" Height="100%" Width="60rem"
+						   Columns="15rem,15rem,10rem,Fit,Fit,16px">
+						<Table.Header>
+							<TableRow>
+								<TableCell Content="@[Journal]" MinWidth="15rem"/>
+								<TableCell Content="Details" MinWidth="15rem"/>
+								<TableCell Content="Kind" MinWidth="10rem"/>
+								<TableCell Content="In/Out" Wrap="NoWrap"/>
+								<TableCell Content="@[Storno]"/>
+								<TableCell Content="Mapping"/>
+							</TableRow>
+						</Table.Header>
+						<TableRow>
+							<SelectorSimple Value="{Bind Journal}" Url="/$meta/config/journal"/>
+							<SelectorSimple Value="{Bind Details}" Url="/$meta/config/details"/>
+							<SelectorSimple Value="{Bind Kind}" Url="/$meta/config/detailskind"
+									Data="{Bind $DetailsArg}" Disabled="{Bind !Details.Id}"/>
+							<ComboBox Value="{Bind InOut}" Width="5rem">
+								<ComboBoxItem Content="In" Value="1"/>
+								<ComboBoxItem Content="Out" Value="-1"/>
+							</ComboBox>
+							<TableCell Align="Center" VAlign="Middle">
+								<CheckBox Value="{Bind Storno}"/>
+							</TableCell>
+							<TableCell>
+								<Hyperlink Content="Mapping"
+									Command="{BindCmdExec showMapping,
+										Argument={Bind}}"/>
+							</TableCell>
+							<TableCell>
+								<Hyperlink Content="✕" Command="{BindCmd Remove, Confirm='Are you sure?'}"/>
+							</TableCell>
+						</TableRow>
+					</Table>
+				</Grid>
+			</Case>
+			<Case Value="forms">
+				<Grid AlignItems="Top" Width="10rem" Padding="0">
+					<Toolbar Wrap="Wrap">
+						<Repeater ItemsSource="{Bind Root.$Forms}">
+							<Button Content="{Bind Name}" Icon="Storyboard"
+								Command="{BindCmdExec openForm, Argument={Bind Value}}"/>
+						</Repeater>
+					</Toolbar>
+				</Grid>
+			</Case>
+		</Switch>
+	</Grid>
+</Partial>

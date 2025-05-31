@@ -1,0 +1,18 @@
+﻿{
+	"$schema": "../../@schemas/model-json-schema.json#",
+	"schema": "a2meta",
+	"model": "Deploy",
+	"actions": {
+		"index": {
+			"index": true,
+			"template": "deploy.template",
+			"view": "deploy.view"
+		}
+	},
+	"commands": {
+		"deploy": {
+			"type": "clr",
+			"clrType": "clr-type:A2v10.Metadata.DeployDatabaseHandler;assembly=A2v10.Metadata"
+		}
+	}
+}

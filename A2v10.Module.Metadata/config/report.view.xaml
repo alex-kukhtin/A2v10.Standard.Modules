@@ -1,0 +1,129 @@
+﻿<Partial xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml">
+	<Grid Rows="Auto,Auto,1*" AlignItems="Stretch" Height="100%">
+		<Toolbar>
+			<Button Icon="SaveOutline" Content="Save" 
+				Command="{BindCmd Save}"/>
+			<Separator />
+			<Button Icon="ArrowOpen" Content="@[Preview]" Command="{BindCmdExec preview}"/>
+			<Separator />
+			<Button Icon="Reload" Command="{BindCmd Reload}"/>
+		</Toolbar>
+		<TabBar Value="{Bind Root.$$Tab}" Margin="0,0,0,10">
+			<TabButton Content="@[General]" />
+			<TabButton Content="@[Data]" ActiveValue="data"/>
+		</TabBar>
+		<Switch Expression="{Bind Root.$$Tab}" Grid.Row="3">
+			<Case Value="">
+				<Grid AlignItems="Top" Padding="0,0,0,10" Height="100%"
+					  Columns="20rem,20rem,1*" Gap=".5rem,1rem" Rows="Auto,Auto,Auto,1*">
+					<TextBox Grid.Row="1" Label="Name" Value="{Bind Table.Name}"/>
+					<SelectorSimple Grid.Row="2" Label="Based On"
+						Value="{Bind Table.ParentTable}" Url="/$meta/config/journal"/>
+					<TextBox Grid.Row="4" Label="Report Name" Value="{Bind Table.ItemLabel}"/>
+					<ComboBox Grid.Row="1" Grid.Col="2" Label="Report Type" Value="{Bind Table.Type}">
+						<ComboBoxItem Value="turnover" Content="@[TurnOverSheet]"/>
+					</ComboBox>
+				</Grid>
+			</Case>
+			<Case Value="data">
+				<Grid AlignItems="Top" Padding="0,0,0,10" Height="100%"
+					  Columns="40rem,44rem,1*" Rows="Auto,Auto,1*" Gap="2rem" Overflow="Auto">
+					<StackPanel Grid.Row="1" Grid.Col="2" Gap=".5rem">
+						<Toolbar AlignItems="Baseline">
+							<Header Bold="False" Margin="0,1rem,0,0">Grouping</Header>
+							<Button Icon="Add"
+								Command="{BindCmdExec addGrouping}"/>
+						</Toolbar>
+						<Table CellSpacing="Medium"
+							   ItemsSource="{Bind Table.Grouping}" 
+							   Columns="Fit,Auto,10rem,Fit,Fit,Fit">
+							<Table.Header>
+								<TableRow>
+									<TableCell />
+									<TableCell>Column</TableCell>
+									<TableCell>Label</TableCell>
+									<TableCell>Checked</TableCell>
+									<TableCell>Function</TableCell>
+									<TableCell />
+								</TableRow>
+							</Table.Header>
+							<TableRow>
+								<CommandBar>
+									<Button Icon="ArrowUp" Command="{BindCmd Move, CommandName=up, Argument={Bind}}"/>
+									<Button Icon="ArrowDown"  Command="{BindCmd Move, CommandName=down, Argument={Bind}}"/>
+								</CommandBar>
+								<TextBox Value="{Bind Column.Name}" Disabled="True"/>
+								<TextBox Value="{Bind Label}" Placeholder="{Bind $LabelPlaceholder}"/>
+								<TableCell Align="Center" VAlign="Bottom">
+									<CheckBox Value="{Bind Checked}"/>
+								</TableCell>
+								<TableCell />
+								<Hyperlink Content="✕" Command="{BindCmd Remove, Confirm='@[Confirm.Sure]'}"/>
+							</TableRow>
+						</Table>
+					</StackPanel>
+					<StackPanel Grid.Row="2" Grid.Col="1" Gap=".5rem">
+						<Toolbar AlignItems="Baseline">
+							<Header Bold="False" Margin="0,1rem,0,0">Filters</Header>
+							<Button Icon="Add"
+								Command="{BindCmdExec addFilter}"/>
+						</Toolbar>
+						<Table CellSpacing="Medium"
+							   ItemsSource="{Bind Table.Filters}" Columns="Fit,Auto,10rem,65,Fit">
+							<Table.Header>
+								<TableRow>
+									<TableCell />
+									<TableCell>Column</TableCell>
+									<TableCell>Label</TableCell>
+									<TableCell />
+									<TableCell />
+								</TableRow>
+							</Table.Header>
+							<TableRow>
+								<CommandBar>
+									<Button Icon="ArrowUp" Command="{BindCmd Move, CommandName=up, Argument={Bind}}"/>
+									<Button Icon="ArrowDown"  Command="{BindCmd Move, CommandName=down, Argument={Bind}}"/>
+								</CommandBar>
+								<TextBox Value="{Bind Column.Name}" Disabled="True"/>
+								<TextBox Value="{Bind Label}" Placeholder="{Bind $LabelPlaceholder}"/>
+								<TableCell />
+								<Hyperlink Content="✕" Command="{BindCmd Remove, Confirm='@[Confirm.Sure]'}"/>
+							</TableRow>
+						</Table>
+					</StackPanel>
+					<StackPanel Grid.Row="1" Grid.Col="1" Gap=".5rem">
+						<Toolbar AlignItems="Baseline">
+							<Header Bold="False" Margin="0,1rem,0,0">Data</Header>
+							<Button Icon="Add"
+									Command="{BindCmdExec addData}"/>
+						</Toolbar>
+						<Table CellSpacing="Medium" Columns="Fit,Auto,10rem,Fit,Fit"
+							   ItemsSource="{Bind Table.Data}">
+							<Table.Header>
+								<TableRow>
+									<TableCell />
+									<TableCell>Column</TableCell>
+									<TableCell>Label</TableCell>
+									<TableCell>Checked</TableCell>
+									<TableCell />
+								</TableRow>
+							</Table.Header>
+							<TableRow>
+								<CommandBar>
+									<Button Icon="ArrowUp" Command="{BindCmd Move, CommandName=up, Argument={Bind}}"/>
+									<Button Icon="ArrowDown"  Command="{BindCmd Move, CommandName=down, Argument={Bind}}"/>
+								</CommandBar>
+								<TextBox Value="{Bind Column.Name}" Disabled="True"/>
+								<TextBox Value="{Bind Label}" Placeholder="{Bind $LabelPlaceholder}"/>
+								<TableCell Align="Center" VAlign="Bottom">
+									<CheckBox Value="{Bind Checked}"/>
+								</TableCell>
+								<Hyperlink Content="✕" Command="{BindCmd Remove, Confirm='@[Confirm.Sure]'}"/>
+							</TableRow>
+						</Table>
+					</StackPanel>
+				</Grid>
+			</Case>
+		</Switch>
+	</Grid>
+</Partial>

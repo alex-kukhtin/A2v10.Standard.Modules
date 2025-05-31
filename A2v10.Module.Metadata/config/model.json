@@ -1,0 +1,95 @@
+﻿{
+	"$schema": "../@schemas/model-json-schema.json#",
+	"schema": "a2meta",
+	"model": "Table",
+	"actions": {
+		"index": {
+			"index": true,
+			"model": "Config",
+			"template": "index.template",
+			"view": "index.view"
+		},
+		"application": {
+			"model": "Application",
+			"template": "application.template",
+			"view": "application.view"
+		},
+		"catalog": {
+			"template": "table.template",
+			"view": "table.view"
+		},
+		"document": {
+			"template": "table.template",
+			"view": "table.view"
+		},
+		"account": {
+			"template": "table.template",
+			"view": "table.view"
+		},
+		"reginfo": {
+			"template": "table.template",
+			"view": "table.view"
+		},
+		"journal": {
+			"template": "table.template",
+			"view": "table.view"
+		},
+		"operation": {
+			"template": "operation.template",
+			"view": "operation.view"
+		},
+		"optable": {
+			"template": "optable.template",
+			"view": "optable.view"
+		},
+		"enum": {
+			"model": "Enum",
+			"template": "enum.template",
+			"view": "enum.view"
+		},
+		"report": {
+			"model": "Report",
+			"template": "report.template",
+			"view": "report.view"
+		},
+		"form": {
+			"endpointHandler": "Meta:Form.Edit",
+			"view": "editform.view",
+			"template": "editform.template"
+		},
+		"interface": {
+			"model": "Interface",
+			"template": "interface.template",
+			"view": "interface.view"
+		}
+	},
+	"dialogs": {
+		"mapping": {
+			"model": "Mapping",
+			"template": "mapping.template",
+			"view": "mapping.dialog"
+		}
+	},
+	"commands": {
+		"createItem": {
+			"type": "sql",
+			"procedure": "Config.CreateItem"
+		},
+		"deleteItem": {
+			"type": "sql",
+			"procedure": "Config.DeleteItem"
+		},
+		"clearCache": {
+			"type": "clr",
+			"clrType": "clr-type:A2v10.Metadata.ClearCacheHandler;assembly=A2v10.Metadata"
+		},
+		"generate": {
+			"type": "clr",
+			"clrType": "clr-type:A2v10.Metadata.GenerateHandler;assembly=A2v10.Metadata"
+		},
+		"updateUi": {
+			"type": "clr",
+			"clrType": "clr-type:A2v10.Metadata.UpdateUiHandler;assembly=A2v10.Metadata"
+		}
+	}
+}

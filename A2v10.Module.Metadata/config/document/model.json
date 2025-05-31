@@ -1,0 +1,25 @@
+﻿{
+	"$schema": "../../@schemas/model-json-schema.json#",
+	"schema": "a2meta",
+	"model": "Reference",
+	"dialogs": {
+		"browse": {
+			"index": true,
+			"view": "../reference/browse.dialog",
+			"parameters": {
+				"Schema": "doc",
+				"DataType": "reference"
+			}
+		}
+	},
+	"commands": {
+		"fetch": {
+			"type": "sql",
+			"procedure": "Reference.Fetch",
+			"parameters": {
+				"Schema": "doc",
+				"DataType": "reference"
+			}
+		}
+	}
+}

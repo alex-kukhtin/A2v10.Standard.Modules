@@ -1,0 +1,68 @@
+﻿<Partial xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml">
+	<Grid Rows="Auto,1*" AlignItems="Stretch" Height="100%" Padding="0">
+		<Toolbar Grid.Row="1">
+			<Button Icon="SaveOutline" Content="@[Save]" 
+				Command="{BindCmd Save, ValidRequired=True}"/>
+			<Separator />
+			<Button Icon="Reload" Command="{BindCmd Reload}" />
+		</Toolbar>
+		<Grid AlignItems="Top" Padding="0,0,0,10" Height="100%"
+					  Columns="25rem,1*" Gap=".5rem,1rem"
+					  Rows="Auto,Auto,1*" Grid.Row="2" Overflow="Auto">
+			<TextBox Grid.Row="1" Label="@[Name]" Value="{Bind Interface.Name}"/>
+			<TextBox Grid.Row="1" Grid.Col="2" Label="@[Icon]" Value="{Bind Interface.ItemName}" 
+					 Width="10rem" Margin="0,0,3rem,0"/>
+
+			<Toolbar Grid.Row="2" Grid.Col="1"  AlignItems="Baseline">
+				<Header Bold="False" Margin="0,1rem,0,0">Sections</Header>
+				<Button Icon="Add"
+					Command="{BindCmd Append, Argument={Bind Interface.Sections}}"/>
+			</Toolbar>
+			
+			<List ItemsSource="{Bind Interface.Sections}"
+				  Grid.Col="1" Grid.Row="3" AutoSelect="FirstItem" Height="100%">
+				<StackPanel Orientation="Horizontal" Gap="1rem">
+					<SpanIcon Icon="Menu" />
+					<CommandBar>
+						<Button Icon="ArrowUp" Command="{BindCmd Move, CommandName=up, Argument={Bind}}"/>
+						<Button Icon="ArrowDown"  Command="{BindCmd Move, CommandName=down, Argument={Bind}}"/>
+					</CommandBar>
+					<TextBox Value="{Bind Name}" Width="18rem"/>
+					<Hyperlink Content="✕" Command="{BindCmd Remove, Confirm='@[Confirm.Sure]'}"/>
+				</StackPanel>
+			</List>
+
+			<Slot Scope="{Bind Interface.Sections.$selected}">
+				<Toolbar Grid.Col="2" Grid.Row="2"  AlignItems="Baseline">
+					<Header Bold="False" Margin="0,1rem,0,0">Menu Items</Header>
+					<Button Icon="Add"
+							Command="{BindCmd Append, Argument={Bind MenuItems}}"/>
+				</Toolbar>
+				<Table ItemsSource="{Bind MenuItems}" CellSpacing="Medium"
+					   Columns="46,25rem,Auto,24" Width="100%">
+					<Table.Header>
+						<TableRow>
+							<TableCell MinWidth="46"/>
+							<TableCell Content="@[Name]" MinWidth="10rem"/>
+							<TableCell Content="@[Endpoint]" MinWidth="20rem"/>
+							<TableCell MinWidth="24"/>
+						</TableRow>
+					</Table.Header>
+					<TableRow>
+						<CommandBar>
+							<Button Icon="ArrowUp" Command="{BindCmd Move, CommandName=up, Argument={Bind}}"/>
+							<Button Icon="ArrowDown"  Command="{BindCmd Move, CommandName=down, Argument={Bind}}"/>
+						</CommandBar>
+						<TextBox Value="{Bind Name}"/>
+						<TextBox Value="{Bind Url}">
+							<Hyperlink Icon="Search" Command="{BindCmdExec browseUrl, Argument={Bind}}"/>
+						</TextBox>
+						<TableCell>
+							<Hyperlink Content="✕" Command="{BindCmd Remove, Confirm='@[Confirm.Sure]'}"/>
+						</TableCell>
+					</TableRow>
+				</Table>
+			</Slot>
+		</Grid>
+	</Grid>
+</Partial>

@@ -17,7 +17,10 @@ public class Startup(IConfiguration configuration)
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<ILicenseManager, NullLicenseManager>();
+        services.UseAppMetdata();
+
+        //services.AddSingleton<ILicenseManager, NullLicenseManager>();
+
         services.UsePlatform(Configuration);
 
         services.AddWorkflowEngineScoped()

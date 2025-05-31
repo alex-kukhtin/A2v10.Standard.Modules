@@ -1,0 +1,11 @@
+﻿{
+	"$schema": "../../@schemas/model-json-schema.json#",
+	"schema": "a2meta",
+	"model": "Endpoint",
+	"dialogs": {
+		"browse": {
+			"index": true,
+			"view": "browse.dialog"
+		}
+	}
+}

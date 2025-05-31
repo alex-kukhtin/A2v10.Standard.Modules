@@ -23,6 +23,8 @@
 		<PackageReference Include="A2v10.Workflow.Engine" Version="10.1.8228" />
 		<PackageReference Include="A2v10.Scheduling" Version="10.1.8551" />
 		<!--!!!UPDATE versions in A2v10.Module.Workflow.nuspec && _layout !!!-->
+		<PackageReference Include="A2v10.Metadata" Version="10.1.8552" />
+		<!--!!!UPDATE versions in A2v10.Module.Metadata.nuspec && _layout !!!-->
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,0 +1,29 @@
+﻿<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
+	  Title="Deploy Database">
+	<StackPanel Padding="2rem" Gap="1rem"
+				AlignItems="Start">
+
+		<Header>Deploy Database</Header>
+		
+		<Table ItemsSource="{Bind Deploy}" CellSpacing="Large">
+			<Table.Header>
+				<TableRow>
+					<TableCell />
+					<TableCell Content="Count"/>
+					<TableCell Content="Index"/>
+					<TableCell Content="Table"/>
+				</TableRow>
+			</Table.Header>
+			<TableRow>
+				<TableCell Content="{Bind Name}"/>
+				<TableCell Content="{Bind Count}" Align="Right"/>
+				<TableCell Content="{Bind Index}" Align="Right"/>
+				<TableCell Content="{Bind Table}" MinWidth="20rem"/>
+			</TableRow>
+		</Table>
+
+		<Button Style="Primary" Content="Deploy now"
+			Command="{BindCmdExec deploy}" Width="10rem"/>
+	
+	</StackPanel>
+</Page>

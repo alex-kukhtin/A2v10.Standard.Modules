@@ -1,0 +1,86 @@
+﻿<Partial xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml">
+	<Grid Rows="Auto,Auto,1*" AlignItems="Stretch" Height="100%">
+		<Toolbar Grid.Row="1">
+			<Button Icon="SaveOutline" Content="@[Save]" 
+				Command="{BindCmd Save}"/>
+			<Separator />
+			<Button Icon="Reload" Command="{BindCmd Reload}" />
+		</Toolbar>
+		<TabBar Value="{Bind Root.$$Tab}" Margin="0,0,0,10" Grid.Row="2">
+			<TabButton Content="Columns" ActiveValue=""/>
+		</TabBar>
+		<Switch Expression="{Bind Root.$$Tab}" Grid.Row="3">
+			<Case Value="">
+				<Grid Rows="Auto,1*" Padding="0,0,0,10" AlignItems="Stretch" Height="100%" Overflow="Hidden">
+					<Toolbar>
+						<Button Icon="Add" Content="Add"
+								Command="{BindCmd Append, Argument={Bind Table.Columns}}"/>
+					</Toolbar>
+					<Table ItemsSource="{Bind Table.Columns}"
+					   CellSpacing="Medium" StickyHeaders="True"
+						   Height="100%" 
+						   Columns="Fit,12rem,12rem,Fit,Fit,Fit,17rem,12rem,16px">
+						<Table.Header>
+							<TableRow>
+								<TableCell />
+								<TableCell Content="@[Name]" MinWidth="10rem"/>
+								<TableCell Content="Label" MinWidth="10rem"/>
+								<TableCell Content="Data Type" MinWidth="7rem" Width="7rem"/>
+								<TableCell Content="Role" MinWidth="9rem" Width="9rem"/>
+								<TableCell Content="Max Length" Wrap="NoWrap"/>
+								<TableCell Content="Reference" MinWidth="17rem"/>
+								<TableCell Content="Source" MinWidth="12rem"/>
+								<TableCell />
+							</TableRow>
+						</Table.Header>
+						<TableRow>
+							<CommandBar>
+								<Button Icon="ArrowUp" Command="{BindCmd Execute, CommandName=moveUp, Argument={Bind}}"/>
+								<Button Icon="ArrowDown"  Command="{BindCmd Execute, CommandName=moveDown, Argument={Bind}}"/>
+							</CommandBar>
+							<TextBox Value="{Bind Name}"/>
+							<TextBox Value="{Bind Label}" Placeholder="{Bind $LabelPlaceholder}"/>
+							<ComboBox Value="{Bind DataType}" Disabled="{Bind $DataTypeDisabled}" Width="7rem">
+								<ComboBoxItem Content="Id" Value="id"/>
+								<ComboBoxItem Content="Int" Value="int"/>
+								<ComboBoxItem Content="BigInt" Value="bigint"/>
+								<ComboBoxItem Content="Bit" Value="bit"/>
+								<ComboBoxItem Content="String" Value="string"/>
+								<ComboBoxItem Content="Float" Value="float"/>
+								<ComboBoxItem Content="Date" Value="date"/>
+								<ComboBoxItem Content="Money" Value="money"/>
+								<ComboBoxItem Content="DateTime" Value="datetime"/>
+								<ComboBoxItem Content="Reference" Value="reference"/>
+								<ComboBoxItem Content="Enum" Value="enum"/>
+								<ComboBoxItem Content="Operation" Value="operation"/>
+								<ComboBoxItem Content="Stream" Value="stream"/>
+							</ComboBox>
+							<TableCell Wrap="NoWrap">
+								<ComboBox Value="{Bind Role}" Width="9rem">
+									<ComboBoxItem Content="&#160;" Value="0"/>
+									<ComboBoxItem Content="Key" Value="1"/>
+									<ComboBoxItem Content="Name" Value="2"/>
+									<ComboBoxItem Content="Void" Value="16"/>
+								</ComboBox>
+							</TableCell>
+							<TableCell>
+								<TextBox Value="{Bind MaxLength}" If="{Bind $HasLength}" Align="Right"/>
+							</TableCell>
+							<TableCell>
+								<SelectorSimple If="{Bind $IsReference}" 
+									Value="{Bind Reference}" Url="/$meta/config/reference"/>
+							</TableCell>
+							<TableCell Wrap="NoWrap">
+								<TextBox If="{Bind Source}"
+									Value="{Bind Source}" Disabled="True"/>
+							</TableCell>
+							<TableCell>
+								<Hyperlink Content="✕"  Command="{BindCmd Remove, Confirm='Are you sure?'}"/>
+							</TableCell>
+						</TableRow>
+					</Table>
+				</Grid>
+			</Case>
+		</Switch>
+	</Grid>
+</Partial>

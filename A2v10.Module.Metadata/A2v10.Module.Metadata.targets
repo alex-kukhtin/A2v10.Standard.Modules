@@ -1,8 +1,12 @@
 ﻿<Project>
 	<ItemGroup>
 		<Files Include="$(MSBuildThisFileDirectory)/../contentFiles/sql/*" />
+		<CssFiles Include="$(MSBuildThisFileDirectory)/../contentFiles/css/*" />
+		<JsFiles Include="$(MSBuildThisFileDirectory)/../contentFiles/js/*" />
 	</ItemGroup>
 	<Target Name="CopyFiles" AfterTargets="Build">
 		<Copy SourceFiles="@(Files)" DestinationFolder="$(ProjectDir)/_assets/sql" SkipUnchangedFiles="true"/>
+		<Copy SourceFiles="@(CssFiles)" DestinationFolder="$(ProjectDir)/wwwroot/css/meta" SkipUnchangedFiles="true"/>
+		<Copy SourceFiles="@(JsFiles)" DestinationFolder="$(ProjectDir)/wwwroot/scripts/meta" SkipUnchangedFiles="true"/>
 	</Target>
 </Project>

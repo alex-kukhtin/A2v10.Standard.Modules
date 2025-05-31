@@ -1,0 +1,57 @@
+﻿; Items
+@Application=Застосунок
+@General=Загальні
+@Enums=Переліки
+@Meta.Columns=Поля
+@Forms=Форми
+@Journal=Журнал
+@Journals=Журнали
+@Catalog=Довідник
+@Document=Документ
+@OperationW=Операцію
+@Operation=Операція
+@Operations=Операції
+@Report=Звіт
+@Reports=Звіти
+@Storno=Сторно
+@AccountPlans=Плани рахунків
+@InfoRegisters=Регістри відомостей
+@Interface=Інтерфейс
+@MainMenu=Меню
+@MenuSection=Розділ меню
+@Icon=Іконка
+@Grouping=Групування
+@Data=Дані
+@Endpoint=Кінцева точка
+@Filters=Фільтри
+; Reports
+@TurnOverSheet=Оборотна відомість
+@TurnOver.Start=На початок
+@TurnOver.In=Прибуток
+@TurnOver.Out=Видаток
+@TurnOver.End=На кінець
+@Total=Всього
+@Report.Param.Changed=Параметри звіту було змінено
+@Report.RunNow=Сформувати зараз
+@Report.Run=Сформувати
+@Report.NotYetBuild=Звіт ще не сформовано
+@Store.AllData=Всі склади
+@Store.NoData=Не вказано
+@Item.AllData=Всі об'єкти обліку
+@Item.NoData=Не вказано
+@Company.AllData=Всі підприємства
+@Company.NoData=Не вказано
+@Agent.AllData=Всі контрагенти
+@Agent.NoData=Не вказано
+@Document.AllData=Всі документи
+@Document.NoData=Не вказано
+; Commands
+@Preview=Перегляд
+@Add=Додати
+@Generate=Згенерувати
+; Errors
+@Error.TypeMismatch=Не співпадають типи
+@Error.SelectJournalFirst=Спочатку оберіть журнал
+; Confirm
+@Confirm.Sure=Ви впевнені?
+

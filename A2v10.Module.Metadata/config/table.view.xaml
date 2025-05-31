@@ -1,0 +1,241 @@
+﻿<Partial xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml">
+	<Grid Rows="Auto,Auto,1*" AlignItems="Stretch" Height="100%">
+		<Toolbar Grid.Row="1">
+			<Button Icon="SaveOutline" Content="@[Save]" 
+				Command="{BindCmd Save}"/>
+			<Separator />
+			<Group If="{Bind Table.$HasPreview}">
+				<Button Icon="ArrowOpen" Content="@[Preview]" Command="{BindCmdExec preview}"/>
+				<Separator />
+			</Group>
+			<Group If="{Bind Table.$HasGenerate}">
+				<Button Icon="FileSignature" Content="@[Generate]" Command="{BindCmdExec generate}"/>
+				<Separator />
+			</Group>
+			<Button Icon="Reload" Command="{BindCmd Reload}" />
+		</Toolbar>
+		<TabBar Value="{Bind Root.$$Tab}" Margin="0,0,0,10" Grid.Row="2">
+			<TabButton Content="@[General]" ActiveValue=""/>
+			<TabButton Content="@[Meta.Columns]" ActiveValue="columns"/>
+			<TabButton Content="Kinds" ActiveValue="kinds" If="{Bind Table.$HasKinds}"/>
+			<TabButton Content="Apply" ActiveValue="apply" If="{Bind Table.$HasApply}"/>
+			<TabButton Content="@[Forms]" ActiveValue="forms" If="{Bind Table.$HasForms}"/>
+			<TabButton Content="Other" ActiveValue="other"/>
+		</TabBar>
+		<Switch Expression="{Bind Root.$$Tab}" Grid.Row="3">
+			<Case Value="">
+				<Grid AlignItems="Top" Padding="0,0,0,10" Height="100%" Overflow="Auto"
+					  Columns="20rem,25rem,25rem,1*" Gap=".5rem,1rem" Rows="Repeat(5;Auto),1*">
+					<TextBox Grid.Row="1" Label="@[Name]" Value="{Bind Table.Name}"/>
+					<TextBox Grid.Row="2" Label="Collection Name" Value="{Bind Table.ItemsName}" Placeholder="{Bind Table.Name}"/>
+					<TextBox Grid.Row="3" Label="Element Name" Value="{Bind Table.ItemName}" Placeholder="{Bind Table.$ItemPlaceholder}"/>
+					<TextBox Grid.Row="4" Label="Type Name" Value="{Bind Table.TypeName}" Placeholder="{Bind Table.$TypePlaceholder}"/>
+
+					<Static Grid.Row="1" Grid.Col="3" Label="Source" Value="{Bind Table.Source}"/>
+
+					<GridGroup If="{Bind Table.$HasForms}">
+
+						<ComboBox Grid.Row="1" Grid.Col="2" Label="Edit With"
+								  Value="{Bind Table.EditWith}" Width="15rem">
+							<ComboBoxItem Content="Dialog" Value="Dialog"/>
+							<ComboBoxItem Content="Page" Value="Page"/>
+						</ComboBox>
+
+						<TextBox Grid.Col="2" Grid.Row="2" Label="Collection Label" Value="{Bind Table.ItemsLabel}" Placeholder="{Bind Table.$ItemsLabelPlaceholder}"/>
+						<TextBox Grid.Col="2" Grid.Row="3" Label="Element Label" Value="{Bind Table.ItemLabel}" Placeholder="{Bind Table.$ItemLabelPlaceholder}"/>
+
+						<SwitchBox Grid.VAlign="Bottom" Margin="6,0,6,0" If="{Bind Table.$HasUseFolders}"
+							Grid.Row="5" Grid.Col="1" Label="Use Folders" Value="{Bind Table.UseFolders}"/>
+
+						<ComboBox Grid.Row="5" Grid.Col="2" Label="Auto Number Field" Render="Hide"
+							  ItemsSource="{Bind Table.Columns}"/>
+					</GridGroup>
+					<GridGroup If="{Bind Table.$IsDetails}">
+						<TextBox Grid.Col="2" Grid.Row="1" Label="Details Label" Value="{Bind Table.ItemsLabel}" Placeholder="{Bind Table.$ItemsLabelPlaceholder}"/>
+					</GridGroup>
+				</Grid>
+			</Case>
+			<Case Value="columns">
+				<Grid Rows="Auto,1*" Padding="0,0,0,10" AlignItems="Stretch" Height="100%" Overflow="Hidden">
+					<Toolbar>
+						<Button Icon="Add" Content="@[Add]"
+								Command="{BindCmd Append, Argument={Bind Table.Columns}}"/>
+					</Toolbar>
+					<Table ItemsSource="{Bind Table.Columns}"
+					   CellSpacing="Medium" StickyHeaders="True"
+						   Height="100%" 
+						   Columns="Fit,12rem,12rem,Fit,Fit,Fit,17rem,12rem,16px">
+						<Table.Header>
+							<TableRow>
+								<TableCell />
+								<TableCell Content="@[Name]" MinWidth="10rem"/>
+								<TableCell Content="Label" MinWidth="10rem"/>
+								<TableCell Content="Data Type" MinWidth="7rem" Width="7rem"/>
+								<TableCell Content="Role" MinWidth="9rem" Width="9rem"/>
+								<TableCell Content="Max Length" Wrap="NoWrap"/>
+								<TableCell Content="Reference" MinWidth="17rem"/>
+								<TableCell Content="Source" MinWidth="12rem"/>
+								<TableCell />
+							</TableRow>
+						</Table.Header>
+						<TableRow>
+							<CommandBar>
+								<Button Icon="ArrowUp" Command="{BindCmd Execute, CommandName=moveUp, Argument={Bind}}"/>
+								<Button Icon="ArrowDown"  Command="{BindCmd Execute, CommandName=moveDown, Argument={Bind}}"/>
+							</CommandBar>
+							<TextBox Value="{Bind Name}"/>
+							<TextBox Value="{Bind Label}" Placeholder="{Bind $LabelPlaceholder}"/>
+							<ComboBox Value="{Bind DataType}" Disabled="{Bind $DataTypeDisabled}" Width="7rem">
+								<ComboBoxItem Content="Id" Value="id"/>
+								<ComboBoxItem Content="Int" Value="int"/>
+								<ComboBoxItem Content="BigInt" Value="bigint"/>
+								<ComboBoxItem Content="Bit" Value="bit"/>
+								<ComboBoxItem Content="String" Value="string"/>
+								<ComboBoxItem Content="Float" Value="float"/>
+								<ComboBoxItem Content="Date" Value="date"/>
+								<ComboBoxItem Content="Money" Value="money"/>
+								<ComboBoxItem Content="DateTime" Value="datetime"/>
+								<ComboBoxItem Content="Reference" Value="reference"/>
+								<ComboBoxItem Content="Enum" Value="enum"/>
+								<ComboBoxItem Content="Operation" Value="operation"/>
+								<ComboBoxItem Content="Stream" Value="stream"/>
+							</ComboBox>
+							<TableCell Wrap="NoWrap">
+								<ComboBox Value="{Bind Role}" Width="9rem">
+									<ComboBoxItem Content="&#160;" Value="0"/>
+									<ComboBoxItem Content="Key" Value="1"/>
+									<ComboBoxItem Content="Key + RowNo" Value="9"/>
+									<ComboBoxItem Content="Name" Value="2"/>
+									<ComboBoxItem Content="Code" Value="4"/>
+									<ComboBoxItem Content="RowNo" Value="8"/>
+									<ComboBoxItem Content="Void" Value="16"/>
+									<ComboBoxItem Content="Number" Value="2048"/>
+									<ComboBoxItem Content="Parent" Value="32"/>
+									<ComboBoxItem Content="Key + Parent" Value="33"/>
+									<ComboBoxItem Content="IsFolder" Value="64"/>
+									<ComboBoxItem Content="IsSystem" Value="128"/>
+									<ComboBoxItem Content="Done" Value="256"/>
+									<ComboBoxItem Content="Kind" Value="512"/>
+									<ComboBoxItem Content="Owner" Value="1024"/>
+								</ComboBox>
+							</TableCell>
+							<TableCell>
+								<TextBox Value="{Bind MaxLength}" If="{Bind $HasLength}" Align="Right"/>
+							</TableCell>
+							<TableCell>
+								<SelectorSimple If="{Bind $IsReference}" 
+									Value="{Bind Reference}" Url="/$meta/config/reference" Data="{Bind $ReferenceData}"/>
+							</TableCell>
+							<TableCell Wrap="NoWrap">
+								<TextBox If="{Bind Source}"
+									Value="{Bind Source}" Disabled="True"/>
+							</TableCell>
+							<TableCell>
+								<Hyperlink Content="✕"  Command="{BindCmd Remove, Confirm='Are you sure?'}"/>
+							</TableCell>
+						</TableRow>
+					</Table>
+				</Grid>
+			</Case>
+
+			<Case Value="apply">
+				<Block Margin="0,0,0,10">
+					<Table CellSpacing="Medium" ItemsSource="{Bind Table.Apply}">
+						<Table.Header>
+							<TableRow>
+								<TableCell Content="Journal"/>
+								<TableCell Content="Apply"/>
+								<TableCell Content="In"/>
+								<TableCell Content="Out"/>
+								<TableCell Content="Storno"/>
+							</TableRow>
+						</Table.Header>
+						<TableRow>
+							<Static Value="{Bind Name}" Width="20rem"/>
+							<TableCell Align="Center" VAlign="Middle">
+								<CheckBox />
+							</TableCell>
+						</TableRow>
+					</Table>
+				</Block>
+			</Case>
+
+			<Case Value="forms">
+				<Grid AlignItems="Top" Width="10rem" Padding="0">
+					<Toolbar Wrap="Wrap">
+						<Repeater ItemsSource="{Bind Root.$Forms}">
+							<Button Content="{Bind Name}" Icon="Storyboard"
+								Command="{BindCmdExec openForm, Argument={Bind Value}}"/>
+						</Repeater>
+					</Toolbar>
+				</Grid>
+			</Case>
+
+			<Case Value="kinds">
+				<Grid Rows="Auto,1*" Padding="0,0,0,10" 
+					  AlignItems="Stretch" Height="100%" Overflow="Hidden">
+					<Toolbar>
+						<Button Icon="Add" Content="@[Add]"
+								Command="{BindCmd Append, Argument={Bind Table.Kinds}}"/>
+					</Toolbar>
+					<Table CellSpacing="Medium" ItemsSource="{Bind Table.Kinds}"
+						   Columns="46,Auto,Auto,28px" Width="32rem" StickyHeaders="True">
+						<Table.Header>
+							<TableRow>
+								<TableCell />
+								<TableCell Content="Name" MinWidth="12rem"/>
+								<TableCell Content="Label" MinWidth="12rem"/>
+								<TableCell />
+							</TableRow>
+						</Table.Header>
+						<TableRow>
+							<CommandBar>
+								<Button Icon="ArrowUp" Command="{BindCmd Execute, CommandName=moveUp, Argument={Bind}}"/>
+								<Button Icon="ArrowDown"  Command="{BindCmd Execute, CommandName=moveDown, Argument={Bind}}"/>
+							</CommandBar>
+							<TextBox Value="{Bind Name}" />
+							<TextBox Value="{Bind Label}" Placeholder="{Bind $LabelPlaceholder}"/>
+							<TableCell>
+								<Hyperlink Content="✕" Command="{BindCmd Remove, Confirm='Are you sure?'}"/>
+							</TableCell>
+						</TableRow>
+					</Table>
+				</Grid>
+			</Case>
+
+			<Case Value="other">
+				<Grid Margin="0,0,0,10">
+					<Table ItemsSource="{Bind Table.$OtherColumns}"
+					   CellSpacing="Medium" StickyHeaders="True"
+						   Height="100%" 
+						   Columns="12rem,12rem,30rem,Fit,Fit,Fit" Width="65rem">
+						<Table.Header>
+							<TableRow>
+								<TableCell Content="@[Name]" MinWidth="10rem"/>
+								<TableCell Content="Label" MinWidth="10rem"/>
+								<TableCell Content="Computed" MinWidth="30rem"/>
+								<TableCell Content="Required" />
+								<TableCell Content="Total" />
+								<TableCell Content="Unique" />
+							</TableRow>
+						</Table.Header>
+						<TableRow>
+							<TextBox Value="{Bind Name}" Disabled="True"/>
+							<TextBox Value="{Bind Label}" Disabled="True" Placeholder="{Bind $LabelPlaceholder}"/>
+							<TextBox Value="{Bind Computed}" CssClass="input-code"/>
+							<TableCell Align="Center" VAlign="Middle">
+								<CheckBox Value="{Bind Required}"/>
+							</TableCell>
+							<TableCell Align="Center" VAlign="Middle">
+								<CheckBox Value="{Bind Total}"/>
+							</TableCell>
+							<TableCell Align="Center" VAlign="Middle">
+								<CheckBox Value="{Bind Unique}"/>
+							</TableCell>
+						</TableRow>
+					</Table>
+				</Grid>
+			</Case>
+		</Switch>
+	</Grid>
+</Partial>

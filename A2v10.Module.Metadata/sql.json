@@ -1,0 +1,15 @@
+﻿[
+	{
+		"$schema": "@schemas/sql-json-schema.json#",
+		"outputFile": "_sqlscripts/a2v10_platform_meta.sql",
+		"inputFiles": [
+			"_sql/a2v10_struct_meta.sql",
+			"_sql/a2v10_security_meta.sql",
+			"_sql/a2v10_metadata.sql",
+			"_sql/a2v10_system_meta.sql",
+			"_sql/a2v10_ui_meta.sql",
+			"_sql/a2v10_admin_meta.sql",
+			"_sql/_default.sql"
+		]
+	}
+]

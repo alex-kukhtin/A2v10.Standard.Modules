@@ -1,0 +1,30 @@
+﻿{
+	"$schema": "../../@schemas/model-json-schema.json#",
+	"schema": "a2meta",
+	"model": "Reference",
+	"dialogs": {
+		"browse": {
+			"index": true,
+			"view": "../reference/browse.dialog",
+			"parameters": {
+				"Schema": "jrn",
+				"DataType": "reference"
+			}
+		},
+		"browseField": {
+			"index": true,
+			"model": "Journal.Field",
+			"view": "browsefield.dialog"
+		}
+	},
+	"commands": {
+		"fetch": {
+			"type": "sql",
+			"procedure": "Reference.Fetch",
+			"parameters": {
+				"Schema": "jrn",
+				"DataType": "reference"
+			}
+		}
+	}
+}
