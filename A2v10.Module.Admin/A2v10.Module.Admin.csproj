@@ -21,6 +21,7 @@
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<IncludeContentInPack>False</IncludeContentInPack>
 		<NuspecFile>A2v10.Module.Admin.nuspec</NuspecFile>
 	</PropertyGroup>
 

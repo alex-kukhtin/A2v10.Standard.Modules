@@ -94,6 +94,7 @@ go
 create type wfadm.[AutoStart.TableType] as table (
 	Workflow nvarchar(255),
 	StartAt datetime,
+	TimezoneOffset int,
 	CorrelationId nvarchar(255)
 );
 go
@@ -117,13 +118,12 @@ begin
 	set nocount on;
 	set transaction isolation level read committed;
 
-	declare @mins int;
-	set @mins = datediff(minute,getdate(),getutcdate());
+	-- SQL server time may be UTC!!!
 
-	declare @rtable table(Id bigint)
+	declare @rtable table(Id bigint);
 	insert into a2wf.AutoStart (WorkflowId, CorrelationId, StartAt)
 	output inserted.Id into @rtable(Id)
-	select upper(Workflow), CorrelationId, dateadd(minute, @mins, StartAt)
+	select upper(Workflow), CorrelationId, dateadd(minute, TimezoneOffset, StartAt)
 	from @AutoStart;
 
 	declare @Id bigint;
@@ -131,4 +131,3 @@ begin
 	exec wfadm.[AutoStart.Load] @UserId, @Id;
 end
 go
-

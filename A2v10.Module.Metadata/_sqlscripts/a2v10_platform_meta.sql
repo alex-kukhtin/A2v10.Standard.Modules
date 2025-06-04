@@ -77,7 +77,6 @@ create table a2security.Users
 	Memo nvarchar(255) null,
 	ChangePasswordEnabled bit not null constraint DF_Users_ChangePasswordEnabled default(1),
 	RegisterHost nvarchar(255) null,
-	Segment nvarchar(32) null,
 	SetPassword bit,
 	IsApiUser bit constraint DF_UsersIsApiUser default(0),
 	IsExternalLogin bit constraint DF_UsersIsExternalLogin default(0),
@@ -166,7 +165,7 @@ as
 	select Id, UserName, DomainUser, PasswordHash, SecurityStamp, Email, PhoneNumber,
 		LockoutEnabled, AccessFailedCount, LockoutEndDateUtc, TwoFactorEnabled, [Locale],
 		PersonName, Memo, Void, LastLoginDate, LastLoginHost, EmailConfirmed,
-		PhoneNumberConfirmed, RegisterHost, ChangePasswordEnabled, Segment,
+		PhoneNumberConfirmed, RegisterHost, ChangePasswordEnabled,
 		SecurityStamp2, PasswordHash2, SetPassword, IsBlocked, AuthenticatorKey
 	from a2security.Users u
 	where Void = 0 and Id <> 0;
@@ -193,7 +192,7 @@ go
 /*
 Copyright © 2008-2025 Oleksandr Kukhtin
 
-Last updated : 31 may 2025
+Last updated : 04 jun 2025
 module version : 8553
 */
 
@@ -357,9 +356,9 @@ begin
 	set @status = N'ApiKey=' + @ApiKey;
 	set @code = 65; /*fail*/
 
-	declare @user table(Id bigint, Segment nvarchar(255), [Name] nvarchar(255), ClientId nvarchar(255), AllowIP nvarchar(255), Locale nvarchar(32));
-	insert into @user(Id, Segment, [Name], ClientId, AllowIP, Locale)
-	select top(1) u.Id, Segment, [Name]=u.UserName, s.ClientId, s.AllowIP, u.Locale 
+	declare @user table(Id bigint, [Name] nvarchar(255), ClientId nvarchar(255), AllowIP nvarchar(255), Locale nvarchar(32));
+	insert into @user(Id, [Name], ClientId, AllowIP, Locale)
+	select top(1) u.Id, [Name]=u.UserName, s.ClientId, s.AllowIP, u.Locale 
 	from a2security.Users u inner join a2security.ApiUserLogins s on u.Id = s.[User]
 	where u.Void=0 and s.Mode = N'ApiKey' and s.ApiKey=@ApiKey;
 	
@@ -539,9 +538,9 @@ begin
 	declare @newid bigint;
 
 	begin tran;
-		insert into a2security.Users(IsApiUser, UserName, PersonName, Memo, Segment, Locale, SecurityStamp, SecurityStamp2)
+		insert into a2security.Users(IsApiUser, UserName, PersonName, Memo, Locale, SecurityStamp, SecurityStamp2)
 		output inserted.Id into @users(Id)
-		select 1, @Name, @PersonName, @Memo, u.Segment, u.Locale, N'', N''
+		select 1, @Name, @PersonName, @Memo, u.Locale, N'', N''
 		from a2security.Users u where Id = @UserId;
 
 		select top(1) @newid = Id from @users;
@@ -550,7 +549,7 @@ begin
 			(@newid, N'ApiKey', @ApiKey);
 	commit tran;
 
-	select Id, UserName, PersonName, Memo, Segment, Locale from a2security.ViewUsers where Id = @newid;
+	select Id, UserName, PersonName, Memo, Locale from a2security.ViewUsers where Id = @newid;
 end
 go
 ------------------------------------------------
@@ -572,7 +571,7 @@ begin
 	commit tran;
 
 	-- We can't use ViewUsers (Void = 0)
-	select Id, Segment from a2security.Users where Id = @Id;
+	select Id from a2security.Users where Id = @Id;
 end
 go
 ------------------------------------------------
@@ -599,7 +598,7 @@ begin
 	where Id = @Id;
 
 	-- We can't use ViewUsers (Void = 0)
-	select Id, Segment, UserName, Email, PhoneNumber, DomainUser from a2security.Users where Id = @Id;
+	select Id, UserName, Email, PhoneNumber, DomainUser from a2security.Users where Id = @Id;
 
 	commit tran;
 
@@ -1705,8 +1704,8 @@ begin
 	if not exists (select * from a2ui.Menu)
 		insert into a2ui.Menu(Id, Parent, [Name], Icon, [Order], [ClassName]) values
 		(N'00000000-0000-0000-0000-000000000000', null, N'Main', null, 0, null),
-		(newid(), N'00000000-0000-0000-0000-000000000000', null, null, 890, N'grow'),
-		(newid(), N'00000000-0000-0000-0000-000000000000', N'@[Settings]', N'gear-outline', 900, null);
+		(N'02393194-2D0C-4651-B7D0-C64A9B6E0A69', N'00000000-0000-0000-0000-000000000000', null, null, 890, N'grow'),
+		(N'9F3B38D6-2344-4BD7-BEFA-47819E0EC2FF', N'00000000-0000-0000-0000-000000000000', N'@[Settings]', N'gear-outline', 900, null);
 end
 go
 ------------------------------------------------

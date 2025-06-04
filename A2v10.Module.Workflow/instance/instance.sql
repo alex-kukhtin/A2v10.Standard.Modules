@@ -76,7 +76,7 @@ begin
 
 	-- Inbox MUST be created
 	select [!TInbox!Array] = null, [Id!!Id] = i.Id, 
-		Bookmark, [DateCreated!!Utc] = DateCreated, i.[Text], i.[User], i.[Role], i.[Url], i.[State],
+		Bookmark, [DateCreated!!Utc] = DateCreated, i.[Text], i.[User], i.[Role], i.[Url],
 		[Instance!TInstance.Inboxes!ParentId] = InstanceId
 	from a2wf.Inbox i inner join @inst t on i.InstanceId = t.Id
 	where i.Void = 0;

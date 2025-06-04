@@ -75,7 +75,6 @@ create table a2security.Users
 	Memo nvarchar(255) null,
 	ChangePasswordEnabled bit not null constraint DF_Users_ChangePasswordEnabled default(1),
 	RegisterHost nvarchar(255) null,
-	Segment nvarchar(32) null,
 	SetPassword bit,
 	IsApiUser bit constraint DF_UsersIsApiUser default(0),
 	IsExternalLogin bit constraint DF_UsersIsExternalLogin default(0),
@@ -164,7 +163,7 @@ as
 	select Id, UserName, DomainUser, PasswordHash, SecurityStamp, Email, PhoneNumber,
 		LockoutEnabled, AccessFailedCount, LockoutEndDateUtc, TwoFactorEnabled, [Locale],
 		PersonName, Memo, Void, LastLoginDate, LastLoginHost, EmailConfirmed,
-		PhoneNumberConfirmed, RegisterHost, ChangePasswordEnabled, Segment,
+		PhoneNumberConfirmed, RegisterHost, ChangePasswordEnabled,
 		SecurityStamp2, PasswordHash2, SetPassword, IsBlocked, AuthenticatorKey
 	from a2security.Users u
 	where Void = 0 and Id <> 0;

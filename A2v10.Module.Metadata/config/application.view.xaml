@@ -6,7 +6,7 @@
 		</Toolbar>
 		<TabBar Margin="0,0,0,10" Value="{Bind Root.$$Tab}">
 			<TabButton Content="General" ActiveValue=""/>
-			<TabButton Content="Localization" ActiveValue="loc"/>
+			<TabButton Content="Localization" ActiveValue="loc" Render="Hide"/>
 		</TabBar>
 		<Switch Expression="{Bind Root.$$Tab}">
 			<Case Value="">

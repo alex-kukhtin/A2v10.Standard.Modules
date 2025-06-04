@@ -26,8 +26,8 @@ begin
 	if not exists (select * from a2ui.Menu)
 		insert into a2ui.Menu(Id, Parent, [Name], Icon, [Order], [ClassName]) values
 		(N'00000000-0000-0000-0000-000000000000', null, N'Main', null, 0, null),
-		(newid(), N'00000000-0000-0000-0000-000000000000', null, null, 890, N'grow'),
-		(newid(), N'00000000-0000-0000-0000-000000000000', N'@[Settings]', N'gear-outline', 900, null);
+		(N'02393194-2D0C-4651-B7D0-C64A9B6E0A69', N'00000000-0000-0000-0000-000000000000', null, null, 890, N'grow'),
+		(N'9F3B38D6-2344-4BD7-BEFA-47819E0EC2FF', N'00000000-0000-0000-0000-000000000000', N'@[Settings]', N'gear-outline', 900, null);
 end
 go
 ------------------------------------------------

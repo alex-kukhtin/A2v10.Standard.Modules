@@ -1,7 +1,8 @@
 ﻿// workflow/autostart/add.template
 
 const template: Template = {
-	options: {
+	properties: {
+		'TAutoStart.TimezoneOffset'() { return (new Date()).getTimezoneOffset(); }
 	},
 	validators: {
 		'AutoStart.Workflow': "@[Error.Required]"

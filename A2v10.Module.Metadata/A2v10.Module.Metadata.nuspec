@@ -1,7 +1,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
 	<metadata>
 		<id>A2v10.Module.Metadata</id>
-		<version>10.1.1050</version>
+		<version>10.1.1051</version>
 		<authors>Oleksandr Kukthin</authors>
 		<description>A2v10 Platform Application Designer UI</description>
 		<copyright>Copyright © 2025 Oleksandr Kukthin. All rights reserved.</copyright>
@@ -11,13 +11,18 @@
 		<readme>.\README.md</readme>
 		<dependencies>
 			<group targetFramework="net8.0">
-				<dependency id="A2v10.Metadata" version="10.1.8552" />
+				<dependency id="A2v10.Metadata" version="10.1.8553" />
+			</group>
+			<group targetFramework="net9.0">
+				<dependency id="A2v10.Metadata" version="10.1.8553" />
 			</group>
 		</dependencies>
 	</metadata>
 	<files>
 		<file src="bin\Release\net8.0\A2v10.Module.Metadata.dll" target="lib\net8.0" />
 		<file src="bin\Release\net8.0\A2v10.Module.Metadata.pdb" target="lib\net8.0" />
+		<file src="bin\Release\net9.0\A2v10.Module.Metadata.dll" target="lib\net9.0" />
+		<file src="bin\Release\net9.0\A2v10.Module.Metadata.pdb" target="lib\net9.0" />
 		<file src="_sqlScripts\a2v10_platform_meta.sql" target="contentFiles\sql\a2v10_platform_meta.sql" />
 		<file src="..\WebApp\wwwroot\css\meta\formdesigner.min.css" target="contentFiles\css\formdesigner.min.css" />
 		<file src="..\WebApp\wwwroot\css\meta\formdesigner.css" target="contentFiles\css\formdesigner.css" />

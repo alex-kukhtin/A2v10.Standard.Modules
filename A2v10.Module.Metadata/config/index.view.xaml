@@ -5,14 +5,14 @@
 			<Button Icon="Add" Content="@[Create]">
 				<Button.DropDown>
 					<DropDownMenu>
-						<MenuItem Content="Enum" Command="{BindCmdExec addItem, Argument='enm.Enum.enum'}"/>
+						<MenuItem Content="@[Enum]" Command="{BindCmdExec addItem, Argument='enm.Enum.enum'}"/>
 						<MenuItem Content="@[Catalog]" Command="{BindCmdExec addItem, Argument='cat.Catalog.table'}"/>
 						<MenuItem Content="@[Document]" Command="{BindCmdExec addItem, Argument='doc.Document.table'}"/>
 						<MenuItem Content="@[OperationW]" Command="{BindCmdExec addItem, Argument='op.Operation.operation'}"/>
 						<MenuItem Content="@[Journal]" Command="{BindCmdExec addItem, Argument='jrn.Journal.table'}"/>
 						<MenuItem Content="@[Report]" Command="{BindCmdExec addItem, Argument='rep.Report.report'}"/>
 						<Separator />
-						<MenuItem Content="Details" Command="{BindCmdExec addDetails, Argument='details'}"/>
+						<MenuItem Content="@[DetailsW]" Command="{BindCmdExec addDetails, Argument='details'}"/>
 						<Separator />
 						<MenuItem Content="@[MenuSection]" Command="{BindCmdExec addItem, Argument='ui.Menu.interface'}"/>
 					</DropDownMenu>
@@ -21,10 +21,20 @@
 			<Button Icon="Delete"
 				Command="{BindCmd Command=ExecuteSelected, CommandName=deleteItem, Argument={Bind Elems}}"/>
 			<Separator />
-			<Button Icon="Database" Content="Deploy"
+			<Button Icon="Database" Content="@[Deploy]"
 					Command="{BindCmd Open, Url='/$meta/config/deploy/index', Argument=0}"/>
+			<SpanIcon Icon="WarningOutlineYellow" Tip="@[NeedDeploy]" Render="Hide"/>
 			<Separator />
 			<Button Icon="Reload" Command="{BindCmd Reload}"/>
+			<ToolbarAligner />
+			<Button Icon="EllipsisVertical">
+				<Button.DropDown>
+					<DropDownMenu>
+						<MenuItem Content="@[UploadApp]" />
+						<MenuItem Content="@[DownloadApp]" />
+					</DropDownMenu>
+				</Button.DropDown>
+			</Button>
 		</Toolbar>
 		<TreeView Grid.Col="1" Grid.Row="2" Border="True" Background="White"
 				ItemsSource="{Bind Elems}" FolderSelect="True" AutoSelect="FirstItem">

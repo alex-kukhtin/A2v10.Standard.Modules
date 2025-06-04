@@ -1,7 +1,7 @@
 ﻿/*
 Copyright © 2008-2025 Oleksandr Kukhtin
 
-Last updated : 31 may 2025
+Last updated : 04 jun 2025
 module version : 8553
 */
 
@@ -165,9 +165,9 @@ begin
 	set @status = N'ApiKey=' + @ApiKey;
 	set @code = 65; /*fail*/
 
-	declare @user table(Id bigint, Segment nvarchar(255), [Name] nvarchar(255), ClientId nvarchar(255), AllowIP nvarchar(255), Locale nvarchar(32));
-	insert into @user(Id, Segment, [Name], ClientId, AllowIP, Locale)
-	select top(1) u.Id, Segment, [Name]=u.UserName, s.ClientId, s.AllowIP, u.Locale 
+	declare @user table(Id bigint, [Name] nvarchar(255), ClientId nvarchar(255), AllowIP nvarchar(255), Locale nvarchar(32));
+	insert into @user(Id, [Name], ClientId, AllowIP, Locale)
+	select top(1) u.Id, [Name]=u.UserName, s.ClientId, s.AllowIP, u.Locale 
 	from a2security.Users u inner join a2security.ApiUserLogins s on u.Id = s.[User]
 	where u.Void=0 and s.Mode = N'ApiKey' and s.ApiKey=@ApiKey;
 	
@@ -347,9 +347,9 @@ begin
 	declare @newid bigint;
 
 	begin tran;
-		insert into a2security.Users(IsApiUser, UserName, PersonName, Memo, Segment, Locale, SecurityStamp, SecurityStamp2)
+		insert into a2security.Users(IsApiUser, UserName, PersonName, Memo, Locale, SecurityStamp, SecurityStamp2)
 		output inserted.Id into @users(Id)
-		select 1, @Name, @PersonName, @Memo, u.Segment, u.Locale, N'', N''
+		select 1, @Name, @PersonName, @Memo, u.Locale, N'', N''
 		from a2security.Users u where Id = @UserId;
 
 		select top(1) @newid = Id from @users;
@@ -358,7 +358,7 @@ begin
 			(@newid, N'ApiKey', @ApiKey);
 	commit tran;
 
-	select Id, UserName, PersonName, Memo, Segment, Locale from a2security.ViewUsers where Id = @newid;
+	select Id, UserName, PersonName, Memo, Locale from a2security.ViewUsers where Id = @newid;
 end
 go
 ------------------------------------------------
@@ -380,7 +380,7 @@ begin
 	commit tran;
 
 	-- We can't use ViewUsers (Void = 0)
-	select Id, Segment from a2security.Users where Id = @Id;
+	select Id from a2security.Users where Id = @Id;
 end
 go
 ------------------------------------------------
@@ -407,7 +407,7 @@ begin
 	where Id = @Id;
 
 	-- We can't use ViewUsers (Void = 0)
-	select Id, Segment, UserName, Email, PhoneNumber, DomainUser from a2security.Users where Id = @Id;
+	select Id, UserName, Email, PhoneNumber, DomainUser from a2security.Users where Id = @Id;
 
 	commit tran;
 

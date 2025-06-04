@@ -5,6 +5,7 @@
 		"inputFiles": [
 			"_sql/_schemas.sql",
 			"_sql/_migrations.sql",
+			"_sql/_inbox.sql",
 			"catalog/catalog.sql",
 			"instance/instance.sql",
 			"autostart/autostart.sql"

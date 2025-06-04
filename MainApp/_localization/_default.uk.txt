@@ -12,7 +12,10 @@
 @Unit=Одиниця виміру
 @Units=Одиниці виміру
 @UnitShort=Од. вим.
-
+@Stock=Запаси
+@Service=Послуги
+@RowNo=#
+@ShowTrans=Показати проводки
 ; Fields
 @Id=#
 @Number=Номер

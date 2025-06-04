@@ -2,6 +2,7 @@
 @Application=Застосунок
 @General=Загальні
 @Enums=Переліки
+@Enum=Перелік
 @Meta.Columns=Поля
 @Forms=Форми
 @Journal=Журнал
@@ -10,6 +11,7 @@
 @Document=Документ
 @OperationW=Операцію
 @Operation=Операція
+@DetailsW=Табличну частину
 @Operations=Операції
 @Report=Звіт
 @Reports=Звіти
@@ -49,6 +51,10 @@
 @Preview=Перегляд
 @Add=Додати
 @Generate=Згенерувати
+@Deploy=Розгорнути
+@NeedDeploy=Потрібно розгорнути застосунок
+@UploadApp=Завантажити застосунок
+@DownloadApp=Вивантажити застосунок
 ; Errors
 @Error.TypeMismatch=Не співпадають типи
 @Error.SelectJournalFirst=Спочатку оберіть журнал

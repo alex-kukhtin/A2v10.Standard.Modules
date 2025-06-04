@@ -64,46 +64,48 @@
 	<Page.Taskpad>
 		<Taskpad Collapsible="True" Width="24rem" XamlStyle="{StyleResource Empty}">
 			<Grid AutoFlow="Row" Overflow="True" Padding="1rem" AlignItems="Top">
-			<Panel Header="@[WfAdm.Filters]" Style="Transparent" Collapsible="True">
-				<SelectorSimple Label="@[WfAdm.Workflow]"
+				<Panel Header="@[WfAdm.Filters]" Style="Transparent" Collapsible="True">
+					<SelectorSimple Label="@[WfAdm.Workflow]"
 					Value="{Bind Parent.Filter.Workflow}" Url="/$workflow/catalog"
 						ShowClear="True" Highlight="True" Placeholder="@[WfAdm.Workflow.All]"/>
-				<ComboBox Label="@[WfAdm.State]" Value="{Bind Parent.Filter.State}">
-					<ComboBoxItem Content="All States" Value=""/>
-					<ComboBoxItem Content="Init" Value="Init"/>
-					<ComboBoxItem Content="Idle" Value="Idle"/>
-					<ComboBoxItem Content="Complete" Value="Complete"/>
-					<ComboBoxItem Content="Faulted" Value="Faulted"/>
-				</ComboBox>
-			</Panel>
-			<Slot Scope="{Bind Instances.$selected}">
-				<Panel Header="Inbox" If="{Bind Inboxes.Count}" Style="Transparent" Collapsible="True">
-					<Repeater ItemsSource="{Bind Inboxes}">
-						<StackPanel Gap=".5rem">
-							<Static Label="Id" Value="{Bind Id}" CssClass="input-code"/>
-							<Static Label="Bookmark" Value="{Bind Bookmark}"/>
-							<Static Label="Text" Value="{Bind Text}"/>
-							<Static Label="Url" Value="{Bind Url}"/>
-							<TextBox Label="Answer" Value="{Bind Root.Answer.Answer}"/>
-							<Button Style="Primary" Content="Resume" 
+					<ComboBox Label="@[WfAdm.State]" Value="{Bind Parent.Filter.State}">
+						<ComboBoxItem Content="All States" Value=""/>
+						<ComboBoxItem Content="Init" Value="Init"/>
+						<ComboBoxItem Content="Idle" Value="Idle"/>
+						<ComboBoxItem Content="Complete" Value="Complete"/>
+						<ComboBoxItem Content="Faulted" Value="Faulted"/>
+					</ComboBox>
+				</Panel>
+				<Slot Scope="{Bind Instances.$selected}">
+					<Panel Header="Inbox" If="{Bind Inboxes.Count}" Style="Transparent" Collapsible="True">
+						<Repeater ItemsSource="{Bind Inboxes}">
+							<StackPanel Gap=".5rem">
+								<Static Label="Id" Value="{Bind Id}" CssClass="input-code"/>
+								<Static Label="Bookmark" Value="{Bind Bookmark}"/>
+								<Static Label="User" Value="{Bind User}" />
+								<Static Label="Role" Value="{Bind Role}" />
+								<Static Label="Text" Value="{Bind Text}"/>
+								<Static Label="Url" Value="{Bind Url}"/>
+								<TextBox Label="Answer" Value="{Bind Root.Answer.Answer}"/>
+								<Button Style="Primary" Content="Resume" 
 									Command="{BindCmdExec resume, Argument={Bind}}"
 									Width="12rem"/>
-							<Line />
-						</StackPanel>
-					</Repeater>
-				</Panel>
-				<Panel Header="Bookmarks" If="{Bind Bookmarks.Count}" Style="Transparent" Collapsible="True">
-					<Repeater ItemsSource="{Bind Bookmarks}">
-						<StackPanel Gap=".5rem">
-							<Static Label="Bookmark" Value="{Bind Bookmark}"/>
-							<Button Style="Primary" Content="Resume" 
+								<Line />
+							</StackPanel>
+						</Repeater>
+					</Panel>
+					<Panel Header="Bookmarks" If="{Bind Bookmarks.Count}" Style="Transparent" Collapsible="True">
+						<Repeater ItemsSource="{Bind Bookmarks}">
+							<StackPanel Gap=".5rem">
+								<Static Label="Bookmark" Value="{Bind Bookmark}"/>
+								<Button Style="Primary" Content="Resume" 
 									Command="{BindCmdExec resumeBookmark, Argument={Bind}}"
 									Width="12rem"/>
-							<Line />
-						</StackPanel>
-					</Repeater>
-				</Panel>
-			</Slot>
+								<Line />
+							</StackPanel>
+						</Repeater>
+					</Panel>
+				</Slot>
 			</Grid>
 		</Taskpad>
 	</Page.Taskpad>

@@ -3,8 +3,8 @@ function singular(text) {
 	if (!text) return '';
 	if (text.endsWith('ies'))
 		return text.substring(0, text.length - 3) + 'y';
-	else if (text.endsWith('es'))
-		return text.substring(0, text.length - 2);
+	else if (text.endsWith('ses'))
+		return text.substring(0, text.length - 2); // remove es
 	else if (text.endsWith('s'))
 		return text.substring(0, text.length - 1);
 	return text;
@@ -84,13 +84,20 @@ export default template;
 
 
 function formsArray() {
-	return [
-		{ Name: 'Index', Value: 'index' },
-		{ Name: 'Edit Element', Value: 'edit' },
-		{ Name: 'Edit Folder', Value: 'editfolder' },
-		{ Name: 'Browse Element', Value: 'browse' },
-		{ Name: 'Browse Folder',  Value: 'browsefolder' }
-	];
+	if (this.Table.UseFolders)
+		return [
+			{ Name: 'Index', Value: 'index' },
+			{ Name: 'Edit Element', Value: 'edit' },
+			{ Name: 'Edit Folder', Value: 'editfolder' },
+			{ Name: 'Browse Element', Value: 'browse' },
+			{ Name: 'Browse Folder',  Value: 'browsefolder' }
+		];
+	else
+		return [
+			{ Name: 'Index', Value: 'index' },
+			{ Name: 'Edit Element', Value: 'edit' },
+			{ Name: 'Browse Element', Value: 'browse' }
+		];
 }
 
 function columnAdd(arr, elem) {
