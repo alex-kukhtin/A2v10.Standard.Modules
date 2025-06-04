@@ -11,11 +11,14 @@
 		<readme>.\README.md</readme>
 		<dependencies>
 			<group targetFramework="net8.0" />
+			<group targetFramework="net9.0" />
 		</dependencies>
 	</metadata>
 	<files>
 		<file src="bin\Release\net8.0\A2v10.Module.Admin.dll" target="lib\net8.0" />
 		<file src="bin\Release\net8.0\A2v10.Module.Admin.pdb" target="lib\net8.0" />
+		<file src="bin\Release\net9.0\A2v10.Module.Admin.dll" target="lib\net9.0" />
+		<file src="bin\Release\net9.0\A2v10.Module.Admin.pdb" target="lib\net9.0" />
 		<file src="_sqlScripts\a2v10_admin_module.sql" target="contentFiles\sql\a2v10_admin_module.sql" />
 		<file src="A2v10.Module.Admin.targets" target="build\A2v10.Module.Admin.targets" />
 		<file src=".\README.md" target="\" />
