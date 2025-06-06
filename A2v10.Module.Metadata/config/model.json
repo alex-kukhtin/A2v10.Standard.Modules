@@ -90,6 +90,20 @@
 		"updateUi": {
 			"type": "clr",
 			"clrType": "clr-type:A2v10.Metadata.UpdateUiHandler;assembly=A2v10.Metadata"
+		},
+		"resetForm": {
+			"type": "sql",
+			"procedure": "Config.ResetForm"
+		}
+	},
+	"files": {
+		"export": {
+			"type": "clr",
+			"clrType": "clr-type:A2v10.Metadata.ExportApplicationHandler;assembly=A2v10.Metadata"
+		},
+		"import": {
+			"type": "clr",
+			"clrType": "clr-type:A2v10.Metadata.ImportApplicationHandler;assembly=A2v10.Metadata"
 		}
 	}
 }

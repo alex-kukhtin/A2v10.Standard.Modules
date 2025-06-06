@@ -30,8 +30,8 @@
 			<Button Icon="EllipsisVertical">
 				<Button.DropDown>
 					<DropDownMenu>
-						<MenuItem Content="@[UploadApp]" />
-						<MenuItem Content="@[DownloadApp]" />
+						<MenuItem Content="@[UploadApp]" Command="{BindCmdExec importApp}"/>
+						<MenuItem Content="@[DownloadApp]" Command="{BindCmdExec exportApp}"/>
 					</DropDownMenu>
 				</Button.DropDown>
 			</Button>

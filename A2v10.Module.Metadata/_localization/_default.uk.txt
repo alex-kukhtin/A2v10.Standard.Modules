@@ -60,4 +60,5 @@
 @Error.SelectJournalFirst=Спочатку оберіть журнал
 ; Confirm
 @Confirm.Sure=Ви впевнені?
+@Meta.Confirm.ResetForm=Скинути форму? Всі зміни будуть втрачені.
 

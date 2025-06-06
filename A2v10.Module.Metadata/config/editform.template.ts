@@ -1,9 +1,17 @@
 ﻿
+let designer;
+
 const template: Template = {
 	properties: {
-		'TRoot.$Host': host
+		'TRoot.$Host': host,
+		'TRoot.$$CanDeleteItem': Boolean
 	},
 	commands: {
+		deleteItem: {
+			exec: deleteItem,
+			canExec: canDeleteItem,	
+		},
+		resetForm
 	},
 	events: {
 		'Model.load': modelLoad
@@ -15,27 +23,29 @@ export default template;
 function modelLoad() {
 }
 
-async function execCommand(this: IController, cmd: string) {
-	switch (cmd) {
-		case 'reload': this.$requery(); break;
-		case 'save': await this.$save(); break;
-		default: alert(cmd);
-	}
+function deleteItem() {
+	if (!designer) return;
+	designer.deleteItem();
 }
 
+function canDeleteItem() {
+	return this.$$CanDeleteItem;
+}	
+
 function host() {
-	const ctrl = this.$ctrl;
-	const root = this;
+	const that = this;
 	return {
-		exec(cmd) {
-			execCommand.call(ctrl, cmd);
+		init(elem) {
+			designer = elem;
 		},
-		setDirty() {
-			root.$setDirty(true);
-		},
-		isDirty() {
-			if (!ctrl) return false;
-			return ctrl.$isDirty;
+		canDeleteItemChanged(val) {
+			that.$$CanDeleteItem = val;
 		}
 	};
+}
+
+async function resetForm() {
+	const ctrl: IController = this.$ctrl;
+	await ctrl.$invoke('resetForm', { Id: this.Table.Id, Key: this.Form.Key }, '/$meta/config');
+	ctrl.$requery();
 }

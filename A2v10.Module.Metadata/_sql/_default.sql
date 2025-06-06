@@ -1109,3 +1109,19 @@ begin
 	order by [Schema];
 end
 go
+------------------------------------------------
+create or alter procedure a2meta.[Config.ResetForm] 
+@UserId bigint,
+@Id uniqueidentifier,
+@Key nvarchar(32)
+as
+begin
+	set nocount on;
+	set transaction isolation level read committed;
+
+	delete from a2meta.Forms where [Table] = @Id and [Key] = @Key;
+end
+go
+
+select * from a2meta.Forms
+

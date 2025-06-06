@@ -1,11 +1,19 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    let designer;
     const template = {
         properties: {
-            'TRoot.$Host': host
+            'TRoot.$Host': host,
+            'TRoot.$$CanDeleteItem': Boolean
         },
-        commands: {},
+        commands: {
+            deleteItem: {
+                exec: deleteItem,
+                canExec: canDeleteItem,
+            },
+            resetForm
+        },
         events: {
             'Model.load': modelLoad
         }
@@ -13,32 +21,28 @@ define(["require", "exports"], function (require, exports) {
     exports.default = template;
     function modelLoad() {
     }
-    async function execCommand(cmd) {
-        switch (cmd) {
-            case 'reload':
-                this.$requery();
-                break;
-            case 'save':
-                await this.$save();
-                break;
-            default: alert(cmd);
-        }
+    function deleteItem() {
+        if (!designer)
+            return;
+        designer.deleteItem();
+    }
+    function canDeleteItem() {
+        return this.$$CanDeleteItem;
     }
     function host() {
-        const ctrl = this.$ctrl;
-        const root = this;
+        const that = this;
         return {
-            exec(cmd) {
-                execCommand.call(ctrl, cmd);
+            init(elem) {
+                designer = elem;
             },
-            setDirty() {
-                root.$setDirty(true);
-            },
-            isDirty() {
-                if (!ctrl)
-                    return false;
-                return ctrl.$isDirty;
+            canDeleteItemChanged(val) {
+                that.$$CanDeleteItem = val;
             }
         };
+    }
+    async function resetForm() {
+        const ctrl = this.$ctrl;
+        await ctrl.$invoke('resetForm', { Id: this.Table.Id, Key: this.Form.Key }, '/$meta/config');
+        ctrl.$requery();
     }
 });

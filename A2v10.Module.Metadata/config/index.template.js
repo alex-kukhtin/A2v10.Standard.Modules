@@ -17,7 +17,9 @@ define(["require", "exports"], function (require, exports) {
                 exec: deleteItem,
                 canExec(arg) { return !arg.IsFolder && arg.Kind != 'app'; },
                 confirm: 'Are you sure?'
-            }
+            },
+            exportApp,
+            importApp
         },
         events: {
             'ch.table.saved': tableSaved
@@ -112,5 +114,16 @@ define(["require", "exports"], function (require, exports) {
         const ctrl = this.$ctrl;
         await ctrl.$invoke('deleteItem', { Id: item.Id }, BASE_URL);
         item.$remove();
+    }
+    async function exportApp() {
+        const ctrl = this.$ctrl;
+        await ctrl.$file('/$meta/config/export', null, { action: "download" });
+        ctrl.$toast('Application exported successfully', "success");
+    }
+    async function importApp() {
+        const ctrl = this.$ctrl;
+        await ctrl.$upload('/$meta/config/import', 'application/zip');
+        await ctrl.$msg('Application imported successfully', "success");
+        ctrl.$requery();
     }
 });
