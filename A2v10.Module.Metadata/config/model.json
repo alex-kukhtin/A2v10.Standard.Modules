@@ -92,8 +92,8 @@
 			"clrType": "clr-type:A2v10.Metadata.UpdateUiHandler;assembly=A2v10.Metadata"
 		},
 		"resetForm": {
-			"type": "sql",
-			"procedure": "Config.ResetForm"
+			"type": "clr",
+			"clrType": "clr-type:A2v10.Metadata.ResetFormHandler;assembly=A2v10.Metadata"
 		}
 	},
 	"files": {

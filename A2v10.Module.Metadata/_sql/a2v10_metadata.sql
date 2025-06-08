@@ -355,10 +355,11 @@ begin
 
 	select @tableId = Id from a2meta.[Catalog] r 
 	where r.[Schema] = @Schema collate SQL_Latin1_General_CP1_CI_AI
-		and r.[Name] = @Table collate SQL_Latin1_General_CP1_CI_AI
+		--and r.[Name] = @Table collate SQL_Latin1_General_CP1_CI_AI
 		and r.Kind in (N'folder') and IsFolder = 1;
 
-	select [Table!TTable!Object] = null, [!!Id] = c.Id, c.[Schema], c.[Name], c.ItemName, c.ItemsName,
+	select [Table!TTable!Object] = null, [!!Id] = c.Id, c.[Schema], 
+		[Name] = N'Operations' /*!!!*/, c.ItemName, c.ItemsName,
 		[Columns!TColumn!Array] = null
 	from a2meta.[Catalog] c 
 	where c.Id = @tableId;
@@ -434,6 +435,21 @@ begin
 	from a2meta.EnumItems ei
 	where ei.Enum = @tableId
 	order by ei.[Order];
+end
+go
+------------------------------------------------
+create or alter procedure a2meta.[Table.Form.Reset] 
+@Id uniqueidentifier,
+@Key nvarchar(32)
+as
+begin
+	set nocount on;
+	set transaction isolation level read committed;
+
+	delete from a2meta.Forms where [Table] = @Id and [Key] = @Key;
+
+	select [Table!TTable!Object] = null, [Id!!Id] = Id, [Schema], [Name]
+	from a2meta.[Catalog] where Id = @Id;
 end
 go
 ------------------------------------------------
@@ -865,7 +881,7 @@ begin
 		t.[MaxLength] = s.[MaxLength],
 		t.Reference = s.Reference,
 		t.[Order] = s.[Order],
-		t.[Role] = s.[Order],
+		t.[Role] = s.[Role],
 		t.Source = s.Source,
 		t.Computed = s.Computed,
 		t.[Required] = s.[Required],

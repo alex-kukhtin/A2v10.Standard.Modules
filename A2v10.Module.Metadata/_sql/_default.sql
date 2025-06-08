@@ -649,8 +649,10 @@ begin
 	select [Tables!TRefTable!Array] = null, [Id!!Id] = Id, [Name!!Name] = a2meta.fn_TableFullName([Schema], [Name]),
 		[Schema] = a2meta.fn_Schema2Text([Schema]), TableName = [Name]
 	from a2meta.[Catalog] where 
-		(@DataType = N'reference' and Kind in (N'table', N'details')
-			or @DataType = N'enum' and Kind in (N'enum'))
+		(
+			@DataType = N'reference' and Kind in (N'table', N'details')			
+			or @DataType = N'enum' and Kind in (N'enum')
+		)
 		and (@Schema is null or [Schema] = @Schema)
 		and (@fr is null or [Name] like @fr)
 	order by [Name];		
@@ -1109,19 +1111,5 @@ begin
 	order by [Schema];
 end
 go
-------------------------------------------------
-create or alter procedure a2meta.[Config.ResetForm] 
-@UserId bigint,
-@Id uniqueidentifier,
-@Key nvarchar(32)
-as
-begin
-	set nocount on;
-	set transaction isolation level read committed;
 
-	delete from a2meta.Forms where [Table] = @Id and [Key] = @Key;
-end
-go
-
-select * from a2meta.Forms
 
