@@ -712,8 +712,8 @@ go
 /*
 Copyright � 2025 Oleksandr Kukhtin
 
-Last updated : 31 may 2025
-module version : 8553
+Last updated : 09 jun 2025
+module version : 8554
 */
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.SCHEMATA where SCHEMA_NAME=N'a2meta')
@@ -1066,10 +1066,11 @@ begin
 
 	select @tableId = Id from a2meta.[Catalog] r 
 	where r.[Schema] = @Schema collate SQL_Latin1_General_CP1_CI_AI
-		and r.[Name] = @Table collate SQL_Latin1_General_CP1_CI_AI
+		--and r.[Name] = @Table collate SQL_Latin1_General_CP1_CI_AI
 		and r.Kind in (N'folder') and IsFolder = 1;
 
-	select [Table!TTable!Object] = null, [!!Id] = c.Id, c.[Schema], c.[Name], c.ItemName, c.ItemsName,
+	select [Table!TTable!Object] = null, [!!Id] = c.Id, c.[Schema], 
+		[Name] = N'Operations' /*!!!*/, c.ItemName, c.ItemsName,
 		[Columns!TColumn!Array] = null
 	from a2meta.[Catalog] c 
 	where c.Id = @tableId;
@@ -1145,6 +1146,21 @@ begin
 	from a2meta.EnumItems ei
 	where ei.Enum = @tableId
 	order by ei.[Order];
+end
+go
+------------------------------------------------
+create or alter procedure a2meta.[Table.Form.Reset] 
+@Id uniqueidentifier,
+@Key nvarchar(32)
+as
+begin
+	set nocount on;
+	set transaction isolation level read committed;
+
+	delete from a2meta.Forms where [Table] = @Id and [Key] = @Key;
+
+	select [Table!TTable!Object] = null, [Id!!Id] = Id, [Schema], [Name]
+	from a2meta.[Catalog] where Id = @Id;
 end
 go
 ------------------------------------------------
@@ -1421,101 +1437,414 @@ create type a2meta.[Enum.TableType] as table
 );
 go
 ------------------------------------------------
+create or alter procedure a2meta.[Config.Export]
+@UserId bigint
+as
+begin
+	set nocount on;
+	set transaction isolation level read uncommitted;
+
+	-- FOR DOWNLOAD/UPLOAD
+	select [Catalog!TCatalog!Array] = null, [Id!!Id] = Id, FParent = Parent, ParentTable, IsFolder, 
+		[Order], [Schema], [Name], Kind, ItemsName, ItemName, TypeName, EditWith, Source,
+		ItemsLabel, ItemLabel, UseFolders, FolderMode, [Type]
+	from a2meta.[Catalog];
+
+	select [Application!TApplication!Array] = null, [Id!!Id] = Id, [Name], [Title], IdDataType, 
+		Memo, [Version]
+	from a2meta.[Application];
+
+	select [Columns!TColumn!Array] = null, [Id!!Id] = Id, [Table], [Name], [Label], DataType,
+		[MaxLength], Reference, [Order], [Role], Source, Computed, [Required], Total, [Unique]
+	from a2meta.[Columns];
+
+	select [DetailsKinds!TDetailKind!Array] = null, [Id!!Id] = Id, Details, [Order],
+		[Name], [Label]
+	from a2meta.DetailsKinds;
+
+	select [Apply!TApply!Array] = null, [Id!!Id] = Id, [Table], Journal, [Order], Details, InOut,
+		Storno, Kind
+	from a2meta.Apply;
+
+	select [ApplyMapping!TApplyMap!Array] = null, [Id!!Id] = Id, Apply, [Target], Source
+	from a2meta.ApplyMapping;
+
+	select [EnumItems!TEnumItem!Array] = null, [Id!!Id] = Id, Enum, [Name], [Label],
+		[Order], Inactive
+	from a2meta.EnumItems;
+
+	select [Forms!TForm!Array] = null, [Table], [Key], [Json]
+	from a2meta.Forms;
+
+	select [MenuItems!TMenuItem!Array] = null, [Id!!Id] = Id, Interface, FParent = Parent, [Name], 
+		[Url], CreateName, CreateUrl, [Order], Source
+	from a2meta.MenuItems;
+
+	select [ReportItems!TRepItem!Array] = null, [Id!!Id] = Id, Report, [Column], Kind, [Order], [Label], 
+		Func, Checked
+	from a2meta.ReportItems;
+end
+go
+------------------------------------------------
+drop procedure if exists a2meta.[Config.Export.Metadata];
+drop procedure if exists a2meta.[Config.Export.Update];
+drop type if exists a2meta.[Config.Export.Catalog.TableType];
+drop type if exists a2meta.[Config.Export.Application.TableType];
+drop type if exists a2meta.[Config.Export.DetailsKind.TableType];
+drop type if exists a2meta.[Config.Export.Column.TableType];
+drop type if exists a2meta.[Config.Export.Apply.TableType];
+drop type if exists a2meta.[Config.Export.ApplyMap.TableType];
+drop type if exists a2meta.[Config.Export.EnumItem.TableType];
+drop type if exists a2meta.[Config.Export.Form.TableType];
+drop type if exists a2meta.[Config.Export.MenuItem.TableType];
+drop type if exists a2meta.[Config.Export.RepItem.TableType];
+go
+------------------------------------------------
+create type a2meta.[Config.Export.Catalog.TableType] as table 
+(
+	[Id] uniqueidentifier,
+	[FParent] uniqueidentifier,
+	[ParentTable] uniqueidentifier,
+	IsFolder bit,
+	[Order] int,
+	[Schema] nvarchar(32), 
+	[Name] nvarchar(128),
+	[Kind] nvarchar(32),
+	ItemsName nvarchar(128),
+	ItemName nvarchar(128),
+	TypeName nvarchar(128),
+	EditWith nvarchar(16),
+	Source nvarchar(255),
+	ItemsLabel nvarchar(255),
+	ItemLabel nvarchar(128),
+	UseFolders bit,
+	FolderMode nvarchar(16),
+	[Type] nvarchar(32)
+);
+go
+------------------------------------------------
+create type a2meta.[Config.Export.Column.TableType] as table 
+(
+	[Id] uniqueidentifier,
+	[Table] uniqueidentifier,
+	[Name] nvarchar(128),
+	[Label] nvarchar(255),
+	[DataType] nvarchar(32),
+	[MaxLength] int,
+	Reference uniqueidentifier,
+	[Order] int,
+	[Role] int,
+	Source nvarchar(255),
+	Computed nvarchar(255),
+	[Required] bit,
+	[Total] bit,
+	[Unique] bit
+)
+go
+------------------------------------------------
+create type a2meta.[Config.Export.Application.TableType] as table 
+(
+	[Id] uniqueidentifier,
+	[Name] nvarchar(255),
+	[Title] nvarchar(255),
+	IdDataType nvarchar(32),
+	Memo nvarchar(255),
+	[Version] int not null
+);
+go
+------------------------------------------------
+create type a2meta.[Config.Export.DetailsKind.TableType] as table
+(
+	[Id] uniqueidentifier,
+	[Details] uniqueidentifier,
+	[Order] int,
+	[Name] nvarchar(32),
+	[Label] nvarchar(255)
+);
+go
+------------------------------------------------
+create type a2meta.[Config.Export.Apply.TableType] as table
+(
+	[Id] uniqueidentifier,
+	[Table] uniqueidentifier,
+	[Journal] uniqueidentifier,
+	[Order] int,
+	Details uniqueidentifier,
+	[InOut] smallint,
+	Storno bit,
+	Kind uniqueidentifier
+);
+go
+------------------------------------------------
+create type a2meta.[Config.Export.ApplyMap.TableType] as table 
+(
+	[Id] uniqueidentifier,
+	[Apply] uniqueidentifier,
+	[Target] uniqueidentifier,
+	[Source] uniqueidentifier
+);
+go
+------------------------------------------------
+create type a2meta.[Config.Export.EnumItem.TableType] as table
+(
+	[Id] uniqueidentifier,
+	[Enum] uniqueidentifier,
+	[Name] nvarchar(16),
+	[Label] nvarchar(255),
+	[Order] int,
+	[Inactive] bit
+);
+go
+------------------------------------------------
+create type a2meta.[Config.Export.Form.TableType] as table
+(
+	[Table] uniqueidentifier,
+	[Key] nvarchar(64),
+	[Json] nvarchar(max)
+);
+go
+------------------------------------------------
+create type a2meta.[Config.Export.MenuItem.TableType] as table
+(
+	[Id] uniqueidentifier,
+	[Interface] uniqueidentifier,
+	[FParent] uniqueidentifier,
+	[Name] nvarchar(255),
+	[Url] nvarchar(255),
+	[CreateName] nvarchar(255),
+	[CreateUrl] nvarchar(255),
+	[Order] int,
+	Source nvarchar(255)
+);
+go
+------------------------------------------------
+create type a2meta.[Config.Export.RepItem.TableType] as table
+(
+	[Id] uniqueidentifier,
+	[Report] uniqueidentifier,
+	[Column] uniqueidentifier,
+	[Kind] nchar(1),
+	[Order] int,
+	[Label] nvarchar(255),
+	Func nvarchar(32), 
+	[Checked] bit
+);
+go
+------------------------------------------------
+create or alter procedure a2meta.[Config.Export.Metadata]
+as
+begin
+	set nocount on;
+	set transaction isolation level read uncommitted;
+
+	declare @Catalog a2meta.[Config.Export.Catalog.TableType];
+	declare @Columns a2meta.[Config.Export.Column.TableType];
+	declare @Application a2meta.[Config.Export.Application.TableType];
+	declare @DetailsKinds a2meta.[Config.Export.DetailsKind.TableType];
+	declare @Apply a2meta.[Config.Export.Apply.TableType];
+	declare @ApplyMapping a2meta.[Config.Export.ApplyMap.TableType];
+	declare @EnumItems a2meta.[Config.Export.EnumItem.TableType];
+	declare @Forms a2meta.[Config.Export.Form.TableType];
+	declare @MenuItems a2meta.[Config.Export.MenuItem.TableType];
+	declare @ReportItems a2meta.[Config.Export.RepItem.TableType];
+
+	select [Catalog!Catalog!Metadata]= null, * from @Catalog;
+	select [Application!Application!Metadata]= null, * from @Application;
+	select [Columns!Columns!Metadata]= null, * from @Columns;
+	select [DetailsKinds!DetailsKinds!Metadata] = null, * from @DetailsKinds;
+	select [Apply!Apply!Metadata] = null, * from @Apply;
+	select [ApplyMapping!ApplyMapping!Metadata] = null, * from @ApplyMapping;
+	select [EnumItems!EnumItems!Metadata] = null, * from @EnumItems;
+	select [Forms!Forms!Metadata] = null, * from @Forms;
+	select [MenuItems!MenuItems!Metadata] = null, * from @MenuItems;
+	select [ReportItems!ReportItems!Metadata] = null, * from @ReportItems;
+end
+go
+------------------------------------------------
+create or alter procedure a2meta.[Config.Export.Update]
+@UserId bigint,
+@Catalog a2meta.[Config.Export.Catalog.TableType] readonly,
+@Application a2meta.[Config.Export.Application.TableType] readonly,
+@Columns a2meta.[Config.Export.Column.TableType] readonly,
+@DetailsKinds a2meta.[Config.Export.DetailsKind.TableType] readonly,
+@Apply a2meta.[Config.Export.Apply.TableType] readonly,
+@ApplyMapping a2meta.[Config.Export.ApplyMap.TableType] readonly,
+@EnumItems a2meta.[Config.Export.EnumItem.TableType] readonly,
+@Forms a2meta.[Config.Export.Form.TableType] readonly,
+@MenuItems a2meta.[Config.Export.MenuItem.TableType] readonly,
+@ReportItems a2meta.[Config.Export.RepItem.TableType] readonly
+as
+begin
+	set nocount on;
+	set transaction isolation level read committed;
+	set xact_abort on;
+
+	declare @currentRootId uniqueidentifier, @newRootId uniqueidentifier;
+	select @currentRootId = Id from a2meta.[Catalog] where Kind = N'root';
+	select @newRootId = Id from @Catalog where Kind = N'root';
+
+	if @currentRootId <> @newRootId
+	begin
+		-- REPLACE OLD APPLICATION
+		delete from a2meta.Columns;
+		delete from a2meta.[Application];
+		delete from a2meta.[Catalog];
+	end
+
+	merge a2meta.[Catalog] as t
+	using @Catalog as s
+	on t.Id = s.Id
+	when matched then update set
+		t.[Order] = s.[Order],
+		t.[Schema] = s.[Schema],
+		t.[Name] = s.[Name],
+		t.[Kind] = s.[Kind],
+		t.ItemsName = s.ItemsName,
+		t.ItemName = s.ItemName,
+		t.TypeName = s.TypeName,
+		t.EditWith = s.EditWith,
+		t.Source = s.Source,
+		t.ItemsLabel = s.ItemsLabel,
+		t.ItemLabel = s.ItemLabel,
+		t.UseFolders = s.UseFolders,
+		t.FolderMode = s.FolderMode,
+		t.[Type] = s.[Type]
+	when not matched then insert
+	([Id], [Parent], [ParentTable], IsFolder, [Order], [Schema], [Name], [Kind], ItemsName, ItemName, TypeName,
+		EditWith, Source, ItemsLabel, ItemLabel, UseFolders, FolderMode, [Type]) values
+	([Id], [FParent], [ParentTable], isnull(IsFolder, 0), [Order], [Schema], [Name], [Kind], ItemsName, ItemName, TypeName,
+		EditWith, Source, ItemsLabel, ItemLabel, UseFolders, FolderMode, [Type]);
+
+	merge a2meta.[Application] as t
+	using @Application as s
+	on t.Id = s.Id
+	when matched then update set
+		t.[Name] = s.[Name],
+		t.[Title] = s.[Title],
+		t.IdDataType = s.IdDataType,
+		t.Memo = s.Memo,
+		t.[Version] = s.[Version]
+	when not matched then insert
+	([Id], [Name], [Title], IdDataType, Memo, [Version]) values
+	([Id], [Name], [Title], IdDataType, Memo, [Version]);
+
+	merge a2meta.Columns as t
+	using @Columns as s
+	on t.Id = s.Id
+	when matched then update set
+		t.[Name] = s.[Name],
+		t.[Label] = s.[Label],
+		t.[DataType] = s.[DataType],
+		t.[MaxLength] = s.[MaxLength],
+		t.Reference = s.Reference,
+		t.[Order] = s.[Order],
+		t.[Role] = isnull(s.[Role], 0),
+		t.Source = s.Source,
+		t.Computed = s.Computed,
+		t.[Required] = s.[Required],
+		t.[Total] = s.[Total],
+		t.[Unique] = s.[Unique]
+	when not matched then insert 
+	([Id], [Table], [Name], [Label], [DataType], [MaxLength], Reference, [Order],
+		[Role], Source, Computed, [Required], [Total], [Unique]) values
+	([Id], [Table], [Name], [Label], [DataType], [MaxLength], Reference, [Order],
+		isnull([Role], 0), Source, Computed, [Required], [Total], [Unique]);
+
+	merge a2meta.DetailsKinds as t
+	using @DetailsKinds as s
+	on t.Id = s.Id
+	when matched then update set
+		t.[Details] = s.[Details],
+		t.[Order] = s.[Order],
+		t.[Name] = s.[Name],
+		t.[Label] = s.[Label]
+	when not matched then insert
+		([Id], [Details], [Order], [Name], [Label]) values
+		([Id], [Details], [Order], [Name], [Label]);
+
+	merge a2meta.Apply as t
+	using @Apply as s
+	on t.Id = s.Id
+	when matched then update set
+		t.[Table] = s.[Table],
+		t.[Journal] = s.[Journal],
+		t.[Order] = s.[Order],
+		t.[Details] = s.[Details],
+		t.InOut = s.InOut,
+		t.Storno = isnull(s.Storno, 0),
+		t.Kind = s.Kind
+	when not matched then insert
+		([Id], [Table], Journal, [Order], [Details], InOut, Storno, Kind) values
+		([Id], [Table], Journal, [Order], [Details], InOut, isnull(Storno, 0), Kind);
+
+	merge a2meta.ApplyMapping as t
+	using @ApplyMapping as s
+	on t.Id = s.Id
+	when matched then update set
+		t.[Apply] = s.[Apply],
+		t.[Target] = s.[Target],
+		t.[Source] = s.[Source]
+	when not matched then insert
+		([Id], [Apply], [Target], [Source]) values
+		([Id], [Apply], [Target], [Source]);
+
+	merge a2meta.EnumItems as t
+	using @EnumItems as s
+	on t.Id = s.Id
+	when matched then update set
+		t.[Enum] = s.[Enum],
+		t.[Name] = s.[Name],
+		t.[Label] = s.[Label],
+		t.[Order] = s.[Order],
+		t.Inactive = s.Inactive
+	when not matched then insert
+		([Id], [Enum], [Name], [Label], [Order], Inactive) values
+		([Id], [Enum], [Name], [Label], [Order], Inactive);
+
+	merge a2meta.Forms as t
+	using @Forms as s
+	on t.[Table] = s.[Table] and t.[Key] = s.[Key]
+	when matched then update set
+		t.[Json] = s.[Json]
+	when not matched then insert
+		([Table], [Key], [Json]) values
+		([Table], [Key], [Json]);
+
+	merge a2meta.MenuItems as t
+	using @MenuItems as s
+	on t.Id = s.Id
+	when matched then update set
+		t.[Interface] = s.[Interface],
+		t.[Parent] = s.[FParent],
+		t.[Name] = s.[Name],
+		t.[Url] = s.[Url],
+		t.CreateName = s.CreateName,
+		t.CreateUrl = s.CreateUrl,
+		t.[Order] = s.[Order],
+		t.[Source] = s.[Source]
+	when not matched then insert
+		([Id], [Interface], Parent, [Name], [Url], CreateName, CreateUrl, [Order], [Source]) values
+		([Id], [Interface], FParent, [Name], [Url], CreateName, CreateUrl, [Order], [Source]);
+
+	merge a2meta.ReportItems as t
+	using @ReportItems as s
+	on t.Id = s.Id
+	when matched then update set
+		t.[Report] = s.[Report],
+		t.[Column] = s.[Column],
+		t.[Kind] = s.[Kind],
+		t.[Order] = s.[Order],
+		t.[Label] = s.[Label],
+		t.Func = s.Func,
+		t.Checked = s.Checked
+	when not matched then insert
+		([Id], [Report], [Column], [Kind], [Order], [Label], [Func], [Checked]) values
+		([Id], [Report], [Column], [Kind], [Order], [Label], [Func], [Checked]);
+end
+go
+------------------------------------------------
 exec a2meta.[Catalog.Init];
 go
-
-/*
-with T as (
-	select fk.[name], [index] = fkc.constraint_column_id,
-		[schema] = schema_name(fk.[schema_id]),
-		[table] = object_name(fk.parent_object_id),
-		[column] = c1.[name],
-		refschema = schema_name(rt.[schema_id]),
-		reftable = object_name(fk.referenced_object_id),
-		refcolumn = c2.[name]
-	from  sys.foreign_keys fk inner join sys.foreign_key_columns fkc on fkc.constraint_object_id = fk.[object_id]
-		inner join sys.tables rt on fk.referenced_object_id = rt.[object_id]
-		inner join sys.columns c1 on fkc.parent_column_id = c1.column_id and fkc.parent_object_id = c1.[object_id]
-		inner join sys.columns c2 on fkc.referenced_column_id = c2.column_id and fkc.referenced_object_id = c2.[object_id]
-	where schema_name(fk.[schema_id]) = 'doc' and object_name(fk.parent_object_id) = 'Contracts'
-)
-select [name], columns = string_agg([column], N','), 
-refschema, reftable, refcolumns = string_agg(refcolumn, N',')
-from T
-group by [name], refschema, reftable;
-*/
-
-
---exec a2meta.[Config.Load] 99
-
-/*
-declare @Schema nvarchar(255) = N'doc';
-declare @Table nvarchar(255) = N'ClientOrders';
-
-exec a2meta.[Table.Schema] @Schema, @Table;
---exec a2meta.[Config.Load] 99 @Schema, @Table;
-*/
-
---select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where CONSTRAINT_NAME = N'FK_Columns_Parent_Catalog'
-
-/*
-	select [!TColumn!Array] = null, [Name!!Id] = COLUMN_NAME, DataType = DATA_TYPE, 
-		[MaxLength] = CHARACTER_MAXIMUM_LENGTH,
-		[Reference!TReference!Object] = null,
-		[!TTable.Columns!ParentId] = @tableId
-	from INFORMATION_SCHEMA.COLUMNS where 
-		TABLE_SCHEMA = @Schema collate SQL_Latin1_General_CP1_CI_AI 
-		and TABLE_NAME = @Table collate SQL_Latin1_General_CP1_CI_AI 
-	order by ORDINAL_POSITION;
-*/
-
-/*
-	with T as (
-		select [Name] = fk.[name], [index] = fkc.constraint_column_id,
-			[schema] = schema_name(fk.[schema_id]),
-			[table] = object_name(fk.parent_object_id),
-			[Column] = c1.[name],
-			RefSchema = schema_name(rt.[schema_id]),
-			RefTable = object_name(fk.referenced_object_id),
-			RefColumn = c2.[name]
-		from  sys.foreign_keys fk inner join sys.foreign_key_columns fkc on fkc.constraint_object_id = fk.[object_id]
-			inner join sys.tables rt on fk.referenced_object_id = rt.[object_id]
-			inner join sys.columns c1 on fkc.parent_column_id = c1.column_id and fkc.parent_object_id = c1.[object_id]
-			inner join sys.columns c2 on fkc.referenced_column_id = c2.column_id and fkc.referenced_object_id = c2.[object_id]
-		where schema_name(fk.[schema_id]) = @Schema collate SQL_Latin1_General_CP1_CI_AI
-		and object_name(fk.parent_object_id) = @Table collate SQL_Latin1_General_CP1_CI_AI 
-	)
-	select [!TReference!Object] = null, RefSchema, RefTable, RefColumn,
-		[!TColumn.Reference!ParentId] = [Column]
-	from T;
-
-	-- exetending properties
-	-- https://www.mssqltips.com/sqlservertip/5384/working-with-sql-server-extended-properties/
-*/
-
-
-/*
-drop table if exists a2meta.[Application]
-drop table if exists a2meta.[ApplyMapping]
-drop table if exists a2meta.[Apply]
-drop table if exists a2meta.[DefaultColumns]
-drop table if exists a2meta.[DetailsKinds];
-drop table if exists a2meta.[Forms]
-drop table if exists a2meta.[Columns]
-drop table if exists a2meta.[Items]
-drop table if exists a2meta.[Catalog]
-
-select * from a2meta.DefaultColumns;
-
-select * from a2meta.ODataTables;
-select * from a2meta.ODataColumns order by [Name];
-*/
-
-
-;
-
-
-
 
 
 /*
@@ -2327,8 +2656,10 @@ begin
 	select [Tables!TRefTable!Array] = null, [Id!!Id] = Id, [Name!!Name] = a2meta.fn_TableFullName([Schema], [Name]),
 		[Schema] = a2meta.fn_Schema2Text([Schema]), TableName = [Name]
 	from a2meta.[Catalog] where 
-		(@DataType = N'reference' and Kind in (N'table', N'details')
-			or @DataType = N'enum' and Kind in (N'enum'))
+		(
+			@DataType = N'reference' and Kind in (N'table', N'details')			
+			or @DataType = N'enum' and Kind in (N'enum')
+		)
 		and (@Schema is null or [Schema] = @Schema)
 		and (@fr is null or [Name] like @fr)
 	order by [Name];		
@@ -2787,4 +3118,6 @@ begin
 	order by [Schema];
 end
 go
+
+
 

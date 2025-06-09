@@ -103,8 +103,10 @@ function formsArray() {
 function columnAdd(arr, elem) {
 	if (!elem.Name)
 		elem.Name = `Field${arr.length}`;
-	if (!elem.DataType)
-		elem.DataType = "int";
+	if (!elem.DataType) {
+		elem.DataType = "string";
+		elem.MaxLength = 50;
+	}
 }
 
 function dataTypeChange(el, dt) {

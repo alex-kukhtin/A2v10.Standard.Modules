@@ -76,8 +76,10 @@ drop table if exists a2meta.[Apply]
 drop table if exists a2meta.[DefaultColumns]
 drop table if exists a2meta.[DetailsKinds];
 drop table if exists a2meta.[Forms]
+drop table if exists a2meta.ReportItems
+drop table if exists a2meta.EnumItems
+drop table if exists a2meta.MenuItems
 drop table if exists a2meta.[Columns]
-drop table if exists a2meta.[Items]
 drop table if exists a2meta.[Catalog]
 
 select * from a2meta.DefaultColumns;
