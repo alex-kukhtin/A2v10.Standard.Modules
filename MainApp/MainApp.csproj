@@ -19,8 +19,4 @@
 		</PackageReference>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="_sqlscripts\" />
-	</ItemGroup>
-
 </Project>
