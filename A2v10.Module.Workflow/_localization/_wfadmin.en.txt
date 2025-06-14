@@ -1,29 +1,34 @@
 ﻿; Commands
 @WfAdm.Run=Run
 @WfAdm.Publish=Publish	
+@WfAdm.Props=Properties
 ; Menu
 @WfAdm.BProcesses=Processes BPMN 2.0
 @WfAdm.Autostart=Autostart	
 @WfAdm.Instances=Instances
 @WfAdm.Instance=Instance
 @WfAdm.Catalog=Catalog
-@WfAdm.Model=Model
 @WfAdm.Events=Events
 @WfAdm.Log=Log
 @WfAdm.Variables=Variables
 @WfAdm.Filters=Filters
 ; Columns	
 @WfAdm.Id=Id
+@WfAdm.Key=Key
 @WfAdm.Workflow=Workflow
 @WfAdm.Created=Created
 @WfAdm.Started=Started
 @WfAdm.Modified=Modified	
 @WfAdm.State=State
 @WfAdm.StartAt=Start At
+@WfAdm.Model=Model
 ; Placeholders
 @WfAdm.Workflow.All=All Workflows
 ; Text
 @WfAdm.Upload=Upload workflow
 @WfAdm.Download=Download workflow
 @WfAdm.Published=Published
+@WfAdm.Arguments=Аргументи
+; Errors
+@WfAdm.Error.WorkflowUsed=Unable to delete the process. It's used.
 

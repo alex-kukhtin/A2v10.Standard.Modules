@@ -17,8 +17,7 @@ const template: Template = {
 			exec: unlock,
 			canExec: (inst) => !!inst.Lock
 		},
-		start,
-		startWorkflow
+		start
 	}
 }
 
@@ -65,28 +64,6 @@ async function start() {
 	const ctrl: IController = this.$ctrl;
 	var wf = await ctrl.$showDialog('/$workflow/catalog/browse');
 	if (!wf) return;
-	this.StartWorkflow = wf;
-
-	if (wf.Arguments.length) {
-		ctrl.$inlineOpen('args');
-		return;
-	}
-	startWorkflow.call(this, wf);
-}
-
-async function startWorkflow(wf) {
-	const ctrl: IController = this.$ctrl;
-	let args = wf.Arguments.reduce((acc, arg) => {
-		acc[arg.Name] = arg.Value;
-		return acc;
-	}, {});
-	let res = await ctrl.$invoke('start', { WorkflowId: wf.Id, Args: args }, '/$workflow/catalog');
-	ctrl.$inlineClose('args');
-	let resMsg = `InstanceId: ${res.InstanceId}, Result: ${JSON.stringify(res.Result)}`;
-	ctrl.$msg(resMsg, "Result", CommonStyle.info);
-
-	await ctrl.$reload();
-	var f = this.Instances.$find(i => i.Id === res.InstanceId);
-	if (f)
-		f.$select();
+	let res = await ctrl.$showDialog('/$workflow/catalog/run', wf);
+	ctrl.$reload();
 }

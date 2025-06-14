@@ -1,0 +1,24 @@
+﻿<Dialog xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
+		Title="@[WfAdm.Run]" Width="30rem"
+		SaveEvent="g.workflow.props">
+	<Dialog.Buttons>
+		<Button Content="@[WfAdm.Run]" Style="Primary"
+				Command="{BindCmdExec runProcess}" />
+		<Button Content="@[Cancel]" Command="{BindCmd Close}" />
+	</Dialog.Buttons>
+	<StackPanel Gap=".5rem" Padding="1rem">
+		<Static Label="@[Name]" Value="{Bind Workflow.Name}"/>
+		<TextBox Label="@[WfAdm.Model]" Value="{Bind Workflow.CorrelationId}"
+				 Width="15rem"/>
+		<Header Bold="False">@[WfAdm.Arguments]</Header>
+		<Table ItemsSource="{Bind Workflow.Arguments}" Columns="Auto,100%,Auto" Width="100%"
+				CellSpacing="Medium" StickyHeaders="True"
+				Height="15rem">
+			<TableRow>
+				<TableCell Content="{Bind Name}"/>
+				<TextBox Value="{Bind Value}" Multiline="True"/>
+				<TableCell Content="{Bind Type}"/>
+			</TableRow>
+		</Table>
+	</StackPanel>
+</Dialog>

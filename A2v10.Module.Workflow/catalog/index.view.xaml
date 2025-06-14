@@ -1,6 +1,5 @@
 ﻿<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
-	  Title="@[WfAdm.Catalog]"
-	  Components="{Components '../_components/workflow.components'}">
+	  Title="@[WfAdm.Catalog]">
 	<Page.CollectionView>
 		<CollectionView ItemsSource="{Bind Workflows}" RunAt="ServerUrl">
 
@@ -9,12 +8,14 @@
 	<Grid Rows="Auto,1*,Auto" Height="100%">
 		<Toolbar>
 			<Button Icon="Add" Content="@[Create]" Command="{BindCmd Open, Argument=0, Url='/$workflow/catalog/edit'}"/>
-			<Button Icon="Edit" Command="{BindCmd OpenSelected, Argument={Bind Parent.ItemsSource}, Url='/$workflow/catalog/edit'}"/>
+			<Button Icon="Edit" Tip="@[WfAdm.Props]" Command="{BindCmd Dialog, Action=ShowSelected, Argument={Bind Parent.ItemsSource}, Url='/$workflow/catalog/props'}"/>
+			<Button Icon="ArrowOpen" Content="@[Edit]" Command="{BindCmd OpenSelected, Argument={Bind Parent.ItemsSource}, Url='/$workflow/catalog/edit'}"/>
 			<Button Icon="Delete" Command="{BindCmd ExecuteSelected, CommandName=delete, Argument={Bind Parent.ItemsSource}}" />
 			<Separator />
 			<Button Icon="Upgrade" Content="@[WfAdm.Publish]" 
 				Command="{BindCmd ExecuteSelected, CommandName=publish, Argument={Bind Workflows}}"/>
-			<Button Icon="PlayOutline" Content="@[WfAdm.Run]" Command="{BindCmd ExecuteSelected, CommandName=start, Argument={Bind Workflows}}"/>
+			<Button Icon="PlayOutline" Content="@[WfAdm.Run]" 
+					Command="{BindCmd ExecuteSelected, CommandName=start, Argument={Bind Workflows}}"/>
 			<Separator />
 			<Button Icon="Upload" Tip="@[WfAdm.Upload]" 
 					Command="{BindCmd Execute, CommandName=upload}"/>
@@ -28,6 +29,7 @@
 				DoubleClick="{BindCmd OpenSelected, Argument={Bind Parent.ItemsSource}, Url='/$workflow/catalog/edit'}">
 			<DataGridColumn Header="@[WfAdm.Id]" Content="{Bind Id}" Wrap="NoWrap" Fit="True" 
 							CssClass="monospace"/>
+			<DataGridColumn Content="{Bind Key}" Header="@[WfAdm.Key]" Wrap="NoWrap" Fit="True"/>
 			<DataGridColumn Header="@[WfAdm.Workflow]">
 				<Popover Text="{Bind Name}" ShowOnHover="True" Background="White"
 						 Placement="RightBottom" Underline="Disable">
@@ -47,5 +49,4 @@
 			<DataGridColumn Header="@[Memo]" Content="{Bind Memo}" LineClamp="2" />
 		</DataGrid>
 	</Grid>
-	<Component Name="ProcessArguments" Scope="{Bind Workflows.$selected}" />
 </Page>

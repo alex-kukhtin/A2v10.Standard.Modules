@@ -1,6 +1,5 @@
 ﻿<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
-	  Title="@[WfAdm.Instances]"
-	  Components="{Components '../_components/workflow.components'}">
+	  Title="@[WfAdm.Instances]">
 	<Page.CollectionView>
 		<CollectionView ItemsSource="{Bind Instances}" RunAt="ServerUrl">
 			<CollectionView.Filter>
@@ -60,7 +59,6 @@
 		</DataGrid>
 		<Pager Source="{Bind Parent.Pager}"/>
 	</Grid>
-	<Component Name="ProcessArguments" Scope="{Bind StartWorkflow}" />
 	<Page.Taskpad>
 		<Taskpad Collapsible="True" Width="24rem" XamlStyle="{StyleResource Empty}">
 			<Grid AutoFlow="Row" Overflow="True" Padding="1rem" AlignItems="Top">

@@ -11,10 +11,10 @@
 		<readme>.\README.md</readme>
 		<dependencies>
 			<group targetFramework="net8.0">
-				<dependency id="A2v10.Metadata" version="10.1.8554" />
+				<dependency id="A2v10.Metadata" version="10.1.8556" />
 			</group>
 			<group targetFramework="net9.0">
-				<dependency id="A2v10.Metadata" version="10.1.8554" />
+				<dependency id="A2v10.Metadata" version="10.1.8556" />
 			</group>
 		</dependencies>
 	</metadata>

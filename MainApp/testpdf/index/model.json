@@ -1,0 +1,18 @@
+﻿{
+	"$schema": "../../@schemas/model-json-schema.json#",
+	"schema": "cat",
+	"model": "TestPDF",
+	"actions": {
+		"index": {
+			"template": "testpdf.template",
+			"view": "testpdf.view"
+		}
+	},
+	"reports": {
+		"testpdf": {
+			"type": "pdf",
+			"model": "TestPDF.Model",
+			"report": "testpdf.report"
+		}
+	}
+}

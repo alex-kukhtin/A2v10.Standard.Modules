@@ -1,8 +1,8 @@
 ﻿/*
 Copyright © 2020-2025 Oleksandr Kukhtin
 
-Last updated : 04 jun 2025
-module version : 8229
+Last updated : 14 jun 2025
+module version : 8233
 */
 
 /* WF TABLES
@@ -44,7 +44,7 @@ go
 begin
 	set nocount on;
 	declare @version int;
-	set @version = 8229;
+	set @version = 8233;
 	if exists(select * from a2wf.Versions where Module = N'main')
 		update a2wf.Versions set [Version] = @version where Module = N'main';
 	else
@@ -77,6 +77,7 @@ create table a2wf.[Catalog]
 	[Name] nvarchar(255),
 	[Memo] nvarchar(255),
 	[Svg] nvarchar(max),
+	[Key] nvarchar(32),
 	constraint PK_Catalog primary key clustered (Id)
 );
 go
@@ -87,6 +88,10 @@ begin
 	alter table a2wf.[Catalog] add [Memo] nvarchar(255);
 	alter table a2wf.[Catalog] add [Svg] nvarchar(max);
 end
+go
+------------------------------------------------
+if not exists(select * from INFORMATION_SCHEMA.COLUMNS where TABLE_SCHEMA = N'a2wf' and TABLE_NAME = N'Catalog' and COLUMN_NAME = N'Key')
+	alter table a2wf.[Catalog] add [Key] nvarchar(32);
 go
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA=N'a2wf' and TABLE_NAME=N'Workflows')
@@ -290,7 +295,8 @@ create or alter procedure a2wf.[Catalog.Save]
 @UserId bigint = null,
 @Id nvarchar(255),
 @Body nvarchar(max),
-@Format nvarchar(32)
+@Format nvarchar(32),
+@Key nvarchar(32) = null
 as
 begin
 	set nocount on;
@@ -303,8 +309,8 @@ begin
 		select @savedHash = hashbytes(N'SHA2_256', Body) from a2wf.[Catalog] where Id=@Id;
 		select @newHash = hashbytes(N'SHA2_256', @Body);
 		if @savedHash is null
-			insert into a2wf.[Catalog] (Id, [Format], Body, [Hash]) 
-			values (@Id, @Format, @Body, @newHash)
+			insert into a2wf.[Catalog] (Id, [Format], Body, [Hash], [Key]) 
+			values (@Id, @Format, @Body, @newHash, @Key)
 		else if @savedHash <> @newHash
 			update a2wf.[Catalog] set Body = @Body, [Hash]=@newHash where Id=@Id;
 	commit tran;
@@ -865,6 +871,19 @@ begin
 end
 go
 ------------------------------------------------
+create or alter procedure a2wf.[Workflow.GetIdByKey]
+@Key nvarchar(32)
+as
+begin
+	set nocount on;
+	set transaction isolation level read uncommitted
+
+	select top(1) w.Id 
+	from a2wf.[Catalog] c inner join a2wf.Workflows w on c.Id = w.Id
+	where c.[Key] = @Key;
+end
+go
+------------------------------------------------
 create or alter procedure a2wf.[Version.Get]
 as
 begin
@@ -930,8 +949,9 @@ create table a2wf.[Inbox]
 	Activity nvarchar(255),
 	DateCreated datetime not null
 		constraint DF_Inbox_DateCreated default(getutcdate()),
-	DateRemoved datetime null
-	Void bit,
+	DateRemoved datetime null,
+	Void bit not null
+		constraint DF_Inbox_Void default(0),
 	-- other fields
 	constraint PK_Inbox primary key clustered(Id, InstanceId)
 );
@@ -942,7 +962,7 @@ create or alter procedure a2wf.[Instance.Inbox.Create]
 @Id uniqueidentifier,
 @InstanceId uniqueidentifier,
 @Bookmark nvarchar(255),
-@Activity nvarchar(255),
+@Activity nvarchar(255)
 -- ...other parametets
 as
 begin

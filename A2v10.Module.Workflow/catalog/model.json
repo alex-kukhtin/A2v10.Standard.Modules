@@ -17,6 +17,15 @@
 		"browse": {
 			"index": true,
 			"view": "browse.dialog"
+		},
+		"props": {
+			"model": "Catalog.Prop",
+			"view": "prop.dialog"
+		},
+		"run": {
+			"model": "Catalog.Run",
+			"template": "run.template",
+			"view": "run.dialog"
 		}
 	},
 	"commands": {

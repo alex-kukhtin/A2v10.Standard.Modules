@@ -1,0 +1,36 @@
+﻿<Page xmlns="clr-namespace:A2v10.Xaml.Report;assembly=A2v10.Xaml.Report"
+	  Orientation="Portrait" FontFamily="Calibri" FontSize="10">
+    <Page.Title>Договір/акт наданих послуг</Page.Title>
+    <Column>
+        <Text Style="Title" Align="Center">
+            ДОГОВІР/АКТ НАДАНИХ ПОСЛУГ №
+			<Span Bold="True">22233</Span>
+        </Text>
+        <Text Align="Center">
+            про надання юридичних послуг</Text>
+        <Table ItemsSource="{Bind Agents}" Columns="3cm,5cm,1fr" Style="Details">
+            <Table.Header>
+                <TableRow >
+                    <TableCell ColSpan="3" Content="Контрагенти" Align="Center" Padding="5"/>
+                </TableRow>
+            </Table.Header>
+            <TableRow>
+				<TableCell Content="{Bind Id}" Align="Right"/>
+				<TableCell Content="{Bind Name}" />
+				<TableCell Content="{Bind Memo}" />
+			</TableRow>
+        </Table>
+    </Column>
+	<Page.Footer>
+		<Column>
+			<Line Thickness="1pt" Color="#ff0000"/>
+			<Text Align="Center" Italic="True" Color="#0077FF" Margin="5mm">
+				<Span Content="$(PageNumber)"/>
+				/
+				<Span Content="$(TotalPages)"/>
+			</Text>
+		</Column>
+	</Page.Footer>
+</Page>
+
+	

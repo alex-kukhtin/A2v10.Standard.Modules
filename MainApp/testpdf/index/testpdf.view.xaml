@@ -1,0 +1,22 @@
+﻿<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
+		Title="Test PDF">
+	<Page.Toolbar>
+		<Toolbar>
+			<Button Icon="Print" Content="Print"
+				Command="{BindCmd Report, Report=testpdf, Argument={Bind TestObject.Id}, Url='/testpdf/index', Print=True}"/>
+			<Button Icon="ArrowOpen" Content="Show"
+				Command="{BindCmd Report, Report=testpdf, Argument={Bind TestObject.Id}, Url='/testpdf/index'}"/>
+			<Button Icon="Download" Content="Download"
+				Command="{BindCmd Report, Report=testpdf, Argument={Bind TestObject.Id}, Url='/testpdf/index', Export=True}"/>
+            <Button Icon="Reload"
+				Command="{BindCmd Requery}"/>
+        </Toolbar>
+	</Page.Toolbar>
+	<Grid AlignItems="Stretch" Height="100%" Padding="0">
+		<PdfViewer Source="{Bind Root.$ReportUrl}" />
+	</Grid>
+	<Page.Taskpad>
+		<Taskpad Collapsible="False">
+		</Taskpad>
+	</Page.Taskpad>
+</Page>

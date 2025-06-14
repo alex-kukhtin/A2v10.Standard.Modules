@@ -57,4 +57,10 @@
 		<None Include="README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Update="catalog\run.dialog.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Content>
+	</ItemGroup>
+
 </Project>

@@ -11,7 +11,8 @@ define(["require", "exports"], function (require, exports) {
             'TWorkflow.$PopupStyle'() { return `zoom: ${this.Zoom};`; },
         },
         events: {
-            'g.workflow.saved': handleSaved
+            'g.workflow.saved': handleSaved,
+            'g.workflow.props': handleProps
         },
         commands: {
             publish: {
@@ -22,7 +23,6 @@ define(["require", "exports"], function (require, exports) {
                 exec: start,
                 canExec: a => !a.NeedPublish
             },
-            startWorkflow,
             download,
             upload,
             delete: {
@@ -40,6 +40,15 @@ define(["require", "exports"], function (require, exports) {
         else
             this.Workflows.$prepend(wf);
     }
+    function handleProps(root) {
+        let wf = root.Workflow;
+        let f = this.Workflows.$find(w => w.Id === wf.Id);
+        if (!f)
+            return;
+        f.Name = wf.Name;
+        f.Memo = wf.Memo;
+        f.Key = wf.Key;
+    }
     async function publish(wf) {
         const ctrl = this.$ctrl;
         let res = await ctrl.$invoke('publish', { WorkflowId: wf.Id }, '/$workflow/catalog');
@@ -48,22 +57,9 @@ define(["require", "exports"], function (require, exports) {
     }
     async function start(wf) {
         const ctrl = this.$ctrl;
-        if (wf.Arguments.length) {
-            ctrl.$inlineOpen('args');
+        if (wf.NeedPublish)
             return;
-        }
-        startWorkflow.call(this, wf);
-    }
-    async function startWorkflow(wf) {
-        const ctrl = this.$ctrl;
-        let args = wf.Arguments.reduce((acc, arg) => {
-            acc[arg.Name] = arg.Value;
-            return acc;
-        }, {});
-        let res = await ctrl.$invoke('start', { WorkflowId: wf.Id, Args: args }, '/$workflow/catalog');
-        ctrl.$inlineClose('args');
-        let resMsg = `InstanceId: ${res.InstanceId}, Result: ${JSON.stringify(res.Result)}`;
-        ctrl.$msg(resMsg, "Result", "info");
+        ctrl.$showDialog('/$workflow/catalog/run', wf);
     }
     async function download(wf) {
         const ctrl = this.$ctrl;

@@ -9,7 +9,8 @@ const template: Template = {
 		'TWorkflow.$PopupStyle'() { return `zoom: ${this.Zoom};`; },
 	},
 	events: {
-		'g.workflow.saved': handleSaved
+		'g.workflow.saved': handleSaved,
+		'g.workflow.props': handleProps
 	},
 	commands: {
 		publish: {
@@ -20,7 +21,6 @@ const template: Template = {
 			exec: start,
 			canExec: a => !a.NeedPublish
 		},
-		startWorkflow,
 		download,
 		upload,
 		delete: {
@@ -42,6 +42,15 @@ function handleSaved(wf) {
 		this.Workflows.$prepend(wf);
 }
 
+function handleProps(root) {
+	let wf = root.Workflow;
+	let f = this.Workflows.$find(w => w.Id === wf.Id);
+	if (!f) return;
+	f.Name = wf.Name;
+	f.Memo = wf.Memo;
+	f.Key = wf.Key;
+}
+
 async function publish(wf) {
 	const ctrl: IController = this.$ctrl;
 	let res = await ctrl.$invoke('publish', { WorkflowId: wf.Id }, '/$workflow/catalog');
@@ -51,23 +60,8 @@ async function publish(wf) {
 
 async function start(wf) {
 	const ctrl: IController = this.$ctrl;
-	if (wf.Arguments.length) {
-		ctrl.$inlineOpen('args');
-		return;
-	}
-	startWorkflow.call(this, wf);
-}
-
-async function startWorkflow(wf) {
-	const ctrl: IController = this.$ctrl;
-	let args = wf.Arguments.reduce((acc, arg) => {
-		acc[arg.Name] = arg.Value;
-		return acc;
-	}, {});
-	let res = await ctrl.$invoke('start', { WorkflowId: wf.Id, Args: args }, '/$workflow/catalog');
-	ctrl.$inlineClose('args');
-	let resMsg = `InstanceId: ${res.InstanceId}, Result: ${JSON.stringify(res.Result)}`;
-	ctrl.$msg(resMsg, "Result", CommonStyle.info);
+	if (wf.NeedPublish) return;
+	ctrl.$showDialog('/$workflow/catalog/run', wf);
 }
 
 async function download(wf) {
@@ -92,3 +86,4 @@ async function deleteWorkflow(wf) {
 	await ctrl.$invoke('delete', { Id: wf.Id }, '/$workflow/catalog');
 	wf.$remove();
 }
+
