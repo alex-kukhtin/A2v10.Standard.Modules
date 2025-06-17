@@ -1,18 +1,4 @@
-﻿/* _sqlscripts/a2v10_admin_module.sql */
-
--- ADMIN SCHEMAS
-------------------------------------------------
-if not exists(select * from INFORMATION_SCHEMA.SCHEMATA where SCHEMA_NAME=N'adm')
-	exec sp_executesql N'create schema adm authorization dbo';
-go
-
-grant execute on schema::adm to public;
-go
-
-
-
-
--- USER
+﻿-- USER
 ------------------------------------------------
 create or alter procedure adm.[UserRole.Index]
 @UserId bigint
@@ -196,5 +182,4 @@ begin
 	update a2security.Users set Void = 1 where Id = @Id;
 end
 go
-
 

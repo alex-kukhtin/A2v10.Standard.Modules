@@ -1,0 +1,32 @@
+﻿{
+	"$schema": "../../@schemas/model-json-schema.json#",
+	"schema": "adm",
+	"model": "User",
+	"actions": {
+		"index": {
+			"index": true,
+			"template": "index.template",
+			"view": "index.view"
+		}
+	},
+	"dialogs": {
+		"edit": {
+			"template": "edit.template",
+			"view": "edit.dialog"
+		},
+		"invite": {
+			"template": "invite.template",
+			"view": "invite.dialog"
+		}
+	},
+	"commands": {
+		"inviteUser": {
+			"type": "clr",
+			"clrType": "clr-type:A2v10.Identity.UI.InviteUserHandler;assembly=A2v10.Identity.UI"
+		},
+		"deleteUser": {
+			"type": "sql",
+			"procedure": "User.Delete"
+		}
+	}
+}

@@ -1,0 +1,55 @@
+﻿<Partial xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml">
+	<CollectionView RunAt="Server" ItemsSource="{Bind Users}">
+		<CollectionView.Filter>
+			<FilterDescription>
+				<FilterItem Property="Fragment"/>
+				<FilterItem Property="Activity"/>
+			</FilterDescription>
+		</CollectionView.Filter>
+		<Grid Rows="Auto,1*" Padding="0" Height="100%">
+			<Toolbar Grid.Row="1">
+				<Button Icon="Plus" Content="@[Adm.Invite]"
+					Command="{BindCmd Execute, CommandName=inviteUser, Argument={Bind Users}}"/>
+				<Button Icon="Edit"
+					Command="{BindCmd Dialog, Action=ShowSelected, Argument={Bind Users}, 
+					Url='/$admin/userrole/user/edit'}"/>
+				<Button Icon="Delete" Command="{BindCmd Command=ExecuteSelected, CommandName=deleteUser, Argument={Bind Users}, Confirm='@[Adm.Confirm.Delete.User]'}"/>
+				<Separator />
+				<Button Icon="Reload" Command="{BindCmd Reload}"/>
+				<Separator />
+				<ToolbarAligner />
+				<ComboBox Value="{Bind Parent.Filter.Activity}" Width="10rem" Render="Hide">
+					<ComboBoxItem Content="Active Users" Value="A"/>
+					<ComboBoxItem Content="Blocked Users" Value="B"/>
+					<ComboBoxItem Content="All Users" Value="L"/>
+				</ComboBox>
+				<TextBox Placeholder="@[Search]" Value="{Bind Parent.Filter.Fragment}" Width="20rem"
+					 ShowClear="True" ShowSearch="True" />
+			</Toolbar>
+			<DataGrid Grid.Row="2" MarkerStyle="Row" Mark="{Bind $Mark}"
+					ItemsSource="{Bind Parent.ItemsSource}" FixedHeader="True" Sort="True"
+					DoubleClick="{BindCmd Dialog, Action=ShowSelected, Argument={Bind Users}, Url='/$admin/userrole/user/edit'}">
+				<DataGridColumn Header="#" Content="{Bind Id}" Role="Id"/>
+				<DataGridColumn Fit="True">
+					<SpanIcon If="{Bind IsBlocked}" Icon="Ban"/>
+				</DataGridColumn>
+				<DataGridColumn Header="@[Adm.LoginText]" Content="{Bind UserName}" Fit="True" Wrap="NoWrap"/>
+				<DataGridColumn Header="@[Adm.PersonName]" Content="{Bind PersonName}"/>
+				<DataGridColumn Header="@[Phone]" Wrap="NoWrap" Fit="True">
+					<Span Content="{Bind PhoneNumber}" />
+				</DataGridColumn>
+				<DataGridColumn Header="@[Adm.Created]" Content="{Bind DateCreated, DataType=DateTime}" Role="Date"/>
+				<DataGridColumn Header="@[Adm.LastLoginDate]" Content="{Bind LastLoginDate, DataType=DateTime}" Role="Date"/>
+				<DataGridColumn Header="@[Memo]" Content="{Bind Memo}" MaxChars="50"/>
+				<DataGridColumn Fit="True" Wrap="NoWrap">
+					<CommandBar Visibility="Hover">
+						<Button Icon="Edit" Command="{BindCmd Dialog, Action=Show, Argument={Bind}, Url='/$admin/userrole/user/edit'}"/>
+						<Button Icon="Delete" 
+							Command="{BindCmd Execute, CommandName=deleteUser, Argument={Bind}, Confirm='@[Adm.Confirm.Delete.User]'}"/>
+					</CommandBar>
+				</DataGridColumn>
+			</DataGrid>
+			<Pager Source="{Bind Parent.Pager}"></Pager>
+		</Grid>
+	</CollectionView>
+</Partial>

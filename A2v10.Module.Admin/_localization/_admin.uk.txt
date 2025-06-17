@@ -1,0 +1,17 @@
+﻿; Labels
+@Adm.Administrator=Адміністратор
+@Adm.UsersAndRoles=Користувачі та ролі
+@Adm.PersonName=Ім'я
+@Adm.LoginText=Логін
+@Adm.LastLoginDate=Останній вхід
+@Adm.Created=Створений
+@Adm.Invite=Запросити
+; Errors
+@Adm.Error.Email=Неправильний е-mail
+; Confirm
+@Adm.Confirm.Delete.User=Видалити користувача?
+
+
+
+
+

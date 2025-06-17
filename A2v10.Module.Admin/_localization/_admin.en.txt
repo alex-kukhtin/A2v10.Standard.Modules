@@ -1,0 +1,13 @@
+﻿; Labels
+@Adm.Administrator=Administrator
+@Adm.UsersAndRoles=Users & Roles
+@Adm.PersonName=Person Name
+@Adm.LoginText=Login
+@Adm.LastLoginDate=Last Login Date
+@Adm.Created=Created
+@Adm.Invite=Invite
+; Errors
+@Adm.Error.Email=Invalid e-mail
+; Confirm
+@Adm.Confirm.Delete.User=Are you sure you want to delete the user?
+
