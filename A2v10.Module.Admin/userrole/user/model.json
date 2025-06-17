@@ -17,12 +17,20 @@
 		"invite": {
 			"template": "invite.template",
 			"view": "invite.dialog"
+		},
+		"create": {
+			"template": "create.template",
+			"view": "create.dialog"
 		}
 	},
 	"commands": {
 		"inviteUser": {
 			"type": "clr",
 			"clrType": "clr-type:A2v10.Identity.UI.InviteUserHandler;assembly=A2v10.Identity.UI"
+		},
+		"createUser": {
+			"type": "clr",
+			"clrType": "clr-type:A2v10.Identity.UI.CreateUserHandler;assembly=A2v10.Identity.UI"
 		},
 		"deleteUser": {
 			"type": "sql",

@@ -103,7 +103,8 @@ begin
 	set transaction isolation level read uncommitted;
 
 	select [User!TUser!Object] = null, [Id!!Id] = u.Id, u.UserName, u.PersonName, u.PhoneNumber, 
-		u.Email,  u.Memo, u.EmailConfirmed, IsBlocked, [Roles!TRole!Array] = null
+		u.Email,  u.Memo, u.EmailConfirmed, IsBlocked, [Password] = cast(null as nvarchar(255)),
+		[Roles!TRole!Array] = null
 	from a2security.Users u where u.Id = @Id and IsApiUser = 0;
 
 	/*
@@ -179,7 +180,9 @@ begin
 	set nocount on;
 	set transaction isolation level read committed;
 
-	update a2security.Users set Void = 1 where Id = @Id;
+	update a2security.Users set Void = 1, UserName = UserName + N'_' +  cast(newid() as nvarchar(50)) 
+		where Id = @Id;
 end
 go
+
 

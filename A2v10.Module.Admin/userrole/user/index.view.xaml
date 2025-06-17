@@ -8,8 +8,8 @@
 		</CollectionView.Filter>
 		<Grid Rows="Auto,1*" Padding="0" Height="100%">
 			<Toolbar Grid.Row="1">
-				<Button Icon="Plus" Content="@[Adm.Invite]"
-					Command="{BindCmd Execute, CommandName=inviteUser, Argument={Bind Users}}"/>
+				<Button Icon="Plus" Content="@[Create]"
+					Command="{BindCmd Execute, CommandName=createUser, Argument={Bind Users}}"/>
 				<Button Icon="Edit"
 					Command="{BindCmd Dialog, Action=ShowSelected, Argument={Bind Users}, 
 					Url='/$admin/userrole/user/edit'}"/>
@@ -30,10 +30,11 @@
 					ItemsSource="{Bind Parent.ItemsSource}" FixedHeader="True" Sort="True"
 					DoubleClick="{BindCmd Dialog, Action=ShowSelected, Argument={Bind Users}, Url='/$admin/userrole/user/edit'}">
 				<DataGridColumn Header="#" Content="{Bind Id}" Role="Id"/>
-				<DataGridColumn Fit="True">
-					<SpanIcon If="{Bind IsBlocked}" Icon="Ban"/>
+				<DataGridColumn Fit="True" Wrap="NoWrap">
+					<SpanIcon Icon="WarningOutlineYellow" If="{Bind !EmailConfirmed}"/>
 				</DataGridColumn>
-				<DataGridColumn Header="@[Adm.LoginText]" Content="{Bind UserName}" Fit="True" Wrap="NoWrap"/>
+				<DataGridColumn Header="@[Adm.LoginText]" Content="{Bind UserName}" Fit="True" Wrap="NoWrap">
+				</DataGridColumn>
 				<DataGridColumn Header="@[Adm.PersonName]" Content="{Bind PersonName}"/>
 				<DataGridColumn Header="@[Phone]" Wrap="NoWrap" Fit="True">
 					<Span Content="{Bind PhoneNumber}" />

@@ -4,15 +4,16 @@
 		<Button If="{Bind User.IsBlocked}" Content="Unban User" Style="Green" Render="Hide"/>
 		<Button If="{Bind !User.IsBlocked}" Content="Ban User" Style="Red" Render="Hide"/>
 		<ToolbarAligner />
-		<Button Style="Primary" Content="@[SaveAndClose]" 
-				Command="{BindCmd SaveAndClose, ValidRequired=True}"/>
+		<Button Style="Primary" Content="@[Create]" 
+				Command="{BindCmdExec create, ValidRequired=True}"/>
 		<Button Content="@[Cancel]" Command="{BindCmd Close}"/>
 	</Dialog.Buttons>
 	<Grid>
-		<TextBox Label="@[Adm.LoginText]" Value="{Bind User.UserName}" Disabled="True"
-				 TabIndex="-1"/>
-		<TextBox Label="@[Adm.PersonName]" Value="{Bind User.PersonName}" TabIndex="1"/>
-		<TextBox Label="@[Phone]" Value="{Bind User.PhoneNumber}" Width="15rem"/>
+		<TextBox Label="@[Adm.LoginText]" Value="{Bind User.UserName}" TabIndex="1"/>
+		<TextBox Label="@[Adm.PersonName]" Value="{Bind User.PersonName}" />
+		<TextBox Label="@[Phone]" Value="{Bind User.PhoneNumber}" Width="20rem"/>
+		<TextBox Label="@[Password]" Value="{Bind User.Password}" Width="20rem" Password="True"/>
+		<TextBox Label="@[Confirm]" Value="{Bind User.Confirm}" Width="20rem" Password="True"/>
 		<TextBox Label="@[Memo]" Value="{Bind User.Memo}" 
 				 Multiline="True" Rows="3"/>
 	</Grid>

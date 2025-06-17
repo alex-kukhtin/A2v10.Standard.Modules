@@ -4,13 +4,14 @@ const template: Template = {
 		persistSelect: ["Users"]
 	},
 	properties: {
-		'TUser.$Mark'() { return this.IsBlocked ? 'red' : ''; }
+		'TUser.$Mark'() { return !this.EmailConfirmed ? 'warning' : ''; }
 	},
 	events: {
 		'g.user.saved': handleUserSaved
 	},
 	commands: {
 		inviteUser,
+		createUser,
 		deleteUser
 	}
 }
@@ -28,6 +29,12 @@ function handleUserSaved(root) {
 async function inviteUser() {
 	let ctrl: IController = this.$ctrl;
 	let user = await ctrl.$showDialog('/$admin/userrole/user/invite');
+	this.Users.$append(user);
+}
+
+async function createUser() {
+	let ctrl: IController = this.$ctrl;
+	let user = await ctrl.$showDialog('/$admin/userrole/user/create');
 	this.Users.$append(user);
 }
 

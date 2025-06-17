@@ -6,13 +6,14 @@ define(["require", "exports"], function (require, exports) {
             persistSelect: ["Users"]
         },
         properties: {
-            'TUser.$Mark'() { return this.IsBlocked ? 'red' : ''; }
+            'TUser.$Mark'() { return !this.EmailConfirmed ? 'warning' : ''; }
         },
         events: {
             'g.user.saved': handleUserSaved
         },
         commands: {
             inviteUser,
+            createUser,
             deleteUser
         }
     };
@@ -27,6 +28,11 @@ define(["require", "exports"], function (require, exports) {
     async function inviteUser() {
         let ctrl = this.$ctrl;
         let user = await ctrl.$showDialog('/$admin/userrole/user/invite');
+        this.Users.$append(user);
+    }
+    async function createUser() {
+        let ctrl = this.$ctrl;
+        let user = await ctrl.$showDialog('/$admin/userrole/user/create');
         this.Users.$append(user);
     }
     async function deleteUser(user) {
