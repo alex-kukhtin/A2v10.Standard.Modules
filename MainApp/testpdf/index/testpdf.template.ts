@@ -3,6 +3,7 @@
 const template: Template = {
 	properties: {
 		'TRoot.$ReportUrl': reportUrl,
+		'TRoot.$Number': Number
 	}
 };
 

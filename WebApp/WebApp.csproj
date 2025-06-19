@@ -9,8 +9,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="A2v10.Platform" Version="10.1.8556" />
-		<PackageReference Include="A2v10.Web.Assets" Version="10.1.8556" />
+		<PackageReference Include="A2v10.Platform" Version="10.1.8558" />
+		<PackageReference Include="A2v10.Web.Assets" Version="10.1.8558" />
 		<PackageReference Include="A2v10.Workflow.WebAssets" Version="10.1.8117" />
 		<PackageReference Include="A2v10.Workflow.Engine" Version="10.1.8233" />
 		<PackageReference Include="A2v10.Scheduling" Version="10.1.8556" />

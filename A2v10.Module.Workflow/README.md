@@ -7,7 +7,7 @@ Workflow UI module for A2v10 application
 1. Install workflow modules (WebApp):
 ```xml
 <ItemGroup>
-    <PackageReference Include="A2v10.Module.Workflow" Version="10.1.1042" />
+    <PackageReference Include="A2v10.Module.Workflow" Version="10.1.1043" />
 </ItemGroup>
 ```
 Dependent Modules (*A2v10.Workflow.WebAssets*, *A2v10.Workflow.Engine*, *A2v10.Scheduling*) will be installed automatically.

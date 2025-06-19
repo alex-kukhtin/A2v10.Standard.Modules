@@ -4,6 +4,7 @@ define(["require", "exports"], function (require, exports) {
     const template = {
         properties: {
             'TRoot.$ReportUrl': reportUrl,
+            'TRoot.$Number': Number
         }
     };
     exports.default = template;

@@ -10,6 +10,8 @@
 				Command="{BindCmd Report, Report=testpdf, Argument={Bind TestObject.Id}, Url='/testpdf/index', Export=True}"/>
             <Button Icon="Reload"
 				Command="{BindCmd Requery}"/>
+			<TextBox Value="{Bind Root.$Number}"></TextBox>
+			<Hyperlink Content="{BindSum Root.$Number}"></Hyperlink>
         </Toolbar>
 	</Page.Toolbar>
 	<Grid AlignItems="Stretch" Height="100%" Padding="0">
