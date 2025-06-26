@@ -1,7 +1,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
 	<metadata>
 		<id>A2v10.Module.Metadata</id>
-		<version>10.1.1054</version>
+		<version>10.1.1055</version>
 		<authors>Oleksandr Kukthin</authors>
 		<description>A2v10 Platform Application Designer UI</description>
 		<copyright>Copyright © 2025 Oleksandr Kukthin. All rights reserved.</copyright>
@@ -11,10 +11,10 @@
 		<readme>.\README.md</readme>
 		<dependencies>
 			<group targetFramework="net8.0">
-				<dependency id="A2v10.Metadata" version="10.1.8558" />
+				<dependency id="A2v10.Metadata" version="10.1.8559" />
 			</group>
 			<group targetFramework="net9.0">
-				<dependency id="A2v10.Metadata" version="10.1.8558" />
+				<dependency id="A2v10.Metadata" version="10.1.8559" />
 			</group>
 		</dependencies>
 	</metadata>
