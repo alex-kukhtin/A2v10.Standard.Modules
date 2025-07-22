@@ -56,7 +56,7 @@
 				</Grid>
 			</Case>
 			<Case Value="columns">
-				<Grid Rows="Auto,1*" Padding="0,0,0,10" AlignItems="Stretch" Height="100%" Overflow="Hidden">
+				<Grid Rows="Auto,1*" Padding="0,0,0,10" AlignItems="Stretch" Height="100%" Overflow="Auto">
 					<Toolbar>
 						<Button Icon="Add" Content="@[Add]"
 								Command="{BindCmd Append, Argument={Bind Table.Columns}}"/>
@@ -204,7 +204,7 @@
 			</Case>
 
 			<Case Value="other">
-				<Grid Margin="0,0,0,10">
+				<Grid Margin="0,0,0,10" Overflow="Auto">
 					<Table ItemsSource="{Bind Table.$OtherColumns}"
 					   CellSpacing="Medium" StickyHeaders="True"
 						   Height="100%" 

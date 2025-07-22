@@ -18,6 +18,10 @@ define(["require", "exports"], function (require, exports) {
                 canExec(arg) { return !arg.IsFolder && arg.Kind != 'app'; },
                 confirm: 'Are you sure?'
             },
+            copy: {
+                exec: copy,
+                canExec: canCopy
+            },
             exportApp,
             importApp
         },
@@ -125,5 +129,23 @@ define(["require", "exports"], function (require, exports) {
         await ctrl.$upload('/$meta/config/import', 'application/zip');
         await ctrl.$msg('Application imported successfully', "success");
         ctrl.$requery();
+    }
+    function canCopy() {
+        let sel = this.Elems.$selected;
+        if (!sel)
+            return false;
+        if (sel.IsFolder || sel.Kind === 'app')
+            return false;
+        return true;
+    }
+    async function copy() {
+        if (!canCopy.call(this))
+            return;
+        let sel = this.Elems.$selected;
+        const ctrl = this.$ctrl;
+        let res = await ctrl.$invoke('copyItem', { Id: sel.Id }, BASE_URL);
+        if (!res)
+            return;
+        alert('Copy is not implemented yet');
     }
 });

@@ -265,6 +265,7 @@ begin
 	set nocount on;
 	set transaction isolation level read uncommitted;
 
+	set @Id = upper(@Id);
 
 	declare @version int;
 	select @version = max([Version]) from a2wf.Workflows where Id = @Id;

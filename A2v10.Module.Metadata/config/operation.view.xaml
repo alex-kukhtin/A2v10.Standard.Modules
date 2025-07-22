@@ -12,6 +12,7 @@
 			<TabButton Content="@[General]" />
 			<TabButton Content="Apply" ActiveValue="apply" />
 			<TabButton Content="@[Forms]" ActiveValue="forms" />
+			<TabButton Content="@[PrintForms]" ActiveValue="print" />
 		</TabBar>
 		<Switch Expression="{Bind Root.$$Tab}">
 			<Case Value="">
@@ -83,6 +84,23 @@
 								Command="{BindCmdExec openForm, Argument={Bind Value}}"/>
 						</Repeater>
 					</Toolbar>
+				</Grid>
+			</Case>
+			<Case Value="print">
+				<Grid Rows="Auto,1*" Padding="0,0,0,10" AlignItems="Stretch">
+					<Toolbar>
+						<Button Icon="Add" Content="@[Add]" />
+					</Toolbar>
+					<Table CellSpacing="Medium"
+						   StickyHeaders="True" Height="100%" Width="60rem"
+						   Columns="20rem,16px">
+						<Table.Header>
+							<TableRow>
+								<TableCell Content="@[Name]" MinWidth="15rem"/>
+								<TableCell Content=""/>
+							</TableRow>
+						</Table.Header>
+					</Table>
 				</Grid>
 			</Case>
 		</Switch>

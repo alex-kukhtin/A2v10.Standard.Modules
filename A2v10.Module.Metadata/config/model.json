@@ -79,6 +79,10 @@
 			"type": "sql",
 			"procedure": "Config.DeleteItem"
 		},
+		"copyItem": {
+			"type": "sql",
+			"procedure": "Config.CopyItem"
+		},
 		"clearCache": {
 			"type": "clr",
 			"clrType": "clr-type:A2v10.Metadata.ClearCacheHandler;assembly=A2v10.Metadata"

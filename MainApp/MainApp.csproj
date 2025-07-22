@@ -32,4 +32,10 @@
 	<ItemGroup>
 		<AdditionalFiles Include="$(ProjectPath)" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="testexport\index\index.view.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Content>
+	</ItemGroup>
 </Project>

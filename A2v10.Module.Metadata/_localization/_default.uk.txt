@@ -26,6 +26,7 @@
 @Data=Дані
 @Endpoint=Кінцева точка
 @Filters=Фільтри
+@PrintForms=Друковані форми
 ; Reports
 @TurnOverSheet=Оборотна відомість
 @TurnOver.Start=На початок

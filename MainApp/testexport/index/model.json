@@ -1,0 +1,16 @@
+﻿{
+	"$schema": "../../@schemas/model-json-schema.json#",
+	"schema": "cat",
+	"model": "TestExport",
+	"actions": {
+		"index": {
+			"template": "index.template",
+			"view": "index.view",
+			"export": {
+				"format": "xlsx",
+				"template": "agents",
+				"fileName": "Agents"
+			}
+		}
+	}
+}
