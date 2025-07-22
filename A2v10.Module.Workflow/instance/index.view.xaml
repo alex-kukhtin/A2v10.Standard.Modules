@@ -30,6 +30,9 @@
 			<DataGridColumn Header="@[WfAdm.Id]" Content="{Bind Id}" Wrap="NoWrap" Fit="True"
 					CssClass="monospace">
 			</DataGridColumn>
+			<DataGridColumn Header="@[WfAdm.Parent]" Content="{Bind ParentInstance}" Wrap="NoWrap" Fit="True"
+					CssClass="monospace" Sort="False">
+			</DataGridColumn>
 			<DataGridColumn Header="@[WfAdm.Workflow]" Content="{Bind Name}" Sort="False" />
 			<DataGridColumn Header="@[Version]" Content="{BindNumber Version}" Role="Number" Fit="True"
 							Sort="False"/>

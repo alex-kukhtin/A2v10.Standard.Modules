@@ -14,6 +14,7 @@
 @WfAdm.Filters=Filters
 ; Columns	
 @WfAdm.Id=Id
+@WfAdm.Parent=Parent
 @WfAdm.Key=Key
 @WfAdm.Workflow=Workflow
 @WfAdm.Created=Created
