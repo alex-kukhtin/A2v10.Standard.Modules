@@ -135,7 +135,8 @@ begin
 	select [Workflow!TWorkflow!Object] = null, [Id!!Id] = Id, [Name!!Name] = [Name], [Body],
 		[Svg] = cast(null as nvarchar(max)), [Version] = @version,  Zoom,
 		[DateCreated!!Utc] = DateCreated, [DateModified!!Utc] = DateModified,
-		NeedPublish = cast(case when [Hash] = @hash then 0 else 1 end as bit)
+		NeedPublish = cast(case when [Hash] = @hash then 0 else 1 end as bit),
+		[Key], [Memo]
 	from a2wf.[Catalog] 
 	where Id = @Id collate SQL_Latin1_General_CP1_CI_AI
 	order by Id;
