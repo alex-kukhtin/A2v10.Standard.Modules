@@ -106,5 +106,3 @@ async function checkSyntax() {
 	else
 		ctrl.$alert({ msg: 'Знайдено помилки', list: res.Errors.map(e => `${e.Activity}: ${e.Message}`) });
 }
-
-
