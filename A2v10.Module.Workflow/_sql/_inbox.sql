@@ -21,6 +21,21 @@ create table a2wf.[Inbox]
 	constraint PK_Inbox primary key clustered(Id, InstanceId)
 );
 go
+
+------------------------------------------------
+create or alter procedure a2wf.[Inbox.CancelChildren]
+@InstanceId uniqueidentifier
+as
+begin
+	set nocount on;
+	set transaction isolation level read committed;
+
+	update a2wf.Inbox set Void = 1, DateRemoved = getutcdate()
+	from a2wf.Inbox b inner join a2wf.Instances i on b.InstanceId = i.Id
+	where i.Parent = @InstanceId;
+end
+go
+
 ------------------------------------------------
 if not exists (select * from INFORMATION_SCHEMA.ROUTINES where ROUTINE_SCHEMA=N'a2wf' and ROUTINE_NAME=N'Instance.Inbox.Create')
 	exec sp_executesql N'
@@ -62,6 +77,7 @@ if not exists (select * from INFORMATION_SCHEMA.ROUTINES where ROUTINE_SCHEMA=N'
 	end
 	';
 go
+
 
 /*
 drop table a2wf.Inbox;

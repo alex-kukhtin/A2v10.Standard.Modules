@@ -8,7 +8,8 @@ create or alter procedure wfadm.[Instance.Index]
 @Order nvarchar(255) = N'datemodified',
 @Dir nvarchar(20) = N'desc',
 @Workflow nvarchar(255) = null,
-@State nvarchar(32) = null
+@State nvarchar(32) = null,
+@Fragment nvarchar(255) = null
 as
 begin
 	set nocount on;
@@ -17,6 +18,9 @@ begin
 	set @Order = lower(@Order);
 	set @Dir = lower(@Dir);
 	set @Workflow = upper(@Workflow);
+
+	declare @fr nvarchar(255) = N'%' + @Fragment + N'%';
+	declare @frId uniqueidentifier = try_cast(trim(@Fragment) as uniqueidentifier);
 
 	set @State = nullif(@State, N'');
 
@@ -29,6 +33,7 @@ begin
 		inner join a2wf.[Workflows] w on i.WorkflowId = w.Id and i.[Version] = w.[Version]
 	where (@Workflow is null or w.Id = @Workflow)
 		and (@State is null or i.[ExecutionStatus] = @State)
+		and (@fr is null or i.Id = @frId or i.Parent = @frId or i.CorrelationId like @frId or w.[Name] like @fr)
 	order by 
 		case when @Dir = N'asc' then
 			case @Order 
@@ -104,7 +109,7 @@ begin
 	select [!$System!] = null, [!Instances!Offset] = @Offset, [!Instances!PageSize] = @PageSize, 
 		[!Instances!SortOrder] = @Order, [!Instances!SortDir] = @Dir,
 		[!Instances.Workflow.TWorkflow.RefId!Filter] = @Workflow, 
-		[!Instances.State!Filter] = isnull(@State, N'');
+		[!Instances.State!Filter] = isnull(@State, N''), [!Instances.Fragment!Filter] = @Fragment;
 end
 go
 ------------------------------------------------
@@ -116,15 +121,13 @@ begin
 	set nocount on;
 	set transaction isolation level read committed;
 	set xact_abort on;
+
 	begin tran;
-	
 	delete from a2wf.Inbox where InstanceId = @Id;
 	exec a2wf.[Instance.Delete] @UserId = @UserId, @Id = @Id;
-
 	commit tran;
 end
 go
-
 ------------------------------------------------
 create or alter procedure wfadm.[Instance.Show.Load]
 @UserId bigint,

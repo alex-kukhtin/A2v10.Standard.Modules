@@ -56,6 +56,35 @@ async function modelLoad() {
 
 	commandStack = modeler.get("commandStack");
 
+	let eventBus = modeler.get("eventBus");
+	let editorActions = modeler.get("editorActions");	
+
+	// hack diagram.js error
+	eventBus.on('keyboard.keydown', (ctx) => {
+		let ev = ctx.keyEvent;
+		if (!ev.ctrlKey && !ev.metaKey)
+			return;
+		switch (ev.code) {
+			case 'KeyC':
+				editorActions.trigger('copy');
+				ev.preventDefault();
+				return true;
+			case 'KeyV':
+				editorActions.trigger('paste');
+				ev.preventDefault();
+				return true;
+			case 'KeyZ':
+				editorActions.trigger('undo');
+				ev.preventDefault();
+				return true;
+			case 'KeyY':
+				editorActions.trigger('redo');
+				ev.preventDefault();
+				return true;
+		}
+	});
+	
+
 	if (this.Workflow.$isNew)
 		ctrl.$nodirty(async () => {
 			this.Workflow.Name = "Untitled";

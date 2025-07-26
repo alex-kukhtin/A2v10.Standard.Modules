@@ -32,3 +32,5 @@
 @WfAdm.Published=Опубліковано
 ; Errors
 @WfAdm.Error.WorkflowUsed=Процес неможливо видалити. Він використовуюється.
+@WfAfm.Error.InstanceUsed=Екземпляр процесу неможливо видалити. Він використовується.
+

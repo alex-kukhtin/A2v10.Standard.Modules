@@ -12,7 +12,7 @@
 		<PackageReference Include="A2v10.Platform" Version="10.1.8562" />
 		<PackageReference Include="A2v10.Web.Assets" Version="10.1.8560" />
 		<PackageReference Include="A2v10.Workflow.WebAssets" Version="10.1.8118" />
-		<PackageReference Include="A2v10.Workflow.Engine" Version="10.1.8240" />
+		<PackageReference Include="A2v10.Workflow.Engine" Version="10.1.8245" />
 		<PackageReference Include="A2v10.Scheduling" Version="10.1.8562" />
 		<PackageReference Include="A2v10.MailClient" Version="10.1.8562" />
 		<!--!!!UPDATE versions in A2v10.Module.Workflow.nuspec && _layout !!!-->

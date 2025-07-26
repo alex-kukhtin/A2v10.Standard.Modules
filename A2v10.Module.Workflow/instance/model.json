@@ -37,6 +37,10 @@
 		"unlock": {
 			"type": "sql",
 			"procedure": "Instance.Unlock"
+		},
+		"remove": {
+			"type": "sql",
+			"procedure": "Instance.Delete"
 		}
 	}
 }

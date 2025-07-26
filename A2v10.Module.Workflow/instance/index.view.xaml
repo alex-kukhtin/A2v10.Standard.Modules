@@ -6,6 +6,7 @@
 				<FilterDescription>
 					<FilterItem Property="Workflow" DataType="Object"/>
 					<FilterItem Property="State" />
+					<FilterItem Property="Fragment" />
 				</FilterDescription>
 			</CollectionView.Filter>
 		</CollectionView>
@@ -21,9 +22,12 @@
 			<Button Render="Hide" Icon="Bookmark" Command="{BindCmd Dialog, Action=ShowSelected, Argument={Bind Instances}, Url='/$workflow/instance/bookmarks'}"/>
 			<Separator />
 			<Button Icon="UnlockOutline" Command="{BindCmd ExecuteSelected, CommandName=unlock, Argument={Bind Instances}}"/>
-			<Button Icon="Delete" Command="{BindCmd DbRemoveSelected, Argument={Bind Instances}, Confirm='@[Confirm.Delete.Element]'}"/>
+			<Button Icon="Delete" Command="{BindCmd ExecuteSelected, CommandName=remove, Argument={Bind Instances}, Confirm='@[Confirm.Delete.Element]'}"/>
 			<Separator />
 			<Button Icon="Reload" Command="{BindCmd Reload}"/>
+			<ToolbarAligner />
+			<SearchBox Placeholder="@[Search]" Value="{Bind Parent.Filter.Fragment}" Width="20rem"
+					   TabIndex="1"/>
 		</Toolbar>
 		<DataGrid Grid.Row="2" Grid.Col="1" Sort="True" Mark="{Bind $Mark}" MarkerStyle="Row"
 				ItemsSource="{Bind Parent.ItemsSource}" FixedHeader="True">
@@ -36,9 +40,12 @@
 			<DataGridColumn Header="@[WfAdm.Workflow]" Content="{Bind Name}" Sort="False" />
 			<DataGridColumn Header="@[Version]" Content="{BindNumber Version}" Role="Number" Fit="True"
 							Sort="False"/>
-			<DataGridColumn Header="@[WfAdm.State]" Content="{Bind ExecutionStatus}" Wrap="NoWrap"/>
+			<DataGridColumn Header="@[WfAdm.State]" SortProperty="ExecutionStatus" Wrap="NoWrap">
+				<TagLabel Content="{Bind ExecutionStatus}" Style="{Bind $StateStyle}"
+						  Outline="True"/>
+			</DataGridColumn>
 			<DataGridColumn Header="Inbox" Sort="False" Fit="True">
-				<TagLabel If="{Bind Inboxes.Count}" Content="Inbox" Style="Olive" Outline="True"/>
+				<TagLabel If="{Bind Inboxes.Count}" Content="Inbox" Style="Blue" Outline="True"/>
 			</DataGridColumn>
 			<DataGridColumn Content="{Bind DateCreated, DataType=DateTime}" Header="@[WfAdm.Created]" Role="Date"/>
 			<DataGridColumn Content="{Bind DateModified, DataType=DateTime}" Header="@[WfAdm.Modified]" Role="Date"/>
@@ -74,6 +81,7 @@
 						<ComboBoxItem Content="Init" Value="Init"/>
 						<ComboBoxItem Content="Idle" Value="Idle"/>
 						<ComboBoxItem Content="Complete" Value="Complete"/>
+						<ComboBoxItem Content="Canceled" Value="Canceled"/>
 						<ComboBoxItem Content="Faulted" Value="Faulted"/>
 					</ComboBox>
 				</Panel>

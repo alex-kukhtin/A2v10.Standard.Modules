@@ -7,7 +7,8 @@ define(["require", "exports"], function (require, exports) {
             persistSelect: ["Instances"]
         },
         properties: {
-            'TInstance.$Mark'() { return this.Lock ? 'red' : undefined; }
+            'TInstance.$Mark'() { return this.Lock ? 'red' : undefined; },
+            'TInstance.$StateStyle': stateStyle
         },
         events: {},
         commands: {
@@ -17,7 +18,8 @@ define(["require", "exports"], function (require, exports) {
                 exec: unlock,
                 canExec: (inst) => !!inst.Lock
             },
-            start
+            start,
+            remove
         }
     };
     exports.default = template;
@@ -57,5 +59,25 @@ define(["require", "exports"], function (require, exports) {
             return;
         let res = await ctrl.$showDialog('/$workflow/catalog/run', wf);
         ctrl.$reload();
+    }
+    function stateStyle() {
+        switch (this.ExecutionStatus) {
+            case 'Complete': return 'seagreen';
+            case 'Idle': return 'blue';
+            case 'Init':
+            case 'Canceled': return 'gold';
+            case 'Faulted': return 'danger';
+        }
+    }
+    async function remove(inst) {
+        const ctrl = this.$ctrl;
+        try {
+            await ctrl.$invoke('remove', { Id: inst.Id }, '/$workflow/instance', { catchError: true });
+            inst.$remove();
+        }
+        catch (e) {
+            console.error(e);
+            ctrl.$alert('@[WfAfm.Error.InstanceUsed]');
+        }
     }
 });
