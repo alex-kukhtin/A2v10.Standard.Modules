@@ -1,7 +1,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
 	<metadata>
 		<id>A2v10.Module.Workflow</id>
-		<version>10.1.1055</version>
+		<version>10.1.1056</version>
 		<authors>Oleksandr Kukthin</authors>
 		<description>A2v10 Platform Application Workflow UI</description>
 		<copyright>Copyright © 2025 Oleksandr Kukthin. All rights reserved.</copyright>

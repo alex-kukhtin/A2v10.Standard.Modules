@@ -13,7 +13,7 @@
 @WfAdm.Variables=Змінні
 @WfAdm.Filters=Фільтри
 @WfAdm.Backup=Резервне копіювання
-@WfAdm.Restore=Відновити з копії
+@WfAdm.Restore=Відновити з резервної копії
 ; Columns	
 @WfAdm.Id=Ідентифікатор
 @WfAdm.Parent=Батьківський екземпляр
