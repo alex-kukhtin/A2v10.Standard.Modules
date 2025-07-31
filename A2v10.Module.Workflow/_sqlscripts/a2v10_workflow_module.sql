@@ -101,13 +101,6 @@ if not exists (select * from INFORMATION_SCHEMA.ROUTINES where ROUTINE_SCHEMA=N'
 	';
 go
 
-
-/*
-drop table a2wf.Inbox;
-drop procedure a2wf.[Instance.Inbox.Remove];
-drop procedure a2wf.[Instance.Inbox.Create];
-*/
-
 -- CATALOG
 ------------------------------------------------
 create or alter procedure wfadm.[Catalog.Index]
@@ -472,6 +465,7 @@ begin
 		(s.Id, s.[Format], round(s.Zoom, 2), s.[Name], s.[Key], s.[Memo], s.Body, s.Svg, hashbytes(N'SHA2_256', s.Body));
 end
 go
+
 -- INSTANCE
 ------------------------------------------------
 create or alter procedure wfadm.[Instance.Index]
@@ -716,6 +710,7 @@ begin
 	update a2wf.Instances set Lock = null, LockDate = null where Id = @Id;
 end
 go
+
 -- AUTOSTART
 ------------------------------------------------
 create or alter procedure wfadm.[AutoStart.Index]

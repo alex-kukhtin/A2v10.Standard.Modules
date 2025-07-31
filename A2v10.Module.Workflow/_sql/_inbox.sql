@@ -77,10 +77,3 @@ if not exists (select * from INFORMATION_SCHEMA.ROUTINES where ROUTINE_SCHEMA=N'
 	end
 	';
 go
-
-
-/*
-drop table a2wf.Inbox;
-drop procedure a2wf.[Instance.Inbox.Remove];
-drop procedure a2wf.[Instance.Inbox.Create];
-*/

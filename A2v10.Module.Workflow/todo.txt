@@ -27,7 +27,6 @@ Instance
 
 NuGet
 ------------
-3. Add NET 9 framework.
 
 README.md
 ---------
