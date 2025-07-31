@@ -18,6 +18,10 @@
 			"index": true,
 			"view": "browse.dialog"
 		},
+		"choose": {
+			"index": true,
+			"view": "choose.dialog"
+		},
 		"props": {
 			"model": "Catalog.Prop",
 			"view": "prop.dialog"
@@ -58,6 +62,14 @@
 		"upload": {
 			"type": "sql",
 			"model": "Workflow.Upload"
+		},
+		"backup": {
+			"type": "clr",
+			"clrType": "clr-type:A2v10.Module.Workflow.BackupHandler;assembly=A2v10.Module.Workflow"
+		},
+		"restore": {
+			"type": "clr",
+			"clrType": "clr-type:A2v10.Module.Workflow.RestoreHandler;assembly=A2v10.Module.Workflow"
 		}
 	}
 }

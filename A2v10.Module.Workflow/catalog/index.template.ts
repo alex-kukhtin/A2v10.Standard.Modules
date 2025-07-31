@@ -27,7 +27,9 @@ const template: Template = {
 			exec: deleteWorkflow,
 			canExec: wf => !wf.Version,
 			confirm: '@[Confirm.Delete.Element]'
-		}
+		},
+		backup,
+		restore
 	}
 }
 
@@ -87,3 +89,16 @@ async function deleteWorkflow(wf) {
 	wf.$remove();
 }
 
+async function backup() {
+	const ctrl: IController = this.$ctrl;
+	var worflows = await ctrl.$showDialog('/$workflow/catalog/choose', null);
+	if (!worflows || !worflows.length) return;
+	let ids = worflows.map(w => w.Id).join('\v');
+	await ctrl.$file('/$workflow/catalog/backup', { Id: 0 }, { action: FileActions.download }, {Ids: ids});
+}
+
+async function restore() {
+	const ctrl: IController = this.$ctrl;
+	await ctrl.$upload('/$workflow/catalog/restore', 'application/zip');
+	ctrl.$reload();
+}

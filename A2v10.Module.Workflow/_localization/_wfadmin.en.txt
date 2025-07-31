@@ -12,6 +12,8 @@
 @WfAdm.Log=Log
 @WfAdm.Variables=Variables
 @WfAdm.Filters=Filters
+@WfAdm.Backup=Backup
+@WfAdm.Restore=Restore
 ; Columns	
 @WfAdm.Id=Id
 @WfAdm.Parent=Parent

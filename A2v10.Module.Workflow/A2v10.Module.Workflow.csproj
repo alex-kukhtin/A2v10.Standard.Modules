@@ -24,6 +24,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="A2v10.Infrastructure" Version="10.1.8554" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="A2v10.App.Assets" Version="10.1.8554" />
 		<PackageReference Include="A2v10.AppCompiler" Version="10.1.8118" />
 		<PackageReference Include="A2v10.Sql.MSBuild" Version="10.1.8105" />
@@ -56,11 +58,4 @@
 	<ItemGroup>
 		<None Include="README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Content Update="catalog\run.dialog.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Content>
-	</ItemGroup>
-
 </Project>

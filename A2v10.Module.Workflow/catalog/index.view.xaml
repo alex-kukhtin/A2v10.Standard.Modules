@@ -21,6 +21,14 @@
 					Command="{BindCmd Execute, CommandName=upload}"/>
 			<Button Icon="Download" Tip="@[WfAdm.Download]" 
 					Command="{BindCmd ExecuteSelected, CommandName=download, Argument={Bind Workflows}}"/>
+			<Button Icon="EllipsisVertical">
+				<Button.DropDown>
+					<DropDownMenu>
+						<MenuItem Content="@[WfAdm.Backup]" Command="{BindCmdExec backup}"/>
+						<MenuItem Content="@[WfAdm.Restore]" Command="{BindCmdExec restore}"/>
+					</DropDownMenu>
+				</Button.DropDown>
+			</Button>
 			<Separator />
 			<Button Icon="Reload" Command="{BindCmd Reload}"/>
 		</Toolbar>
