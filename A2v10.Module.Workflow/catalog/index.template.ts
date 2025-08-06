@@ -5,7 +5,7 @@ const template: Template = {
 		persistSelect: ["Workflows"]
 	},
 	properties: {
-		'TWorkflow.$Mark'() { return this.NeedPublish ? 'warning' : ''; },
+		'TWorkflow.$Mark'() { return this.Archive ? 'red' : this.NeedPublish ? 'warning' : ''; },
 		'TWorkflow.$PopupStyle'() { return `zoom: ${this.Zoom};`; },
 	},
 	events: {
@@ -51,6 +51,7 @@ function handleProps(root) {
 	f.Name = wf.Name;
 	f.Memo = wf.Memo;
 	f.Key = wf.Key;
+	f.Archive = wf.Archive;
 }
 
 async function publish(wf) {

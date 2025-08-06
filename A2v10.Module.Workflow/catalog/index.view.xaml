@@ -2,7 +2,11 @@
 	  Title="@[WfAdm.Catalog]">
 	<Page.CollectionView>
 		<CollectionView ItemsSource="{Bind Workflows}" RunAt="ServerUrl">
-
+			<CollectionView.Filter>
+				<FilterDescription>
+					<FilterItem Property="Mode" DataType="String"/>
+				</FilterDescription>
+			</CollectionView.Filter>
 		</CollectionView>
 	</Page.CollectionView>
 	<Grid Rows="Auto,1*,Auto" Height="100%">
@@ -31,6 +35,12 @@
 			</Button>
 			<Separator />
 			<Button Icon="Reload" Command="{BindCmd Reload}"/>
+			<ToolbarAligner/>
+			<ComboBox Label="@[WfAdm.View]" Value="{Bind Parent.Filter.Mode}" Width="20rem">
+				<ComboBoxItem Content="@[WfAdm.ViewActive]" Value="A"/>
+				<ComboBoxItem Content="@[WfAdm.ViewArchive]" Value="D"/>
+				<ComboBoxItem Content="@[WfAdm.ViewAll]" Value="L"/>
+			</ComboBox>
 		</Toolbar>
 		<DataGrid Grid.Row="2" Grid.Col="1" Mark="{Bind $Mark}" MarkerStyle="Row"
 				ItemsSource="{Bind Parent.ItemsSource}" FixedHeader="True"
@@ -55,6 +65,9 @@
 			<DataGridColumn Content="{Bind DateCreated, DataType=DateTime}" Header="@[WfAdm.Created]" Role="Date"/>
 			<DataGridColumn Content="{Bind DateModified, DataType=DateTime}" Header="@[WfAdm.Modified]" Role="Date"/>
 			<DataGridColumn Header="@[Memo]" Content="{Bind Memo}" LineClamp="2" />
+			<DataGridColumn Fit="True">
+				<SpanIcon Icon="Ban" If="{Bind Archive}"/>
+			</DataGridColumn>
 		</DataGrid>
 	</Grid>
 </Page>

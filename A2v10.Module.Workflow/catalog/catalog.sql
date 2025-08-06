@@ -2,7 +2,8 @@
 ------------------------------------------------
 create or alter procedure wfadm.[Catalog.Index]
 @UserId bigint,
-@Id nvarchar(64) = null
+@Id nvarchar(64) = null,
+@Mode nchar(1) = N'A' -- (A)ctive | A(L)l | (D)eleted
 as
 begin
 	set nocount on;
@@ -16,11 +17,15 @@ begin
 
 	select [Workflows!TWorkflow!Array] = null, [Id!!Id] = w.Id, w.[Name], t.[Version],
 		[DateCreated!!Utc] = w.DateCreated, [DateModified!!Utc] = w.DateModified,
-		w.Svg, w.Zoom, w.Memo, w.[Key],
+		w.Svg, w.Zoom, w.Memo, w.[Key], w.Archive,
 		NeedPublish = cast(case when w.[Hash] = x.[Hash] then 0 else 1 end as bit)
 	from a2wf.[Catalog] w left join @wftable t on w.Id = t.Id
 		left join a2wf.Workflows x on w.Id = x.Id and x.[Version] = t.[Version]
+	where @Mode = N'L' or @Mode = N'A' and w.Archive = 0 or @Mode = N'D' and w.Archive = 1
 	order by w.DateCreated desc;
+
+
+	select [!$System!] = null, [!Workflows.Mode!Filter] = @Mode;
 end
 go
 ------------------------------------------------
@@ -199,7 +204,7 @@ begin
 	set @Id = upper(@Id);
 
 	select [Workflow!TWorkflow!Object] = null, [Id!!Id] = Id, [Name!!Name] = [Name],
-		Memo, [Key]
+		Memo, [Key], Archive
 	from a2wf.[Catalog] 
 	where Id = @Id collate SQL_Latin1_General_CP1_CI_AI
 	order by Id;
@@ -216,7 +221,8 @@ create type wfadm.[Catalog.Prop.TableType] as table
 	Id nvarchar(64),
 	[Name] nvarchar(255),
 	[Key] nvarchar(32),
-	[Memo] nvarchar(255)
+	[Memo] nvarchar(255),
+	Archive bit
 );
 go
 ------------------------------------------------
@@ -249,6 +255,7 @@ begin
 		t.[Name] = s.[Name],
 		t.[Key] = s.[Key],
 		t.[Memo] = s.[Memo],
+		t.Archive = s.Archive,
 		t.DateModified = getutcdate()
  	output inserted.Id into @rtable(Id);
 	select @wfid = Id from @rtable;

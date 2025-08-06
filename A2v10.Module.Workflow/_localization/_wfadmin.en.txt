@@ -25,6 +25,11 @@
 @WfAdm.State=State
 @WfAdm.StartAt=Start At
 @WfAdm.Model=Model
+@WfAdm.Archive=Archive
+@WfAdm.View=View
+@WfAdm.ViewActive=Active
+@WfAdm.ViewArchive=Archived
+@WfAdm.ViewAll=All
 ; Placeholders
 @WfAdm.Workflow.All=All Workflows
 ; Text

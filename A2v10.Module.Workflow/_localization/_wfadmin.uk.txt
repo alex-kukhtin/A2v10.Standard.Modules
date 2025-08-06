@@ -25,6 +25,11 @@
 @WfAdm.State=Стан
 @WfAdm.StartAt=Запустити в
 @WfAdm.Model=Модель
+@WfAdm.Archive=Архівний
+@WfAdm.View=Показувати
+@WfAdm.ViewActive=Активні
+@WfAdm.ViewArchive=Арихівні
+@WfAdm.ViewAll=Всі
 ; Placeholders
 @WfAdm.Workflow.All=Всі процеси
 ; Text

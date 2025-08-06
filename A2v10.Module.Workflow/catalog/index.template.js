@@ -7,7 +7,7 @@ define(["require", "exports"], function (require, exports) {
             persistSelect: ["Workflows"]
         },
         properties: {
-            'TWorkflow.$Mark'() { return this.NeedPublish ? 'warning' : ''; },
+            'TWorkflow.$Mark'() { return this.Archive ? 'red' : this.NeedPublish ? 'warning' : ''; },
             'TWorkflow.$PopupStyle'() { return `zoom: ${this.Zoom};`; },
         },
         events: {
@@ -50,6 +50,7 @@ define(["require", "exports"], function (require, exports) {
         f.Name = wf.Name;
         f.Memo = wf.Memo;
         f.Key = wf.Key;
+        f.Archive = wf.Archive;
     }
     async function publish(wf) {
         const ctrl = this.$ctrl;
