@@ -34,4 +34,6 @@
 @WfAdm.Arguments=Аргументи
 ; Errors
 @WfAdm.Error.WorkflowUsed=Unable to delete the process. It's used.
+@WfAfm.Error.InstanceUsed=Unable to delete the instance. It's used.
+
 

@@ -33,7 +33,7 @@ begin
 		inner join a2wf.[Workflows] w on i.WorkflowId = w.Id and i.[Version] = w.[Version]
 	where (@Workflow is null or w.Id = @Workflow)
 		and (@State is null or i.[ExecutionStatus] = @State)
-		and (@fr is null or i.Id = @frId or i.Parent = @frId or i.CorrelationId like @frId or w.[Name] like @fr)
+		and (@fr is null or i.Id = @frId or i.Parent = @frId or i.CorrelationId like @fr or w.[Name] like @fr)
 	order by 
 		case when @Dir = N'asc' then
 			case @Order 
