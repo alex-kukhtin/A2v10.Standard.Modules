@@ -17,6 +17,7 @@
 ; Columns	
 @WfAdm.Id=Ідентифікатор
 @WfAdm.Parent=Батьківський екземпляр
+@WfAdm.Children=Дочірні екземпляри
 @WfAdm.Key=Ключ
 @WfAdm.Workflow=Процес
 @WfAdm.Created=Створений

@@ -15,6 +15,24 @@
 					<Button Icon="Variable" Command="{BindCmd Dialog, Action=Show, Argument={Bind Instance}, Url='/$workflow/instance/variables'}"/>
 					<Button Icon="Energy" Command="{BindCmd Dialog, Action=Show, Argument={Bind Instance}, Url='/$workflow/instance/events'}"/>
 				</Toolbar>
+				<Static Label="@[WfAdm.Instance]" Value="{Bind Instance.Id}" CssClass="input-code">
+					<Hyperlink Icon="Copy" Command="{BindCmdExec copyInstanceId}" Render="Show"/>
+				</Static>
+				<Static Label="@[WfAdm.Parent]" If="{Bind Instance.ParentInstance}" 
+						Value="{Bind Instance.ParentInstance}" CssClass="input-code">
+					<Hyperlink Icon="ArrowOpen" Command="{BindCmd Dialog, Action=Show, Argument={Bind Root.$Parent}, 
+						Url='/$workflow/instance/show'}" Render="Show"/>
+				</Static>
+				<Group If="{Bind Instance.Children.Count}">
+					<Span Content="@[WfAdm.Children]"/>
+					<StackPanel ItemsSource="{Bind Instance.Children}">
+						<Static Value="{Bind Id}" CssClass="input-code" Margin="0,0,3,0">
+							<Hyperlink Icon="ArrowOpen" Command="{BindCmd Dialog, Action=Show, Argument={Bind}, 
+							Url='/$workflow/instance/show'}" Render="Show"/>
+						</Static>
+
+					</StackPanel>
+				</Group>
 				<Static Label="@[WfAdm.State]" Value="{Bind Instance.ExecutionStatus}" />
 				<Group If="{Bind Root.$ActiveId}">
 					<Static Label="Actitity" Value="{Bind Root.$ActiveName}"/>

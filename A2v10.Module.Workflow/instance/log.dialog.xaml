@@ -15,6 +15,7 @@
 				ItemsSource="{Bind Parent.ItemsSource}" FixedHeader="True" Height="40rem">
 			<DataGridColumn Header="#" Role="Id" Content="{Bind Id}"/>
 			<DataGridColumn Header="Activity" Content="{Bind Activity}" Wrap="NoWrap"/>
+			<DataGridColumn Header="Kind" Content="{Bind Kind}" Wrap="NoWrap"/>
 			<DataGridColumn Header="Action" Content="{Bind Action}"/>
 			<DataGridColumn Header="EventTime" Content="{Bind EventTime, DataType=DateTime2}" Role="Date" Fit="True"
 							Sort="False"/>

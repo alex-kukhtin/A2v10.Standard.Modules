@@ -17,6 +17,7 @@
 ; Columns	
 @WfAdm.Id=Id
 @WfAdm.Parent=Parent
+@WfAdm.Children=Children
 @WfAdm.Key=Key
 @WfAdm.Workflow=Workflow
 @WfAdm.Created=Created

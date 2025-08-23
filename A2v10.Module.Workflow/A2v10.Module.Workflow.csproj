@@ -4,7 +4,7 @@
 		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<Version>10.1.1064</Version>
+		<Version>10.1.1066</Version>
 		<LangVersion>Latest</LangVersion>
 		<OutputType>Library</OutputType>
 		<NoWarn>$(NoWarn);MSB3245</NoWarn>

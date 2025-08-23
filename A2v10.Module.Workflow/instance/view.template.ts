@@ -5,10 +5,14 @@ const template: Template = {
 	properties: {
 		'TRoot.$ActiveName': String,
 		'TRoot.$ActiveId': String,
-		'TRoot.$ActiveLog': activeLog
+		'TRoot.$ActiveLog': activeLog,
+		'TRoot.$Parent'() { return { Id: this.Instance.ParentInstance }; }
 	},
 	events: {
 		'Model.load': modelLoad
+	},
+	commands: {
+		copyInstanceId
 	}
 };
 
@@ -70,4 +74,10 @@ function activeLog() {
 			};
 		})
 		
+}
+
+function copyInstanceId() {
+	const ctrl: IController = this.$ctrl;
+	navigator.clipboard.writeText(this.Instance.Id);
+	ctrl.$toast('InstanceId copied to clipboard');
 }

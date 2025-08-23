@@ -2,3 +2,7 @@
 .x4 {
   background-color: red;
 }
+.input-code .static-input {
+  font-family: 'Consolas', 'Courier New', Courier, monospace;
+  font-weight: 600;
+}
