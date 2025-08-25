@@ -45,7 +45,7 @@
 						  Outline="True"/>
 			</DataGridColumn>
 			<DataGridColumn Header="Inbox" Sort="False" Fit="True">
-				<TagLabel If="{Bind Inboxes.Count}" Content="Inbox" Style="Blue" Outline="True"/>
+				<TagLabel If="{Bind Inboxes.Count}" Content="Inbox" Style="Pink" Outline="True"/>
 			</DataGridColumn>
 			<DataGridColumn Content="{Bind DateCreated, DataType=DateTime}" Header="@[WfAdm.Created]" Role="Date"/>
 			<DataGridColumn Content="{Bind DateModified, DataType=DateTime}" Header="@[WfAdm.Modified]" Role="Date"/>
