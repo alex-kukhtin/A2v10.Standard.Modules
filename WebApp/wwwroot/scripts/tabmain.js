@@ -1142,9 +1142,9 @@ app.modules['std:utils'] = function () {
 	}
 };
 
-// Copyright © 2015-2022 Oleksandr Kukhtin. All rights reserved.
+// Copyright © 2015-2025 Oleksandr Kukhtin. All rights reserved.
 
-/*20220626-7852*/
+/*20250913-7983*/
 /* services/url.js */
 
 app.modules['std:url'] = function () {
@@ -1201,9 +1201,11 @@ app.modules['std:url'] = function () {
 	function toUrl(obj) {
 		if (!utils.isDefined(obj) || obj === null) return '';
 		if (utils.isDate(obj)) {
-			return utils.format(obj, "DateUrl");		
+			return utils.format(obj, "DateUrl");
 		} else if (period.isPeriod(obj)) {
 			return obj.format('DateUrl');
+		} else if (Array.isArray(obj)) {
+			return obj.map(x => x.Id).join(',');
 		} else if (utils.isObjectExact(obj)) {
 			if (obj.constructor.name === 'Object') {
 				if (!utils.isDefined(obj.Id))
@@ -2546,7 +2548,7 @@ app.modules['std:validators'] = function () {
 
 // Copyright © 2015-2025 Oleksandr Kukhtin. All rights reserved.
 
-/*20250202-7977*/
+/*20250914-7984*/
 /* services/impl/array.js */
 
 app.modules['std:impl:array'] = function () {
@@ -2925,6 +2927,14 @@ app.modules['std:impl:array'] = function () {
 
 		defPropertyGet(arr, "$hasChecked", function () {
 			return !!(this.$checked && this.$checked.length);
+		});
+
+		defPropertyGet(arr, "$names", function () {
+			return this.map(x => x.Name).join(', ');
+		});
+
+		defPropertyGet(arr, "$ids", function () {
+			return this.map(x => x.Id).join(',');
 		});
 	}
 
@@ -8805,15 +8815,16 @@ template: `
 })();
 
 
-// Copyright © 2015-2024 Oleksandr Kukhtin. All rights reserved.
+// Copyright © 2015-2025 Oleksandr Kukhtin. All rights reserved.
 
-//20240913-7971
+//20250913-7983
 /*components/popover.js*/
 
 Vue.component('popover', {
 	template: `
 <div v-dropdown class="popover-wrapper" :style="{top: top}" :class="{show: isShowHover}" :title="title">
-	<span toggle class="popover-title" v-on:mouseover="mouseover" v-on:mouseout="mouseout"><i v-if="hasIcon" :class="iconClass"></i> <span v-text="content"></span><slot name="badge"></slot></span>
+	<span toggle class="popover-title" :class=poClass :style=poStyle v-on:mouseover="mouseover"
+		v-on:mouseout="mouseout" ><i v-if="hasIcon" :class="iconClass"></i> <span v-text="content"></span><slot name="badge"></slot></span>
 	<div class="popup-body" :style="{width: width, left:offsetLeft}">
 		<div class="arrow" :style="{left:offsetArrowLeft}"/>
 		<div v-if="visible">
@@ -8847,6 +8858,7 @@ Vue.component('popover', {
 		hover: Boolean,
 		offsetX: String,
 		arg: undefined,
+		lineClamp: Number
 	},
 	computed: {
 		hasIcon() {
@@ -8865,6 +8877,12 @@ Vue.component('popover', {
 			if (this.icon)
 				cls += ' ico-' + this.icon;
 			return cls;
+		},
+		poClass() {
+			return this.lineClamp ? 'line-clamp' : undefined;
+		},
+		poStyle() {
+			return this.lineClamp ? { '-webkit-line-clamp': '' + this.lineClamp } : undefined;
 		},
 		visible() {
 			return this.url && this.state === 'shown';
@@ -9165,9 +9183,9 @@ Vue.component('popover', {
 	});
 })();
 
-// Copyright © 2015-2023 Oleksandr Kukhtin. All rights reserved.
+// Copyright © 2015-2025 Oleksandr Kukhtin. All rights reserved.
 
-// 20230922-7948
+// 20250913-7983
 // components/collectionviewplain.js
 
 /*
@@ -9210,6 +9228,9 @@ TODO:
 			}
 			else if (utils.isDate(fVal)) {
 				nq[x] = utils.format(fVal, 'DateUrl');
+			}
+			else if (Array.isArray(fVal)) {
+				nq[x] = fVal.map(x => x.Id).join(',');
 			}
 			else if (utils.isObjectExact(fVal)) {
 				if (!('Id' in fVal)) {
@@ -11494,7 +11515,7 @@ Vue.component('a2-panel', {
 
 // Copyright © 2015-2025 Oleksandr Kukhtin. All rights reserved.
 
-// 20250204-7979
+// 20250914-7984
 // components/browsejson.js*/
 
 (function () {
@@ -11502,7 +11523,7 @@ Vue.component('a2-panel', {
 	let utils = require('std:utils');
 	let du = utils.date;
 
-	const sppArray = "$valid,$invalid,$dirty,$lock,$selected,$selectedIndex,$checked,$hasSelected,$hasChecked,$isEmpty,$permissions,$RowCount,$expanded,$collapsed,$level,$loaded"
+	const sppArray = "$valid,$invalid,$dirty,$lock,$selected,$selectedIndex,$checked,$hasSelected,$hasChecked,$isEmpty,$permissions,$RowCount,$expanded,$collapsed,$level,$loaded,$names,$ids"
 		.split(',');
 	const specProps = new Set(sppArray);
 
