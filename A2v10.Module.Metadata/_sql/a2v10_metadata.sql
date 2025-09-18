@@ -203,6 +203,21 @@ create table a2meta.[Forms]
 );
 go
 ------------------------------------------------
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA=N'a2meta' and TABLE_NAME=N'PrintForms')
+create table a2meta.[PrintForms]
+(
+	[Id] uniqueidentifier not null
+		constraint DF_PrintForms_Id default(newid())
+		constraint PK_PrintForms primary key,
+	[Table] uniqueidentifier not null
+		constraint FK_PrintForms_Table_Catalog references a2meta.[Catalog](Id),
+	[Order] int,
+	[Name] nvarchar(255),
+	[Json] nvarchar(max),
+	[Memo] nvarchar(255)
+);
+go
+------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA=N'a2meta' and TABLE_NAME=N'Apply')
 create table a2meta.[Apply]
 (

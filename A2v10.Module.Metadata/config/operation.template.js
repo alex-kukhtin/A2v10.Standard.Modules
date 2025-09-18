@@ -19,7 +19,8 @@ define(["require", "exports"], function (require, exports) {
         commands: {
             preview,
             openForm,
-            showMapping
+            showMapping,
+            addPrintForm
         }
     };
     exports.default = template;
@@ -57,5 +58,8 @@ define(["require", "exports"], function (require, exports) {
         }
         await ctrl.$save();
         ctrl.$showDialog(url, { Id: apply.Id });
+    }
+    function addPrintForm() {
+        alert('add print form here');
     }
 });

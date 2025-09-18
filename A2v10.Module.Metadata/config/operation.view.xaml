@@ -89,17 +89,27 @@
 			<Case Value="print">
 				<Grid Rows="Auto,1*" Padding="0,0,0,10" AlignItems="Stretch">
 					<Toolbar>
-						<Button Icon="Add" Content="@[Add]" />
+						<Button Icon="Add" Content="@[Add]" 
+								Command="{BindCmdExec addPrintForm}"/>
 					</Toolbar>
 					<Table CellSpacing="Medium"
 						   StickyHeaders="True" Height="100%" Width="60rem"
-						   Columns="20rem,16px">
+						   Columns="Fit,20rem,16px" ItemsSource="{Bind Table.PrintForms}">
 						<Table.Header>
 							<TableRow>
+								<TableCell Content="#"/>
 								<TableCell Content="@[Name]" MinWidth="15rem"/>
-								<TableCell Content=""/>
+								<TableCell />
 							</TableRow>
 						</Table.Header>
+						<TableRow>
+							<TableCell Content="{Bind Order}" Align="Right"/>
+							<TableCell Content="{Bind Name}" />
+							<TableCell>
+								<Hyperlink Icon="Edit" Content="Edit" 
+									Command="{BindCmd Open, Url='/$meta/config/printform/edit', Argument={Bind}}"/>
+							</TableCell>
+						</TableRow>
 					</Table>
 				</Grid>
 			</Case>

@@ -195,6 +195,7 @@ begin
 		[Columns!TColumn!Array] = null,
 		[Apply!TApply!Array] = null,
 		[Kinds!TKind!Array] = null,
+		[PrintForms!TPrintForm!Array] = null,
 		[Endpoint] = lower(a2meta.fn_Schema2Text(t.[Schema]) + '/' + t.[Name])
 	from a2meta.[Catalog] t 
 		left join a2meta.[Catalog] p on t.ParentTable = p.Id
@@ -230,6 +231,12 @@ begin
 		left join a2meta.DetailsKinds dk on a.Kind = dk.Id
 	where a.[Table] = @Id
 	order by a.[Order];
+
+	select [!TPrintForm!Array] = null, [Id!!Id] = p.Id, p.[Name], p.Memo,
+		[Order!!RowNumber] = p.[Order],
+		[!TTable.PrintForms!ParentId] = p.[Table]
+	from a2meta.PrintForms p
+	where p.[Table] = @Id;
 end
 go
 ------------------------------------------------
@@ -1112,4 +1119,18 @@ begin
 end
 go
 
+------------------------------------------------
+create or alter procedure a2meta.[PrintForm.Load]
+@UserId bigint,
+@Id uniqueidentifier
+as
+begin
+	set nocount on;
+	set transaction isolation level read uncommitted;
+	
+	select [PrintForm!TPrintForm!Object] = null, [Id!!Id] = Id, [Name!!Name] = [Name], 
+		[Json!!Json] = [Json]
+	from a2meta.PrintForms where Id = @Id;
+end
+go
 

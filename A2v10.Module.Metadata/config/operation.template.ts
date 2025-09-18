@@ -17,7 +17,8 @@ const template: Template = {
 	commands: {
 		preview,
 		openForm,
-		showMapping
+		showMapping,
+		addPrintForm
 	}
 };
 
@@ -64,4 +65,8 @@ async function showMapping(apply) {
 	}
 	await ctrl.$save();
 	ctrl.$showDialog(url, { Id: apply.Id });
+}
+
+function addPrintForm() {
+	alert('add print form here');
 }
