@@ -9,16 +9,31 @@
 	const rowHeaderWidth = 32;
 	const columnHeaderHeigth = 23; // column header height - 1
 
+	function fromCellRef(ref) { 
+		const match = ref.match(/^([A-Z]+)(\d+)$/);
+		if (!match)
+			throw new Error(`Invalid cell reference: ${ref}`);
 
-	function styleHashCode(st) {
-		if (!st) return '-';
-		let b = st.Bold ? 'B' : '-';
-		let i = st.Italic ? 'I' : '-';
-		let fs = st.FontSize ? `FS${st.FontSize}` : '-';
-		let a = st.Align ? st.Align[0] : '-';
-		let va = st.VAlign ? st.VAlign[0] : '-';
-		let brd = st.Border || '-';
-		return `${b}:${i}:${fs}:${a}:${va}:${brd}`;
+		const c = match[1];
+		const rn = parseInt(match[2], 10);
+
+		// (A=1, B=2, ..., Z=26, AA=27 ..)
+		let cn = 0;
+		for (let i = 0; i < c.length; i++) {
+			cn *= 26;
+			cn += c.charCodeAt(i) - 64; // 'A'.charCodeAt(0) === 65
+		}
+
+		return { r: rn, c: cn - 1 };
+	}
+
+
+	function pt2Px(p) {
+		return Math.round(p * 1.33333 * 100) / 100; // pt * (96 / 72);
+	}
+
+	function px2Pt(px) {
+		return px * .75; // px * (72 / 96)
 	}
 
 	class StyleProcessor {
@@ -26,7 +41,7 @@
 			this.styles = styles;
 			this.stylesMap = Object.keys(this.styles).reduce((p, c) => {
 				let st = this.styles[c];
-				let sc = styleHashCode(st);
+				let sc = this.styleHashCode(st);
 				p[sc] = c;
 				return p;
 			}, {});
@@ -36,13 +51,82 @@
 			return {};		
 		}
 
+
+		styleHashCode(st) {
+			if (!st) return '-';
+			let b = st.Bold ? 'B' : '-';
+			let i = st.Italic ? 'I' : '-';
+			let fs = st.FontSize ? `FS${st.FontSize}` : '-';
+			let a = st.Align ? st.Align[0] : '-';
+			let va = st.VAlign ? st.VAlign[0] : '-';
+			let brd = st.Border || '-';
+			let bg = st.BackgroundColor ? `BG${st.Background}` : '-';
+			return `${b}:${i}:${fs}:${a}:${va}:${brd}:${bg}`;
+		}
+
+		cellClass(key) {
+			let st = this.styles[key];
+			let c = '';
+			if (!st) return c;
+			if (st.Bold)
+				c += ' bold';
+			if (st.Italic)
+				c += ' italic';
+			if (st.Align)
+				c += ` text-${st.Align.toLowerCase()}`;
+			if (st.VAlign)
+				c += ` align-${st.VAlign.toLowerCase()}`;
+			return c;
+		}
+
+		cellStyle(key) {
+			let st = this.styles[key];
+			let c = {};
+			if (!st) return c;
+			if (st.FontSize)
+				c.fontSize = `${st.FontSize}pt`;
+			if (st.FontName) {
+				c.fontFamily = st.FontName;
+				console.dir(c);
+			}
+
+			function setBorder(name, val) {
+				val = +val;
+				if (!val)
+					return;
+				if (val === .2)
+					c[name] = "1px solid black";
+				else if (val === 1)
+					c[name] = "2px solid black";
+			}
+
+			if (st.Border) {
+				let bx = st.Border.split(',');
+				if (bx.length === 1) {
+					if (+bx[0] === 0.2)
+						c.border = "1px solid black";
+				}
+				else if (bx.length === 4) {
+					setBorder('borderTop', bx[0]);
+					setBorder('borderRight', bx[1]);
+					setBorder('borderBottom', bx[2]);
+					setBorder('borderLeft', bx[3]);
+				}
+			}
+			if (st.Background)
+				c.backgroundColor = "#" + st.Background;
+			return c;
+		}
+
 		appendNewStyle(styleObj, hashCode) {
-			let ix = Object.keys(this.styles).length + 1;
-			let skey = '';
-			do {
-				skey = `S${ix}`;
-				ix += 1;
-			} while (this.styles[skey]);
+			function getNextKey(obj) {
+				let i = 1;
+				while (obj.hasOwnProperty(`S${i}`)) {
+					i++;
+				}
+				return `S${i}`;
+			}
+			let skey = getNextKey(this.styles);
 			Vue.set(this.styles, skey, styleObj);
 			this.stylesMap[hashCode] = skey;
 			return skey;
@@ -51,7 +135,7 @@
 		setStyleProp(st, prop, val) {
 			let sobj = Object.assign({}, this.styles[st] || this.defaultStyle());
 			sobj[prop] = val;
-			let shc = styleHashCode(sobj);
+			let shc = this.styleHashCode(sobj);
 			if (shc === '-:-:-:-:-:-')
 				return undefined;
 			let ns = this.stylesMap[shc];
@@ -221,8 +305,10 @@
 			},
 			hMouseUp(ev) {
 				this.onUp(ev, nw => {
+					let cw = px2pt(nw);
+					// TODO: check DEFAULT width
 					let col = this.$parent.getOrCreateColumn(this.rItem);
-					Vue.set(col, 'Width', nw);
+					Vue.set(col, 'Width', cw);
 				});
 			},
 			hMouseMove(ev) {
@@ -245,7 +331,7 @@
 			vMouseUp(ev) {
 				this.onUp(ev, nh => {
 					let row = this.$parent.getOrCreateRow(this.rItem);
-					Vue.set(row, 'Height', nh);
+					Vue.set(row, 'Height', px2Pt(nh));
 				});
 			},
 			vMouseMove(ev) {
@@ -392,20 +478,22 @@
 						let nw = cw;
 						let nh = rh;
 						let cellCls = 'cell' + p.cellClass(cell);
+						let cellStyle = p.cellStyle(cell);
 						if (cell.ColSpan > 1 || cell.RowSpan > 1) {
 							for (let sc = 1; sc < cell.ColSpan; sc++)
 								nw += p.colWidth(sc + c);
 							for (let sr = 1; sr < cell.RowSpan; sr++)
 								nh += p.rowHeight(sr + r);
 							cellCls += ' span';
+							let cellStyle = { left: toPx(x + 1), top: toPx(y + 1), width: toPx(nw - 1), height: toPx(nh - 1) };
 							elems.push(h('div', {
 								class: 'cell-ph',
-								style: { left: toPx(x + 1), top: toPx(y + 1), width: toPx(nw - 1), height: toPx(nh - 1) },
+								style: cellStyle
 							}));
 						}
 						elems.push(h('div', {
 							class: cellCls,
-							style: { left: toPx(x), top: toPx(y), width: toPx(nw + 1), height: toPx(nh + 1) },
+							style: Object.assign({ left: toPx(x), top: toPx(y), width: toPx(nw + 1), height: toPx(nh + 1) }, cellStyle),
 							on: { pointerdown: (ev) => this.clickPh(c, r, cell, ev) }
 						},
 						cell.Value));
@@ -510,8 +598,8 @@
 		}
 	};
 
-	const defaultColumWidth = 100;
-	const defaultRowHeight = 23;
+	const defaultColumWidth = 54; // 56pt = 72px
+	const defaultRowHeight = 15; // 15pt = 20px;
 
 	const rowComboWidth = 75;
 
@@ -535,9 +623,9 @@
 		<ss-selection />
 		<ss-edit v-if=editing text=editText />
 	</div>
-	<a2-scroll-bar class="no-me" :horz=true :min="sheet.FixedColumns" :max="sheet.ColumnCount"
+	<a2-scroll-bar class="no-me" :horz=true :min="sheet.FixedColumns || 0" :max="sheet.ColumnCount"
 		:pos="scrollPos.x" :page="hScrollPageSize()"" :setPos=setPosX></a2-scroll-bar>
-	<a2-scroll-bar class="no-me" :horz=false :min="sheet.FixedRows" :max="sheet.RowCount"
+	<a2-scroll-bar class="no-me" :horz=false :min="sheet.FixedRows || 0" :max="sheet.RowCount"
 		:pos="scrollPos.y" :page="vScrollPageSize()" :setPos=setPosY></a2-scroll-bar>
 </div>
 `;
@@ -598,11 +686,11 @@
 			},
 			colWidth(c) {
 				let col = this.sheet.Columns[toColRef(c)];
-				return col ? col.Width : defaultColumWidth;
+				return pt2Px(col ? (col.Width == -1 ? 70 : col.Width) : defaultColumWidth);
 			},
 			rowHeight(r) {
 				let row = this.sheet.Rows[r + 1];
-				return row ? row.Height : defaultRowHeight;
+				return pt2Px(row ? row.Height : defaultRowHeight);
 			},
 			getOrCreateRow(r) {
 				let row = this.sheet.Rows[r + 1];
@@ -694,7 +782,7 @@
 				if (deltaY > 0)
 					this.scrollPos.y = Math.min(this.scrollPos.y + deltaY, this.sheet.RowCount - this.vScrollPageSize());
 				else
-					this.scrollPos.y = Math.max(this.scrollPos.y + deltaY, this.sheet.FixedRows);
+					this.scrollPos.y = Math.max(this.scrollPos.y + deltaY, (this.sheet.FixedRows || 0));
 			},
 			keydown(ev) {
 				let sa = this.selection;
@@ -767,7 +855,7 @@
 					cell = { Content: val };
 					Vue.set(this.sheet.Cells, cellRef, cell);
 				}
-				Vue.set(cell, 'Content', val);
+				Vue.set(cell, 'Value', val);
 			},
 			startEdit(c, r) {
 				return { control: 'editor' };
@@ -790,7 +878,7 @@
 				er.r = rp.row;
 				let c = this.sheet.Cells[`${toColRef(cp.col)}${rp.row + 1}`];
 				if (c)
-					this.editText = c.Content;
+					this.editText = c.Value;
 				else
 					this.editText = '';
 				this.editing = true;
@@ -801,7 +889,7 @@
 				let sa = this.selection;
 				this.selecting = true;
 				sa.length = 0;
-				let sp = { left: c, top: r, right: c + (cell.ColSpan || 1), bottom: r + (cell.RowSpan || 1)};
+				let sp = { left: c, top: r, right: c + (cell.ColSpan || 1), bottom: r + (cell.RowSpan || 1) };
 				sa.push(sp);
 			},
 			pointerdown(ev) {
@@ -816,7 +904,7 @@
 				if (p.x < this.startX) {
 					let rp = this.rowFromPoint(p.y);
 					sa.length = 0;
-					let sp = { left: 0, top: rp.row, right: sht.Size.Columns + 1, bottom: rp.row + 1 };
+					let sp = { left: 0, top: rp.row, right: sht.ColumnCount + 1, bottom: rp.row + 1 };
 					sa.push(sp);
 				}
 				else if (p.y < columnHeaderHeigth) {
@@ -884,7 +972,7 @@
 				let cont = this.$refs.container;
 				let cWidth = cont.clientWidth - 1; //- rowHeaderWidth;
 				let cHeight = cont.clientHeight - 1; //- columnHeaderHeigth;
-				let fix = this.sheet.Fixed || {};
+				let fix = { Rows: this.sheet.FixedRows || 0, Columns: this.sheet.FixedColumns|| 0 };
 				let sp = this.scrollPos;
 				let sr = null;
 				if (sp.y > fix.Rows && sel.top < sp.y)
@@ -918,19 +1006,12 @@
 				return this.selection.some(c => cb(c, this.sheet.Cells[`${toColRef(c.left)}${c.top + 1}`]));
 			},
 			cellClass(cell) {
-				if (!cell || !cell.Style) return '';
-				let st = this.sheet.Styles[cell.Style];
-				if (!st) return '';
-				let c = '';
-				if (st.Bold)
-					c += ' bold';
-				if (st.Italic)
-					c += ' italic';
-				if (st.Align)
-					c += ` text-${st.Align.toLowerCase()}`;
-				if (st.VAlign)
-					c += ` align-${st.VAlign.toLowerCase()}`;
-				return c;
+				if (!cell) return '';
+				return this.__sp.cellClass(cell.Style);
+			},
+			cellStyle(cell) {
+				if (!cell) return '';
+				return this.__sp.cellStyle(cell.Style);
 			},
 			hScrollPageSize() {
 				let cont = this.$refs.container;
@@ -939,14 +1020,14 @@
 				let x = this.startX;
 				let max = cont.clientWidth;
 				let cols = 0;
+				let fc = this.sheet.FixedColumns || 0;
 				for (let c of this.renderedColumns()) {
 					x += this.colWidth(c);
 					if (x > max)
 						break;
-					else if (c >= this.sheet.FixedColumns)
+					else if (c >= fc)
 						cols += 1;
 				}
-				//console.dir(cols);
 				return cols;
 			},
 			vScrollPageSize() {
@@ -956,11 +1037,12 @@
 				let y = columnHeaderHeigth;
 				let max = cont.clientHeight;
 				let rows = 0;
+				let fr = this.sheet.FixedRows || 0;
 				for (let r of this.renderedRows()) {
 					y += this.rowHeight(r);
 					if (y > max)
 						break;
-					else if (r >= this.sheet.FixedRows)
+					else if (r >= fr)
 						rows += 1;
 				}
 				return rows;
@@ -981,7 +1063,7 @@
 				for (let cr of enumerateSel(sel)) {
 					let cell = this.sheet.Cells[cr];
 					if (!cell) {
-						cell = { Content: val };
+						cell = { Value: val };
 						Vue.set(this.sheet.Cells, cr, cell);
 						cell = this.sheet.Cells[cr];
 					}
@@ -998,6 +1080,7 @@
 		mounted() {
 			this.updateCount += 1;
 			let sp = { left: 0, top: 0, right: 1, bottom: 1 };
+			// TODO: check span
 			this.selection.push(sp);
 			this.scrollPos.x = this.sheet.FixedColumns || 0;
 			this.scrollPos.y = this.sheet.FixedRows || 0;
@@ -1007,6 +1090,26 @@
 			});
 			this.__ro.observe(this.$el);
 			this.__sp = new StyleProcessor(this.sheet.Styles);
+			this.__mergeCells = {};
+			for (let cr in this.sheet.Cells) {
+				let cell = this.sheet.Cells[cr];
+				if (cell.ColSpan > 1 || cell.RowSpan > 1) {
+					let rowCol = fromCellRef(cr);
+					if (cell.RowSpan > 1 && (cell.ColSpan || 1) == 1)
+						for (let r = 1; r < (cell.RowSpan || 1); r++)
+							this.__mergeCells[`${toColRef(rowCol.c)}${r + rowCol.r}`] = cr;
+					else if (cell.ColSpan > 1 && (cell.RowSpan || 1) == 1)
+						for (let c = 1; c < (cell.ColSpan || 1); c++)
+							this.__mergeCells[`${toColRef(c + rowCol.c)}${rowCol.r}`] = cr;
+					else
+						for (let c = 1; c < (cell.ColSpan || 1); c++)
+							for (let r = 1; r < (cell.RowSpan || 1); r++)
+								this.__mergeCells[`${toColRef(c + rowCol.c)}${r + rowCol.r}`] = cr;
+				}
+			}
+			// TODO: auto style
+			this.sheet.ColumnCount = 26;
+			this.sheet.RowCount = 100;
 		},
 		beforeDestroy() {
 			if (this.__ro)
