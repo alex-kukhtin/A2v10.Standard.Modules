@@ -69,13 +69,13 @@
 			let c = '';
 			if (!st) return c;
 			if (st.Bold)
-				c += ' bold';
+				c += ' c-bold';
 			if (st.Italic)
-				c += ' italic';
+				c += ' c-italic';
 			if (st.Align)
-				c += ` text-${st.Align.toLowerCase()}`;
+				c += ` c-text-${st.Align.toLowerCase()}`;
 			if (st.VAlign)
-				c += ` align-${st.VAlign.toLowerCase()}`;
+				c += ` c-align-${st.VAlign.toLowerCase()}`;
 			return c;
 		}
 
@@ -105,6 +105,8 @@
 				if (bx.length === 1) {
 					if (+bx[0] === 0.2)
 						c.border = "1px solid black";
+					else if (+bx[0] === 1)
+						c.border = "3px solid black";
 				}
 				else if (bx.length === 4) {
 					setBorder('borderTop', bx[0]);
@@ -112,6 +114,20 @@
 					setBorder('borderBottom', bx[2]);
 					setBorder('borderLeft', bx[3]);
 				}
+			}
+			if (st.Background)
+				c.backgroundColor = "#" + st.Background;
+			return c;
+		}
+
+		cellStyle2(key) {
+			let st = this.styles[key];
+			let c = {};
+			if (!st) return c;
+			if (st.FontSize)
+				c.fontSize = `${st.FontSize}pt`;
+			if (st.FontName) {
+				c.fontFamily = st.FontName;
 			}
 			if (st.Background)
 				c.backgroundColor = "#" + st.Background;
@@ -305,7 +321,7 @@
 			},
 			hMouseUp(ev) {
 				this.onUp(ev, nw => {
-					let cw = px2pt(nw);
+					let cw = px2Pt(nw);
 					// TODO: check DEFAULT width
 					let col = this.$parent.getOrCreateColumn(this.rItem);
 					Vue.set(col, 'Width', cw);
@@ -553,7 +569,9 @@
 			let cell = p.sheet.Cells[cellRef];
 			return h('div', {
 				class: 'input cell cell-edit no-me' + p.cellClass(cell),
-				style: { left: toPx(r.l + 1), top: toPx(r.t + 1), width: toPx(r.w - 1), height: toPx(r.h - 1) },
+				style: Object.assign({
+					left: toPx(r.l + 1), top: toPx(r.t + 1), width: toPx(r.w - 1), height: toPx(r.h - 1),
+				}, p.cellStyle2(cell)),
 				domProps: { contentEditable: true },
 				on: { blur: this.blur }
 			}, p.editText);
@@ -565,7 +583,7 @@
 	};
 
 	const toolbarTemplate = `
-<div class="ss-toolbar">TOOLBAR
+<div class="toolbar ss-toolbar">
 	<button @click="toggleBool('Bold')" :class="{checked: isChecked('Bold', true)}">B</button>
 	<button @click="toggleBool('Italic')" :class="{checked: isChecked('Italic', true)}">I</button>
 	<span>|</span>
@@ -575,7 +593,7 @@
 	<span>|</span>
 	<button @click="setProp('VAlign', '')" :class="{checked: isCheckedProp('VAlign', '')}">T</button>
 	<button @click="setProp('VAlign', 'Middle')" :class="{checked: isCheckedProp('VAlign', 'Middle')}">M</button>
-	<button @click="setProp('VAlign', 'Bottom')" :class="{checked: isCheckedProp('VAlign', 'Bottom')}">B</button>
+	<button class="btn btn-tb" @click="setProp('VAlign', 'Bottom')" :class="{checked: isCheckedProp('VAlign', 'Bottom')}"><i class="ico ico-copy" /></button>
 </div>
 `;
 	var spreadSheetToolbar = {
@@ -614,7 +632,7 @@
 	const spreadsheetTemplate = `
 <div class="ss-container" :class="{editable}">
 	<ss-toolbar v-if="editable" />
-	<div class="ss-body" :key=updateCount ref=container tabindex=0
+	<div class="ss-body" :key=updateCount ref=container tabindex=0 :style=bodyStyle
 		@pointerup=pointerup @pointerdown=pointerdown @pointermove=pointermove
 		@dblclick=dblclick @keydown.self.stop=keydown @wheel.prevent=mousewheel>
 		<ss-canvas />
@@ -640,7 +658,7 @@
 			'ss-toolbar': spreadSheetToolbar
 		},
 		props: {
-			sheet: Object,
+			report: Object,
 			gridLines: { type: Boolean, default: true },
 			headers: { type: Boolean, default: true },
 			rowsCombo: Boolean,
@@ -659,8 +677,15 @@
 			};
 		},
 		computed: {
+			sheet() {
+				return this.report.Workbook;
+			},
 			startX() {
 				return rowHeaderWidth + (this.rowsCombo ? rowComboWidth : 0);
+			},
+			bodyStyle() {
+				console.dir(this.sheet);
+				return { fontFamily: this.report.FontFamily, fontSize: `${this.sheet.FontSize}pt` };
 			}
 		},
 		methods: {
@@ -686,11 +711,17 @@
 			},
 			colWidth(c) {
 				let col = this.sheet.Columns[toColRef(c)];
-				return pt2Px(col ? (col.Width == -1 ? 70 : col.Width) : defaultColumWidth);
+				let cw = this.sheet.ColumnWidth ?? defaultColumWidth;
+				if (col && col.Width)
+					cw = col.Width == -1 ? 70 : col.Width;
+				return pt2Px(cw);
 			},
 			rowHeight(r) {
 				let row = this.sheet.Rows[r + 1];
-				return pt2Px(row ? row.Height : defaultRowHeight);
+				let rh = this.sheet.RowHeight ?? defaultRowHeight;
+				if (row && row.Height)
+					rh = row.Height;
+				return pt2Px(rh);
 			},
 			getOrCreateRow(r) {
 				let row = this.sheet.Rows[r + 1];
@@ -904,13 +935,13 @@
 				if (p.x < this.startX) {
 					let rp = this.rowFromPoint(p.y);
 					sa.length = 0;
-					let sp = { left: 0, top: rp.row, right: sht.ColumnCount + 1, bottom: rp.row + 1 };
+					let sp = { left: 0, top: rp.row, right: sht.ColumnCount, bottom: rp.row + 1 };
 					sa.push(sp);
 				}
 				else if (p.y < columnHeaderHeigth) {
 					let cp = this.colFromPoint(p.x);
 					sa.length = 0;
-					let sp = { left: cp.col, top: 0, right: cp.col + 1, bottom: sht.RowCount + 1 };
+					let sp = { left: cp.col, top: 0, right: cp.col + 1, bottom: sht.RowCount};
 					sa.push(sp);
 				}
 				else {
@@ -959,7 +990,7 @@
 				}
 			},
 			pointerup(ev) {
-				ev.target.setPointerCapture(ev.pointerId);
+				ev.target.releasePointerCapture(ev.pointerId);
 				this.selecting = false;
 				this.selStart.x = 0;
 				this.selStart.y = 0;
@@ -1012,6 +1043,10 @@
 			cellStyle(cell) {
 				if (!cell) return '';
 				return this.__sp.cellStyle(cell.Style);
+			},
+			cellStyle2(cell) {
+				if (!cell) return '';
+				return this.__sp.cellStyle2(cell.Style);
 			},
 			hScrollPageSize() {
 				let cont = this.$refs.container;
@@ -1108,8 +1143,8 @@
 				}
 			}
 			// TODO: auto style
-			this.sheet.ColumnCount = 26;
-			this.sheet.RowCount = 100;
+			this.sheet.ColumnCount = Math.max(this.sheet.ColumnCount, 26);
+			this.sheet.RowCount = Math.max(this.sheet.RowCount, 100);
 		},
 		beforeDestroy() {
 			if (this.__ro)

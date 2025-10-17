@@ -1,12 +1,8 @@
 ﻿<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
-	  Title="Edit Form">
-	<Page.Toolbar>
-		<Toolbar Margin="0,0,0,1rem">
-		</Toolbar>
-	</Page.Toolbar>
+	  Title="Edit Print Form">
 	<HtmlElement TagName="a2-spreadsheet">
 		<HtmlElement.Attributes>
-			<HtmlAttribute Name="sheet" Value="{Bind PrintForm.Json.Workbook}"/>
+			<HtmlAttribute Name="report" Value="{Bind PrintForm.Json}"/>
 		</HtmlElement.Attributes>
 	</HtmlElement>
 </Page>
