@@ -24,6 +24,7 @@
 		},
 		"props": {
 			"model": "Catalog.Prop",
+			"template": "prop.template",
 			"view": "prop.dialog"
 		},
 		"run": {
@@ -52,6 +53,14 @@
 		"delete": {
 			"type": "sql",
 			"procedure": "Workflow.Delete"
+		},
+		"copy": {
+			"type": "sql",
+			"procedure": "Workflow.Copy"
+		},
+		"checkDuplicateKey": {
+			"type": "sql",
+			"procedure": "Workflow.Key.Duplicate"
 		}
 	},
 	"files": {

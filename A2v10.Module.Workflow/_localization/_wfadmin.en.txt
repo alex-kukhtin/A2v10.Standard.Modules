@@ -41,5 +41,9 @@
 ; Errors
 @WfAdm.Error.WorkflowUsed=Unable to delete the process. It's used.
 @WfAfm.Error.InstanceUsed=Unable to delete the instance. It\'s used.
+@WfAfm.Error.DuplicateKey=A process with this key already exists.
+; Confirm
+@WfAdm.Confirm.Copy=Create a copy of the process?
+
 
 

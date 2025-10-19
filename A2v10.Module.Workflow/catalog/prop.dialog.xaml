@@ -3,11 +3,11 @@
 		SaveEvent="g.workflow.props">
 	<Dialog.Buttons>
 		<Button Content="@[Save]" Style="Primary"
-				Command="{BindCmd SaveAndClose}" />
+				Command="{BindCmd SaveAndClose, ValidRequired=True}" />
 		<Button Content="@[Close]" Command="{BindCmd Close}" />
 	</Dialog.Buttons>
 	<Grid Rows="Auto,Auto,Auto,1*,Auto" Height="22rem">
-		<TextBox Label="@[Name]" Value="{Bind Workflow.Name}"/>
+		<TextBox Label="@[Name]" Value="{Bind Workflow.Name}" TabIndex="1"/>
 		<TextBox Label="@[WfAdm.Key]" Value="{Bind Workflow.Key}"
 				 Width="19rem"/>
 		<CheckBox Label="@[WfAdm.Archive]" Value="{Bind Workflow.Archive}" />

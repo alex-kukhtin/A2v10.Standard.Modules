@@ -41,4 +41,7 @@
 ; Errors
 @WfAdm.Error.WorkflowUsed=Процес неможливо видалити. Він використовуюється.
 @WfAfm.Error.InstanceUsed=Екземпляр процесу неможливо видалити. Він використовується.
+@WfAfm.Error.DuplicateKey=Процес з таким ключем вже існує.
+; Confirm
+@WfAdm.Confirm.Copy=Створити копію процесу?
 

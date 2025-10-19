@@ -29,7 +29,8 @@ const template: Template = {
 			confirm: '@[Confirm.Delete.Element]'
 		},
 		backup,
-		restore
+		restore,
+		copy
 	}
 }
 
@@ -102,4 +103,10 @@ async function restore() {
 	const ctrl: IController = this.$ctrl;
 	await ctrl.$upload('/$workflow/catalog/restore', 'application/zip');
 	ctrl.$reload();
+}
+
+async function copy(wf) {
+	const ctrl: IController = this.$ctrl;
+	let np = await ctrl.$invoke('copy', { Id: wf.Id }, '/$workflow/catalog');
+	this.Workflows.$append(np.Workflow);
 }

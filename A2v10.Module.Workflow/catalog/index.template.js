@@ -31,7 +31,8 @@ define(["require", "exports"], function (require, exports) {
                 confirm: '@[Confirm.Delete.Element]'
             },
             backup,
-            restore
+            restore,
+            copy
         }
     };
     exports.default = template;
@@ -95,5 +96,10 @@ define(["require", "exports"], function (require, exports) {
         const ctrl = this.$ctrl;
         await ctrl.$upload('/$workflow/catalog/restore', 'application/zip');
         ctrl.$reload();
+    }
+    async function copy(wf) {
+        const ctrl = this.$ctrl;
+        let np = await ctrl.$invoke('copy', { Id: wf.Id }, '/$workflow/catalog');
+        this.Workflows.$append(np.Workflow);
     }
 });
