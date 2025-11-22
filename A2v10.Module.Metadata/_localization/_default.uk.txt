@@ -27,6 +27,7 @@
 @Endpoint=Кінцева точка
 @Filters=Фільтри
 @PrintForms=Друковані форми
+@Other=Інше
 ; Reports
 @TurnOverSheet=Оборотна відомість
 @TurnOver.Start=На початок
@@ -62,4 +63,5 @@
 ; Confirm
 @Confirm.Sure=Ви впевнені?
 @Meta.Confirm.ResetForm=Скинути форму? Всі зміни будуть втрачені.
-
+;
+@Apply2=Проведення

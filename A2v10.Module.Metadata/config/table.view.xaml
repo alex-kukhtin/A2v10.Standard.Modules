@@ -20,7 +20,7 @@
 			<TabButton Content="Kinds" ActiveValue="kinds" If="{Bind Table.$HasKinds}"/>
 			<TabButton Content="Apply" ActiveValue="apply" If="{Bind Table.$HasApply}"/>
 			<TabButton Content="@[Forms]" ActiveValue="forms" If="{Bind Table.$HasForms}"/>
-			<TabButton Content="Other" ActiveValue="other"/>
+			<TabButton Content="@[Other]" ActiveValue="other"/>
 		</TabBar>
 		<Switch Expression="{Bind Root.$$Tab}" Grid.Row="3">
 			<Case Value="">
