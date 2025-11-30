@@ -32,7 +32,8 @@ async function resume(inbox) {
 		InstanceId: inbox.Instance,
 		Bookmark: inbox.Bookmark,
 		Reply: {
-			Answer: this.Answer.Answer
+			Answer: this.Answer.Answer,
+			UserId: '$(UserId)'
 		}
 	}, '/$workflow/instance');
 

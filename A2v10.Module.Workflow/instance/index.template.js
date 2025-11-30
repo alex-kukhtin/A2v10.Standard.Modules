@@ -29,7 +29,8 @@ define(["require", "exports"], function (require, exports) {
             InstanceId: inbox.Instance,
             Bookmark: inbox.Bookmark,
             Reply: {
-                Answer: this.Answer.Answer
+                Answer: this.Answer.Answer,
+                UserId: '$(UserId)'
             }
         }, '/$workflow/instance');
         let resMsg = `InstanceId: ${res.InstanceId}, Result: ${JSON.stringify(res.Result)}`;
