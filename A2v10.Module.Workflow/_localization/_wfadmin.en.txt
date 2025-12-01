@@ -10,6 +10,7 @@
 @WfAdm.Catalog=Catalog
 @WfAdm.Events=Events
 @WfAdm.Log=Log
+@WfAdm.Track=Track
 @WfAdm.Variables=Variables
 @WfAdm.Filters=Filters
 @WfAdm.Backup=Backup

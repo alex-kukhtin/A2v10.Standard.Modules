@@ -9,18 +9,22 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="A2v10.Platform" Version="10.1.8579" />
-		<PackageReference Include="A2v10.Web.Assets" Version="10.1.8579" />
+		<PackageReference Include="A2v10.Platform" Version="10.1.8600" />
+		<PackageReference Include="A2v10.Web.Assets" Version="10.1.8600" />
 		<PackageReference Include="A2v10.Workflow.WebAssets" Version="10.1.8119" />
 		<PackageReference Include="A2v10.Workflow.Engine" Version="10.1.8305" />
-		<PackageReference Include="A2v10.Scheduling" Version="10.1.8579" />
-		<PackageReference Include="A2v10.MailClient" Version="10.1.8575" />
+		<PackageReference Include="A2v10.Scheduling" Version="10.1.8600" />
+		<PackageReference Include="A2v10.MailClient" Version="10.1.8600" />
+		<PackageReference Include="A2v10.Metadata" Version="10.1.8600" />
 		<!--!!!UPDATE versions in A2v10.Module.Workflow.nuspec && _layout !!!-->
+		<!--
 		<PackageReference Include="A2v10.Module.Metadata" Version="10.1.1055" />
+		-->
 		<!--!!!UPDATE versions in A2v10.Module.Metadata.nuspec && _layout !!!-->
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\A2v10.Module.Workflow\A2v10.Module.Workflow.csproj" />
+		<ProjectReference Include="..\A2v10.Module.Metadata\A2v10.Module.Metadata.csproj" />
 	</ItemGroup>
 </Project>

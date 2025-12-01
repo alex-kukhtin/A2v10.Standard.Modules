@@ -14,6 +14,7 @@
 					<Button Icon="Log" Command="{BindCmd Dialog, Action=Show, Argument={Bind Instance}, Url='/$workflow/instance/log'}"/>
 					<Button Icon="Variable" Command="{BindCmd Dialog, Action=Show, Argument={Bind Instance}, Url='/$workflow/instance/variables'}"/>
 					<Button Icon="Energy" Command="{BindCmd Dialog, Action=Show, Argument={Bind Instance}, Url='/$workflow/instance/events'}"/>
+					<Button Icon="FileUser" Command="{BindCmd Dialog, Action=Show, Argument={Bind Instance}, Url='/$workflow/instance/track'}"/>
 				</Toolbar>
 				<Static Label="@[WfAdm.Instance]" Value="{Bind Instance.Id}" CssClass="input-code">
 					<Hyperlink Icon="Copy" Command="{BindCmdExec copyInstanceId}" Render="Show"/>

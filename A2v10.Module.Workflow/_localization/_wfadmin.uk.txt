@@ -10,6 +10,7 @@
 @WfAdm.Catalog=Каталог
 @WfAdm.Events=Події
 @WfAdm.Log=Журнал
+@WfAdm.Track=Трекінг
 @WfAdm.Variables=Змінні
 @WfAdm.Filters=Фільтри
 @WfAdm.Backup=Резервне копіювання

@@ -248,3 +248,23 @@ begin
 	update a2wf.Instances set Lock = null, LockDate = null where Id = @Id;
 end
 go
+------------------------------------------------
+create or alter procedure wfadm.[Instance.Track.Load]
+@UserId bigint,
+@Id nvarchar(64) = null,
+@Offset int = 0,
+@PageSize int = 20
+as
+begin
+	select [Records!TRecord!Array] = null, [Id!!Id] = t.Id, t.Activity, t.[Message],
+		[DateCreated!!Utc] = t.DateCreated, UserId, RoleId,
+		[!!RowCount] = count(*) over()
+	from a2wf.UserTrack t
+	where t.InstanceId = @Id
+	order by Id desc
+	offset @Offset rows fetch next @PageSize rows only
+	option (recompile);
+
+	select [!$System!] = null, [!Records!Offset] = @Offset, [!Records!PageSize] = @PageSize;
+end
+go

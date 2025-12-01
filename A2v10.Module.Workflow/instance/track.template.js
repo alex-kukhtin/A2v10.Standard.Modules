@@ -3,9 +3,7 @@ define(["require", "exports"], function (require, exports) {
     Object.defineProperty(exports, "__esModule", { value: true });
     const template = {
         options: {},
-        properties: {
-            'TInstance.$Vars'() { return { Variables: this.State.Variables, LastResult: this.State.LastResult }; }
-        }
+        properties: {}
     };
     exports.default = template;
 });

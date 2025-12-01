@@ -1,0 +1,26 @@
+﻿<Dialog xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
+	  Title="@[WfAdm.Track]" Width="65rem">
+	<Dialog.Buttons>
+		<Button Content="@[Close]" Command="{BindCmd Close}" />
+	</Dialog.Buttons>
+	<Dialog.CollectionView>
+		<CollectionView ItemsSource="{Bind Records}" RunAt="Server">
+		</CollectionView>
+	</Dialog.CollectionView>
+	<Grid Rows="Auto,1*,Auto" Height="100%">
+		<Toolbar>
+			<Button Icon="Reload" Command="{BindCmd Reload}"/>
+		</Toolbar>
+		<DataGrid Grid.Row="2" Grid.Col="1" Sort="False"
+				ItemsSource="{Bind Parent.ItemsSource}" FixedHeader="True" Height="40rem">
+			<DataGridColumn Header="#" Role="Id" Content="{Bind Id}"/>
+			<DataGridColumn Header="Activity" Content="{Bind Activity}" Wrap="NoWrap"/>
+			<DataGridColumn Header="DateCreated" Content="{Bind DateCreated, DataType=DateTime2}" Role="Date" Fit="True"
+							Sort="False"/>
+			<DataGridColumn Header="UserId" Content="{BindNumber UserId}" Role="Id"/>
+			<DataGridColumn Header="RoleId" Content="{BindNumber RoleId}" Role="Id"/>
+			<DataGridColumn Header="Message" Content="{Bind Message}" Width="500"/>
+		</DataGrid>
+		<Pager Source="{Bind Parent.Pager}"/>
+	</Grid>
+</Dialog>

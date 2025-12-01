@@ -27,6 +27,11 @@
 			"model": "Instance.Variables",
 			"template": "variables.template",
 			"view": "variables.dialog"
+		},
+		"track": {
+			"model": "Instance.Track",
+			"template": "track.template",
+			"view": "track.dialog"
 		}
 	},
 	"commands": {
