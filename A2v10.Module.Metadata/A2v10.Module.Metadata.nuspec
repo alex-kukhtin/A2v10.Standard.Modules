@@ -1,7 +1,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
 	<metadata>
 		<id>A2v10.Module.Metadata</id>
-		<version>10.1.1080</version>
+		<version>10.1.1081</version>
 		<authors>Oleksandr Kukthin</authors>
 		<description>A2v10 Platform Application Designer UI</description>
 		<copyright>Copyright © 2025 Oleksandr Kukthin. All rights reserved.</copyright>
@@ -28,6 +28,10 @@
 		<file src="..\WebApp\wwwroot\css\meta\formdesigner.css" target="contentFiles\css\formdesigner.css" />
 		<file src="..\WebApp\wwwroot\scripts\meta\formdesigner.min.js" target="contentFiles\js\formdesigner.min.js" />
 		<file src="..\WebApp\wwwroot\scripts\meta\formdesigner.js" target="contentFiles\js\formdesigner.js" />
+		<file src="..\WebApp\wwwroot\css\meta\a2v10spreadsheet.min.css" target="contentFiles\css\a2v10spreadsheet.min.css" />
+		<file src="..\WebApp\wwwroot\css\meta\a2v10spreadsheet.css" target="contentFiles\css\a2v10spreadsheet.css" />
+		<file src="..\WebApp\wwwroot\scripts\meta\a2v10spreadsheet.min.js" target="contentFiles\js\a2v10spreadsheet.min.js" />
+		<file src="..\WebApp\wwwroot\scripts\meta\a2v10spreadsheet.js" target="contentFiles\js\a2v10spreadsheet.js" />
 		<file src="A2v10.Module.Metadata.targets" target="build\A2v10.Module.Metadata.targets" />
 		<file src=".\README.md" target="\" />
 	</files>
