@@ -12,7 +12,7 @@
 		<PackageReference Include="A2v10.Platform" Version="10.1.8600" />
 		<PackageReference Include="A2v10.Web.Assets" Version="10.1.8600" />
 		<PackageReference Include="A2v10.Workflow.WebAssets" Version="10.1.8119" />
-		<PackageReference Include="A2v10.Workflow.Engine" Version="10.1.8306" />
+		<PackageReference Include="A2v10.Workflow.Engine" Version="10.1.8308" />
 		<PackageReference Include="A2v10.Scheduling" Version="10.1.8600" />
 		<PackageReference Include="A2v10.MailClient" Version="10.1.8600" />
 		<PackageReference Include="A2v10.Metadata" Version="10.1.8600" />

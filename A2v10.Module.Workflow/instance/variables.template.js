@@ -4,7 +4,13 @@ define(["require", "exports"], function (require, exports) {
     const template = {
         options: {},
         properties: {
-            'TInstance.$Vars'() { return { Variables: this.State.Variables, LastResult: this.State.LastResult }; }
+            'TInstance.$Vars'() {
+                return {
+                    Variables: this.State.Variables,
+                    LastResult: this.State.LastResult,
+                    CurrentUser: this.State.CurrentUser
+                };
+            }
         }
     };
     exports.default = template;
