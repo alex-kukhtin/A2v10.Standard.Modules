@@ -76,7 +76,8 @@ const template: Template = {
 		moveDown: {
 			exec(itm) { itm.$move('down'); },
 			canExec(itm) { return itm.$canMove('down'); }
-		}
+		},
+		addPrintForm
 	}
 };
 
@@ -178,3 +179,6 @@ function openForm(arg) {
 	ctrl.$navigate(`/$meta/config/form`, { Id: this.Table.Id, Form: arg });
 }
 
+function addPrintForm() {
+	alert('add print form here');
+}

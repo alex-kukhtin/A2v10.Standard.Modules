@@ -74,7 +74,8 @@ define(["require", "exports"], function (require, exports) {
             moveDown: {
                 exec(itm) { itm.$move('down'); },
                 canExec(itm) { return itm.$canMove('down'); }
-            }
+            },
+            addPrintForm
         }
     };
     exports.default = template;
@@ -159,5 +160,8 @@ define(["require", "exports"], function (require, exports) {
     function openForm(arg) {
         const ctrl = this.$ctrl;
         ctrl.$navigate(`/$meta/config/form`, { Id: this.Table.Id, Form: arg });
+    }
+    function addPrintForm() {
+        alert('add print form here');
     }
 });

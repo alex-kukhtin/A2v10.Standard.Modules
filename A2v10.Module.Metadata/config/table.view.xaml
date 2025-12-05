@@ -20,6 +20,7 @@
 			<TabButton Content="Kinds" ActiveValue="kinds" If="{Bind Table.$HasKinds}"/>
 			<TabButton Content="Apply" ActiveValue="apply" If="{Bind Table.$HasApply}"/>
 			<TabButton Content="@[Forms]" ActiveValue="forms" If="{Bind Table.$HasForms}"/>
+			<TabButton Content="@[PrintForms]" ActiveValue="print" />
 			<TabButton Content="@[Other]" ActiveValue="other"/>
 		</TabBar>
 		<Switch Expression="{Bind Root.$$Tab}" Grid.Row="3">
@@ -231,6 +232,34 @@
 							</TableCell>
 							<TableCell Align="Center" VAlign="Middle">
 								<CheckBox Value="{Bind Unique}"/>
+							</TableCell>
+						</TableRow>
+					</Table>
+				</Grid>
+			</Case>
+
+			<Case Value="print">
+				<Grid Rows="Auto,1*" Padding="0,0,0,10" AlignItems="Stretch">
+					<Toolbar>
+						<Button Icon="Add" Content="@[Add]" 
+								Command="{BindCmdExec addPrintForm}"/>
+					</Toolbar>
+					<Table CellSpacing="Medium"
+						   StickyHeaders="True" Height="100%" Width="60rem"
+						   Columns="Fit,20rem,16px" ItemsSource="{Bind Table.PrintForms}">
+						<Table.Header>
+							<TableRow>
+								<TableCell Content="#"/>
+								<TableCell Content="@[Name]" MinWidth="15rem"/>
+								<TableCell />
+							</TableRow>
+						</Table.Header>
+						<TableRow>
+							<TableCell Content="{Bind Order}" Align="Right"/>
+							<TableCell Content="{Bind Name}" />
+							<TableCell>
+								<Hyperlink Icon="Edit" Content="Edit" 
+									Command="{BindCmd Open, Url='/$meta/config/printform/edit', Argument={Bind}}"/>
 							</TableCell>
 						</TableRow>
 					</Table>
