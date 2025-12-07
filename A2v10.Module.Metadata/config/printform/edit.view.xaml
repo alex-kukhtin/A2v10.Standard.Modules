@@ -1,5 +1,12 @@
 ﻿<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
 	  Title="Edit Print Form">
+	<Page.Toolbar>
+		<Toolbar>
+			<Button Icon="SaveOutline"/>
+			<Separator />
+			<Button Icon="Reload" Command="{BindCmd Reload}"/>
+		</Toolbar>
+	</Page.Toolbar>
 	<HtmlElement TagName="a2-spreadsheet">
 		<HtmlElement.Attributes>
 			<HtmlAttribute Name="report" Value="{Bind PrintForm.Json}"/>

@@ -239,7 +239,7 @@
 			</Case>
 
 			<Case Value="print">
-				<Grid Rows="Auto,1*" Padding="0,0,0,10" AlignItems="Stretch">
+				<Grid Rows="Auto,1*" Padding="0,0,0,10" AlignItems="Stretch" Overflow="Auto">
 					<Toolbar>
 						<Button Icon="Add" Content="@[Add]" 
 								Command="{BindCmdExec addPrintForm}"/>
