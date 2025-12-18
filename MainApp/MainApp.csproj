@@ -38,4 +38,10 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </Content>
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="agents\index.view.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Content>
+	</ItemGroup>
 </Project>

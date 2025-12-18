@@ -295,7 +295,8 @@ begin
 		[Columns!TColumn!Array] = null,
 		[Details!TTable!Array] = null,
 		[Apply!TApply!Array] = null,
-		[Kinds!TKind!Array] = null
+		[Kinds!TKind!Array] = null,
+		[RefsToMe!TRefMe!Array] = null
 	from a2meta.view_RealTables c 
 		left join a2meta.[Catalog] pt on c.ParentTable = pt.Id
 	where c.Id = @tableId and c.Kind in (N'table', N'operation');
@@ -326,6 +327,13 @@ begin
 			and tvc.[type_name] = it.[Name] + N'.TableType' collate SQL_Latin1_General_CP1_CI_AI
 		left join a2meta.[Catalog] r on c.Reference = r.Id
 	order by it.[Name], tvc.column_id; -- same as [Config.Load]
+
+	-- exclude jrn
+	select [!TRefMe!Array] = null, RefSchema = t.[Schema], [RefTable] = t.[Name], [Column] = c.[Name],
+		[!TTable.RefsToMe!ParentId] = c.Reference
+	from a2meta.Columns c 
+		inner join a2meta.[Catalog] t on c.[Table] = t.Id
+	where c.Reference = @tableId and t.[Schema] not in (N'jrn');
 
 	select [!TApply!Array] = null, [Id!!Id] = a.Id, a.InOut, a.Storno, DetailsKind = dk.[Name],
 		[Journal.RefSchema!TReference!] = j.[Schema], [Journal.RefTable!TReference!Name] = j.[Name],

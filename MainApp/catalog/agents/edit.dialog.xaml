@@ -1,0 +1,12 @@
+<Dialog Title="@[Agent]" Overflow="True" CssClass="edit-item-dialog" xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml">
+	<Dialog.Buttons>
+		<Button Style="Primary" Command="{BindCmd SaveAndClose, ValidRequired=True}" Content="@[SaveAndClose]" />
+		<Button Command="{BindCmd Close}" Content="@[Cancel]" />
+	</Dialog.Buttons>
+	<Grid Rows="Auto, Auto, Auto, Auto" Columns="1*">
+		<TextBox Value="{Bind Agent.Name}" Label="@[Name]" Required="True" TabIndex="1" />
+		<DatePicker Align="Center" Value="{Bind Agent.Date}" Label="@[Date]" Width="12rem" Grid.Row="2" />
+		<SelectorSimple Url="/catalog/stores" Value="{Bind Agent.Store}" Label="@[Store]" Grid.Row="3" />
+		<TextBox Rows="3" Multiline="True" Value="{Bind Agent.Memo}" Label="@[Memo]" Grid.Row="4" />
+	</Grid>
+</Dialog>
