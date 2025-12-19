@@ -328,12 +328,12 @@ begin
 		left join a2meta.[Catalog] r on c.Reference = r.Id
 	order by it.[Name], tvc.column_id; -- same as [Config.Load]
 
-	-- exclude jrn
+	-- exclude jrn and details
 	select [!TRefMe!Array] = null, RefSchema = t.[Schema], [RefTable] = t.[Name], [Column] = c.[Name],
 		[!TTable.RefsToMe!ParentId] = c.Reference
 	from a2meta.Columns c 
 		inner join a2meta.[Catalog] t on c.[Table] = t.Id
-	where c.Reference = @tableId and t.[Schema] not in (N'jrn');
+	where c.Reference = @tableId and t.[Schema] not in (N'jrn') and t.[Parent] <> @tableId;
 
 	select [!TApply!Array] = null, [Id!!Id] = a.Id, a.InOut, a.Storno, DetailsKind = dk.[Name],
 		[Journal.RefSchema!TReference!] = j.[Schema], [Journal.RefTable!TReference!Name] = j.[Name],
