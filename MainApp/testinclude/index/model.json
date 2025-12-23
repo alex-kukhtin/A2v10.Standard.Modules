@@ -1,0 +1,13 @@
+﻿{
+	"$schema": "../../@schemas/model-json-schema.json#",
+	"schema": "cat",
+	"actions": {
+		"index": {
+			"template": "index.template",
+			"view": "testinclude.view"
+		},
+		"part": {
+			"view": "part.partial"
+		}
+	}
+}

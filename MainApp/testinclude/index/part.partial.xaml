@@ -1,0 +1,6 @@
+﻿<Partial xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
+		Background="White">
+	<Text>
+		Partial view
+	</Text>
+</Partial>

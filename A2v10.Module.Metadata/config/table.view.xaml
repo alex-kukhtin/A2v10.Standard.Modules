@@ -86,7 +86,7 @@
 							</CommandBar>
 							<TextBox Value="{Bind Name}"/>
 							<TextBox Value="{Bind Label}" Placeholder="{Bind $LabelPlaceholder}"/>
-							<ComboBox Value="{Bind DataType}" Disabled="{Bind $DataTypeDisabled}" Width="7rem">
+							<ComboBox Value="{Bind DataType}" Disabled="{Bind $DataTypeDisabled}" Width="7.5rem">
 								<ComboBoxItem Content="Id" Value="id"/>
 								<ComboBoxItem Content="Int" Value="int"/>
 								<ComboBoxItem Content="BigInt" Value="bigint"/>
@@ -100,19 +100,18 @@
 								<ComboBoxItem Content="Enum" Value="enum"/>
 								<ComboBoxItem Content="Operation" Value="operation"/>
 								<ComboBoxItem Content="Stream" Value="stream"/>
+								<ComboBoxItem Content="RowVersion" Value="rowversion"/>
 							</ComboBox>
 							<TableCell Wrap="NoWrap">
 								<ComboBox Value="{Bind Role}" Width="9rem">
 									<ComboBoxItem Content="&#160;" Value="0"/>
 									<ComboBoxItem Content="Key" Value="1"/>
-									<ComboBoxItem Content="Key + RowNo" Value="9"/>
 									<ComboBoxItem Content="Name" Value="2"/>
 									<ComboBoxItem Content="Code" Value="4"/>
 									<ComboBoxItem Content="RowNo" Value="8"/>
 									<ComboBoxItem Content="Void" Value="16"/>
 									<ComboBoxItem Content="Number" Value="2048"/>
 									<ComboBoxItem Content="Parent" Value="32"/>
-									<ComboBoxItem Content="Key + Parent" Value="33"/>
 									<ComboBoxItem Content="IsFolder" Value="64"/>
 									<ComboBoxItem Content="IsSystem" Value="128"/>
 									<ComboBoxItem Content="Done" Value="256"/>

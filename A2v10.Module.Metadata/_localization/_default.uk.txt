@@ -60,6 +60,8 @@
 ; Errors
 @Error.TypeMismatch=Не співпадають типи
 @Error.SelectJournalFirst=Спочатку оберіть журнал
+@Error.Element.RowVersion=Елемент було зміненено іншим користувачем або системою.
+@Error.Document.RowVersion=Документ було зміненено іншим користувачем або системою.
 ; Confirm
 @Confirm.Sure=Ви впевнені?
 @Meta.Confirm.ResetForm=Скинути форму? Всі зміни будуть втрачені.

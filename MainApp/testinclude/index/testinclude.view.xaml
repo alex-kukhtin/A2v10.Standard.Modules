@@ -1,0 +1,14 @@
+﻿<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
+		Title="Test INCLUDE">
+	<Grid AlignItems="Stretch" Height="100%" Padding="0"
+		  Rows="100,100,100,100,100" Columns="200,200,200">
+		<Block Grid.Row="1" Grid.Col="1" Background="LightYellow" Border="True"/>
+		<Block Grid.Row="2" Grid.Col="2" Background="LightYellow" Border="True"/>
+		<Switch Expression="{Bind Root.$$Tab}">
+			<Case Value="" Grid.Row="3" Grid.Col="1">
+				<Include FullHeight="True" Grid.RowSpan="3" Grid.ColSpan="2"
+					Source="/testinclude/index/part" Argument="0"/>
+			</Case>
+		</Switch>
+	</Grid>
+</Page>

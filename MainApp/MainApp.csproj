@@ -44,4 +44,16 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </Content>
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="testinclude\index\testinclude.view.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="testinclude\index\part.partial.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Content>
+	</ItemGroup>
 </Project>

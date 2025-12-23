@@ -1,11 +1,10 @@
 
+import { TRoot, TItem } from './edit';
+
 const template : Template = {
-    properties: {
-        
-    },
     validators: {
         'Item.Name': `@[Error.Required]`
-    },
+    }
 };
 
 export default template;
