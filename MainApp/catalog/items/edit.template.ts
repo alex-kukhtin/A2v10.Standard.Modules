@@ -1,5 +1,5 @@
 
-import { TRoot, TItem } from './edit';
+import { TRoot, TItem, TUnit } from './edit';
 
 const template : Template = {
     validators: {

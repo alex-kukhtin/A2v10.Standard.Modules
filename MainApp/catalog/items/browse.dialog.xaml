@@ -24,6 +24,7 @@
 		<DataGrid Sort="True" FixedHeader="True" ItemsSource="{Bind Parent.ItemsSource}" DoubleClick="{BindCmd Select, Argument={Bind Parent.ItemsSource}}" Height="30rem" Grid.Row="2">
 			<DataGridColumn Content="{Bind Id}" Header="@[Id]" Role="Id" />
 			<DataGridColumn Content="{Bind Name}" Header="@[Name]" />
+			<DataGridColumn Content="{Bind Unit.Name}" Header="@[Unit]" SortProperty="Unit" />
 			<DataGridColumn Content="{Bind VatRate.Name}" Header="@[VatRate]" Fit="True" Wrap="NoWrap" SortProperty="VatRate" />
 			<DataGridColumn Content="{Bind Memo}" Header="@[Memo]" LineClamp="2" />
 		</DataGrid>

@@ -26,7 +26,7 @@ const ROLE_NUMBER = 2048;
 function normalColumn(column) {
 	const flag = ROLE_PK | ROLE_PARENT | ROLE_ISFOLDER | ROLE_ISYSTEM
 		| ROLE_VOID | ROLE_DONE | ROLE_OWNER | ROLE_KIND | ROLE_ROWNO;
-	return (column.Role & flag) === 0;
+	return (column.Role & flag) === 0 && column.DataType !== 'rowversion';
 }
 
 

@@ -1,12 +1,9 @@
 
-import { TRoot, TItem, TItems } from './index';
+import { TRoot, TItem, TItems, TUnit } from './index';
 
 const template: Template = {
-    options: {
+    properties: {
         persistSelect: ['Items']
-    },
-    events: {   
-        
     }
 };
 

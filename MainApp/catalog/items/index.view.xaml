@@ -1,9 +1,19 @@
 <Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml" Title="@[Items]">
+	<Page.Taskpad>
+		<Taskpad Collapsible="True">
+			<Panel Header="@[Filters]" Collapsible="True" Style="Transparent">
+				<Grid Rows="Auto" Columns="1*">
+					<SelectorSimple Url="/catalog/units" Placeholder="@[Unit.AllData]" ShowClear="True" LineClamp="2" Highlight="True" Value="{Bind Parent.Filter.Unit}" Label="@[Unit]" />
+				</Grid>
+			</Panel>
+		</Taskpad>
+	</Page.Taskpad>
 	<Page.CollectionView>
 		<CollectionView ItemsSource="{Bind Items}" RunAt="ServerUrl">
 			<CollectionView.Filter>
 				<FilterDescription>
 					<FilterItem Property="Fragment" />
+					<FilterItem Property="Unit" DataType="Object" />
 				</FilterDescription>
 			</CollectionView.Filter>
 		</CollectionView>
@@ -21,6 +31,7 @@
 		<DataGrid Sort="True" FixedHeader="True" ItemsSource="{Bind Parent.ItemsSource}" DoubleClick="{BindCmd Dialog, Action=EditSelected, Url='/catalog/items/edit', Argument={Bind Parent.ItemsSource}}" Height="100%" Grid.Row="2">
 			<DataGridColumn Content="{Bind Id}" Header="@[Id]" Role="Id" />
 			<DataGridColumn Content="{Bind Name}" Header="@[Name]" />
+			<DataGridColumn Content="{Bind Unit.Name}" Header="@[Unit]" SortProperty="Unit" />
 			<DataGridColumn Content="{Bind VatRate.Name}" Header="@[VatRate]" Fit="True" Wrap="NoWrap" SortProperty="VatRate" />
 			<DataGridColumn Content="{Bind Memo}" Header="@[Memo]" LineClamp="2" />
 		</DataGrid>
