@@ -870,8 +870,8 @@ go
 /*
 Copyright � 2025 Oleksandr Kukhtin
 
-Last updated : 09 jun 2025
-module version : 8554
+Last updated : 23 dec 2025
+module version : 8601
 */
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.SCHEMATA where SCHEMA_NAME=N'a2meta')
@@ -1164,7 +1164,8 @@ begin
 		[Columns!TColumn!Array] = null,
 		[Details!TTable!Array] = null,
 		[Apply!TApply!Array] = null,
-		[Kinds!TKind!Array] = null
+		[Kinds!TKind!Array] = null,
+		[RefsToMe!TRefMe!Array] = null
 	from a2meta.view_RealTables c 
 		left join a2meta.[Catalog] pt on c.ParentTable = pt.Id
 	where c.Id = @tableId and c.Kind in (N'table', N'operation');
@@ -1195,6 +1196,13 @@ begin
 			and tvc.[type_name] = it.[Name] + N'.TableType' collate SQL_Latin1_General_CP1_CI_AI
 		left join a2meta.[Catalog] r on c.Reference = r.Id
 	order by it.[Name], tvc.column_id; -- same as [Config.Load]
+
+	-- exclude jrn and details
+	select [!TRefMe!Array] = null, RefSchema = t.[Schema], [RefTable] = t.[Name], [Column] = c.[Name],
+		[!TTable.RefsToMe!ParentId] = c.Reference
+	from a2meta.Columns c 
+		inner join a2meta.[Catalog] t on c.[Table] = t.Id
+	where c.Reference = @tableId and t.[Schema] not in (N'jrn') and t.[Parent] <> @tableId;
 
 	select [!TApply!Array] = null, [Id!!Id] = a.Id, a.InOut, a.Storno, DetailsKind = dk.[Name],
 		[Journal.RefSchema!TReference!] = j.[Schema], [Journal.RefTable!TReference!Name] = j.[Name],
@@ -1420,19 +1428,21 @@ begin
 	(1, N'cat', N'table', N'Id',         1, 0, 0, N'id', null, null),
 	(2, N'cat', N'table', N'Void',      16, 0, 0, N'bit', null, null),
 	(3, N'cat', N'table', N'IsSystem', 128, 0, 0, N'bit', null, null),
-	(4, N'cat', N'table', N'Name',       2, 1, 0, N'string',    100, null),
-	(5, N'cat', N'table', N'Memo',       0, 0, 0, N'string',    255, null),
+	(4, N'cat', N'table', N'rv',         0, 0, 0, N'rowversion', null, null),
+	(5, N'cat', N'table', N'Name',       2, 1, 0, N'string',    100, null),
+	(6, N'cat', N'table', N'Memo',       0, 0, 0, N'string',    255, null),
 
 	-- Document
-	(1, N'doc', N'table', N'Id',         1, 0, 0, N'id',        null, null),
-	(2, N'doc', N'table', N'Void',      16, 0, 0, N'bit',       null, null),
-	(3, N'doc', N'table', N'Done',     256, 0, 0, N'bit',       null, null),
-	(4, N'doc', N'table', N'Date',       0, 0, 0, N'date',      null, null),
-	(5, N'doc', N'table', N'Number',  2048, 0, 0, N'string',      32, null),
-	(6, N'doc', N'table', N'Operation',  0, 0, 0, N'operation', null, null),
-	(7, N'doc', N'table', N'Name',       2, 0, 0, N'string',     100, null), -- todo: computed
-	(8, N'doc', N'table', N'Sum',        0, 0, 0, N'money',     null, null),
-	(9, N'doc', N'table', N'Memo',       0, 0, 0, N'string',     255, null),
+	( 1, N'doc', N'table', N'Id',         1, 0, 0, N'id',        null, null),
+	( 2, N'doc', N'table', N'Void',      16, 0, 0, N'bit',       null, null),
+	( 3, N'doc', N'table', N'Done',     256, 0, 0, N'bit',       null, null),
+	( 4, N'doc', N'table', N'rv',         0, 0, 0, N'rowversion', null, null),
+	( 5, N'doc', N'table', N'Date',       0, 0, 0, N'date',      null, null),
+	( 6, N'doc', N'table', N'Number',  2048, 0, 0, N'string',      32, null),
+	( 7, N'doc', N'table', N'Operation',  0, 0, 0, N'operation', null, null),
+	( 8, N'doc', N'table', N'Name',       2, 0, 0, N'string',     100, null), -- todo: computed
+	( 9, N'doc', N'table', N'Sum',        0, 0, 0, N'money',     null, null),
+	(10, N'doc', N'table', N'Memo',       0, 0, 0, N'string',     255, null),
 	
 	-- cat.Details
 	(1, N'cat', N'details', N'Id',      1, 0, 0, N'id',  null, null),
