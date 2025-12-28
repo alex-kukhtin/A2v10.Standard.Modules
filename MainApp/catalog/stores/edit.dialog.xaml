@@ -1,0 +1,45 @@
+<Dialog xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml" Title="@[Store]" Overflow="True" CssClass="edit-item-dialog">
+	<Dialog.Buttons>
+		<Button Style="Primary" Command="{BindCmd SaveAndClose, ValidRequired=True}" Content="@[SaveAndClose]" />
+		<Button Command="{BindCmd Close}" Content="@[Cancel]" />
+	</Dialog.Buttons>
+	<StackPanel CssClass="dialog-details">
+		<Grid Rows="Auto, Auto" Columns="1*">
+			<TextBox Value="{Bind Store.Name}" Label="@[Name]" Required="True" TabIndex="1" />
+			<SelectorSimple Url="/catalog/stores" Folder="True" Value="{Bind Store.Folder}" Label="@[Folder]" Grid.Row="2" />
+		</Grid>
+		<TabBar Value="{Bind Store.$$Tab}" CssClass="details-tabbar">
+			<TabButton ActiveValue="Addresses">@[Addresses]</TabButton>
+		</TabBar>
+		<Switch Expression="{Bind Store.$$Tab}" Height="20rem">
+			<Case Value="Addresses">
+				<StackPanel Height="100%" CssClass="details">
+					<Toolbar CssClass="catalog-details-toolbar">
+						<Button Icon="Plus" Command="{BindCmd Append, Argument={Bind Store.Addresses}}" Content="@[AddRow]" />
+					</Toolbar>
+					<Table GridLines="Both" Background="White" StickyHeaders="True" Height="100%" ItemsSource="{Bind Store.Addresses}" CssClass="catalog-details">
+						<TableRow>
+							<TableCell Align="Right" Width="1px">
+								<Span Content="{BindNumber RowNo}" />
+							</TableCell>
+							<TableCell>
+								<TextBox Value="{Bind Text}" />
+							</TableCell>
+							<TableCell Width="1px">
+								<Hyperlink Command="{BindCmd Remove, Argument={Bind}}">✕</Hyperlink>
+							</TableCell>
+						</TableRow>
+						<Table.Header>
+							<TableRow>
+								<TableCell>@[RowNo]</TableCell>
+								<TableCell>@[Text]</TableCell>
+								<TableCell />
+							</TableRow>
+						</Table.Header>
+					</Table>
+				</StackPanel>
+			</Case>
+		</Switch>
+		<TextBox Rows="3" Multiline="True" Value="{Bind Store.Memo}" Label="@[Memo]" />
+	</StackPanel>
+</Dialog>

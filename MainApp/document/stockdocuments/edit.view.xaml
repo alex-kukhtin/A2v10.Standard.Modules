@@ -1,0 +1,147 @@
+<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml" Title="@[Document]" CssClass="document-page">
+	<Page.Toolbar>
+		<Toolbar>
+			<Button Icon="SaveCloseOutline" Command="{BindCmd SaveAndClose, ValidRequired=True}" Content="@[SaveAndClose]" />
+			<Button Icon="SaveOutline" Command="{BindCmd Save, ValidRequired=True}" />
+			<Button Icon="Print" Command="{BindCmd Print}" />
+			<Separator />
+			<Button Icon="Apply" Command="{BindCmdExec apply, SaveRequired=True, ValidRequired=True}" Content="@[Apply]" If="{Bind !Document.Done}" />
+			<Button Icon="Unapply" Command="{BindCmdExec unApply}" Content="@[UnApply]" If="{Bind Document.Done}" />
+			<Button Icon="Account" Command="{BindCmd Dialog, Action=Show, Url='/document/stockdocuments/showtrans', Argument={Bind Document}}" Content="@[ShowTrans]" If="{Bind Document.Done}" />
+			<Separator />
+			<Button Icon="Reload" Command="{BindCmd Reload}" />
+			<ToolbarAligner />
+		</Toolbar>
+	</Page.Toolbar>
+	<Grid Height="100%" Rows="Auto, Auto, Auto, 1*, Auto" Columns="1*" CssClass="document-grid">
+		<Grid Rows="Auto" Columns="Auto, 5rem, Auto, 12rem, Auto, 12rem, 1*" CssClass="document-header">
+			<Header>@[Document]</Header>
+			<Label Grid.Col="3">@[Number]</Label>
+			<TextBox Value="{Bind Document.Number}" Grid.Col="4" />
+			<Label Grid.Col="5">@[Date]</Label>
+			<DatePicker Align="Center" Value="{Bind Document.Date}" Grid.Col="6" />
+		</Grid>
+		<Grid Rows="Auto, Auto, Auto" Columns="22rem, 22rem, 22rem, 22rem, 1*" Grid.Row="2">
+			<SelectorSimple Url="/operation/operations" Value="{Bind Document.Operation}" Label="@[Operation]" />
+			<Static Value="{Bind Document.Name}" Label="@[Name]" Grid.Col="2" />
+			<Static Align="Right" Value="{BindSum Document.Sum}" Label="@[Sum]" Width="12rem" Grid.Col="3" />
+			<SelectorSimple Url="/catalog/agents" Value="{Bind Document.Agent}" Label="@[Agent]" Grid.Col="4" />
+			<SelectorSimple Url="/catalog/stores" Value="{Bind Document.StoreFrom}" Label="@[StoreFrom]" Grid.Row="2" />
+			<SelectorSimple Url="/catalog/stores" Value="{Bind Document.StoreTo}" Label="@[StoreTo]" Grid.Col="2" Grid.Row="2" />
+		</Grid>
+		<TabBar Value="{Bind Document.$$Tab}" CssClass="document-tabbar" Grid.Row="3">
+			<TabButton ActiveValue="Stock">@[Stock]</TabButton>
+			<TabButton ActiveValue="Service">@[Service]</TabButton>
+		</TabBar>
+		<Switch Expression="{Bind Document.$$Tab}" Grid.Row="4">
+			<Case Value="Stock">
+				<Grid Height="100%" Overflow="Hidden" Rows="Auto, 1*" Columns="1*" CssClass="details">
+					<Toolbar CssClass="document-details-toolbar">
+						<Button Icon="Plus" Command="{BindCmd Append, Argument={Bind Document.Stock}}" Content="@[AddRow]" />
+					</Toolbar>
+					<Table GridLines="Both" Background="White" StickyHeaders="True" Height="100%" ItemsSource="{Bind Document.Stock}" CssClass="document-details" Grid.Row="2">
+						<TableRow>
+							<TableCell Align="Right" Width="1px">
+								<Span Content="{BindNumber RowNo}" />
+							</TableCell>
+							<TableCell>
+								<SelectorSimple Url="/catalog/items" Value="{Bind Item}" />
+							</TableCell>
+							<TableCell>
+								<ComboBox ItemsSource="{Bind Root.VatRates}" Value="{Bind VatRate}">
+									<ComboBoxItem Content="{Bind Name}" Value="{Bind}" />
+								</ComboBox>
+							</TableCell>
+							<TableCell Align="Right" Width="10rem">
+								<TextBox Align="Right" Value="{BindNumber Qty}" />
+							</TableCell>
+							<TableCell Align="Right" Width="10rem">
+								<TextBox Align="Right" Value="{BindNumber Price}" />
+							</TableCell>
+							<TableCell Align="Right" Width="10rem">
+								<Static Align="Right" Value="{BindSum Sum}" />
+							</TableCell>
+							<TableCell Width="1px">
+								<Hyperlink Command="{BindCmd Remove, Argument={Bind}}">✕</Hyperlink>
+							</TableCell>
+						</TableRow>
+						<Table.Header>
+							<TableRow>
+								<TableCell>@[RowNo]</TableCell>
+								<TableCell>@[Item]</TableCell>
+								<TableCell>@[VatRate]</TableCell>
+								<TableCell>@[Qty]</TableCell>
+								<TableCell>@[Price]</TableCell>
+								<TableCell>@[Sum]</TableCell>
+								<TableCell />
+							</TableRow>
+						</Table.Header>
+						<Table.Footer>
+							<TableRow>
+								<TableCell ColSpan="5">@[Total]</TableCell>
+								<TableCell Align="Right" Width="10rem" Content="{BindSum Document.Stock.Sum}" />
+								<TableCell Width="1px" />
+							</TableRow>
+						</Table.Footer>
+					</Table>
+				</Grid>
+			</Case>
+			<Case Value="Service">
+				<Grid Height="100%" Overflow="Hidden" Rows="Auto, 1*" Columns="1*" CssClass="details">
+					<Toolbar CssClass="document-details-toolbar">
+						<Button Icon="Plus" Command="{BindCmd Append, Argument={Bind Document.Service}}" Content="@[AddRow]" />
+					</Toolbar>
+					<Table GridLines="Both" Background="White" StickyHeaders="True" Height="100%" ItemsSource="{Bind Document.Service}" CssClass="document-details" Grid.Row="2">
+						<TableRow>
+							<TableCell Align="Right" Width="1px">
+								<Span Content="{BindNumber RowNo}" />
+							</TableCell>
+							<TableCell>
+								<SelectorSimple Url="/catalog/items" Value="{Bind Item}" />
+							</TableCell>
+							<TableCell>
+								<ComboBox ItemsSource="{Bind Root.VatRates}" Value="{Bind VatRate}">
+									<ComboBoxItem Content="{Bind Name}" Value="{Bind}" />
+								</ComboBox>
+							</TableCell>
+							<TableCell Align="Right" Width="10rem">
+								<TextBox Align="Right" Value="{BindNumber Qty}" />
+							</TableCell>
+							<TableCell Align="Right" Width="10rem">
+								<TextBox Align="Right" Value="{BindNumber Price}" />
+							</TableCell>
+							<TableCell Align="Right" Width="10rem">
+								<Static Align="Right" Value="{BindSum Sum}" />
+							</TableCell>
+							<TableCell Width="1px">
+								<Hyperlink Command="{BindCmd Remove, Argument={Bind}}">✕</Hyperlink>
+							</TableCell>
+						</TableRow>
+						<Table.Header>
+							<TableRow>
+								<TableCell>@[RowNo]</TableCell>
+								<TableCell>@[Item]</TableCell>
+								<TableCell>@[VatRate]</TableCell>
+								<TableCell>@[Qty]</TableCell>
+								<TableCell>@[Price]</TableCell>
+								<TableCell>@[Sum]</TableCell>
+								<TableCell />
+							</TableRow>
+						</Table.Header>
+						<Table.Footer>
+							<TableRow>
+								<TableCell ColSpan="5">@[Total]</TableCell>
+								<TableCell Align="Right" Width="10rem" Content="{BindSum Document.Service.Sum}" />
+								<TableCell Width="1px" />
+							</TableRow>
+						</Table.Footer>
+					</Table>
+				</Grid>
+			</Case>
+		</Switch>
+		<Grid Rows="" Columns="Auto, 1*" CssClass="document-footer" Grid.Row="5">
+			<Label>@[Memo]</Label>
+			<TextBox Rows="3" Multiline="True" Value="{Bind Document.Memo}" />
+		</Grid>
+	</Grid>
+</Page>

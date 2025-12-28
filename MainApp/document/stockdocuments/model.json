@@ -1,0 +1,28 @@
+{
+	"$schema": "../../@schemas/model-json-schema.json#",
+	"schema": "doc",
+	"meta": {
+		"table": "StockDocuments"
+	},
+	"actions": {
+		"index": {
+			"meta": {},
+			"index": true,
+			"template": "index.template",
+			"view": "index.view"
+		},
+		"edit": {
+			"meta": {},
+			"template": "edit.template",
+			"view": "edit.view"
+		}
+	},
+	"dialogs": {
+		"browse": {
+			"meta": {},
+			"index": true,
+			"template": "index.template",
+			"view": "browse.dialog"
+		}
+	}
+}

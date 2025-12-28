@@ -1,0 +1,51 @@
+<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml" Title="@[Stores]">
+	<Page.Taskpad>
+		<Taskpad Collapsible="True">
+			<Panel Header="@[Grouping]" Collapsible="True" Style="Transparent">
+				<Toolbar>
+					<Button Icon="Plus" Command="{BindCmd Dialog, Action=Edit, Url='/catalog/stores/editfolder'}" Content="@[Create]" />
+					<Button Icon="Edit" Command="{BindCmd Dialog, Action=EditSelected, Url='/catalog/stores/editfolder', Argument={Bind Folders}}" />
+					<Button Icon="Clear" Command="{BindCmd DbRemoveSelected, Argument={Bind Folders}, Confirm='@[Confirm.Delete.Element]'}" />
+					<Separator />
+					<Button Icon="Reload" Command="{BindCmd Reload}" />
+				</Toolbar>
+				<TreeView ItemsSource="{Bind Folders}" FolderSelect="True" AutoSelect="FirstItem" Height="50vh">
+					<TreeViewItem ItemsSource="{Bind SubItems}" Icon="{Bind Icon}" Label="{Bind Name}" IsFolder="{Bind HasSubItems}" />
+					<TreeView.ContextMenu>
+						<DropDownMenu Direction="UpRight" IsDropUp="True">
+							<Separator />
+						</DropDownMenu>
+					</TreeView.ContextMenu>
+				</TreeView>
+			</Panel>
+		</Taskpad>
+	</Page.Taskpad>
+	<Page.CollectionView>
+		<CollectionView ItemsSource="{Bind Folders.Selected('Stores')}" RunAt="ServerUrl">
+			<CollectionView.Filter>
+				<FilterDescription>
+					<FilterItem Property="Fragment" />
+					<FilterItem Property="Parent" DataType="Object" />
+				</FilterDescription>
+			</CollectionView.Filter>
+		</CollectionView>
+	</Page.CollectionView>
+	<Grid Height="100%" Rows="Auto, 1*, Auto" Columns="1*">
+		<Toolbar>
+			<Button Icon="Plus" Command="{BindCmd Dialog, Action=Append, Url='/catalog/stores/edit', Argument={Bind Parent.ItemsSource}}" Content="@[Create]" />
+			<Button Icon="Edit" Command="{BindCmd Dialog, Action=EditSelected, Url='/catalog/stores/edit', Argument={Bind Parent.ItemsSource}}" />
+			<Button Icon="Clear" Command="{BindCmd DbRemoveSelected, Argument={Bind Parent.ItemsSource}, Confirm='@[Confirm.Delete.Element]'}" />
+			<Separator />
+			<Button Icon="Reload" Command="{BindCmd Reload}" />
+			<ToolbarAligner />
+			<SearchBox Placeholder="@[Search]" Value="{Bind Parent.Filter.Fragment}" TabIndex="1" Width="20rem" />
+		</Toolbar>
+		<DataGrid Sort="True" FixedHeader="True" ItemsSource="{Bind Parent.ItemsSource}" DoubleClick="{BindCmd Dialog, Action=EditSelected, Url='/catalog/stores/edit', Argument={Bind Parent.ItemsSource}}" Height="100%" Grid.Row="2">
+			<DataGridColumn Content="{Bind $checked}" Editable="True" Role="CheckBox" CheckAll="{Bind $checked}" />
+			<DataGridColumn Content="{Bind Id}" Header="@[Id]" Role="Id" />
+			<DataGridColumn Content="{Bind Name}" Header="@[Name]" />
+			<DataGridColumn Content="{Bind Memo}" Header="@[Memo]" LineClamp="2" />
+		</DataGrid>
+		<Pager Source="{Bind Parent.Pager}" Grid.Row="3" />
+	</Grid>
+</Page>
