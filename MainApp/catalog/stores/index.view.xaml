@@ -3,7 +3,7 @@
 		<Taskpad Collapsible="True">
 			<Panel Header="@[Grouping]" Collapsible="True" Style="Transparent">
 				<Toolbar>
-					<Button Icon="Plus" Command="{BindCmd Dialog, Action=Edit, Url='/catalog/stores/editfolder'}" Content="@[Create]" />
+					<Button Icon="Plus" Command="{BindCmd Dialog, Action=Edit, Url='/catalog/stores/editfolder', Argument='new'}" Content="@[Create]" />
 					<Button Icon="Edit" Command="{BindCmd Dialog, Action=EditSelected, Url='/catalog/stores/editfolder', Argument={Bind Folders}}" />
 					<Button Icon="Clear" Command="{BindCmd DbRemoveSelected, Argument={Bind Folders}, Confirm='@[Confirm.Delete.Element]'}" />
 					<Separator />
@@ -12,7 +12,7 @@
 				<TreeView ItemsSource="{Bind Folders}" FolderSelect="True" AutoSelect="FirstItem" Height="50vh">
 					<TreeViewItem ItemsSource="{Bind SubItems}" Icon="{Bind Icon}" Label="{Bind Name}" IsFolder="{Bind HasSubItems}" />
 					<TreeView.ContextMenu>
-						<DropDownMenu Direction="UpRight" IsDropUp="True">
+						<DropDownMenu Direction="UpRight">
 							<Separator />
 						</DropDownMenu>
 					</TreeView.ContextMenu>

@@ -4,7 +4,8 @@ define(["require", "exports"], function (require, exports) {
     const template = {
         options: {
             persistSelect: ['Documents']
-        }, validators: {
+        },
+        events: {
             'g.document.saved': handleSaved,
             'g.document.applied': handleApply
         }

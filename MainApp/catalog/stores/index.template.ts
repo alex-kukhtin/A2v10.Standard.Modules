@@ -1,5 +1,5 @@
 
-import { TRoot, TStore, TStoreArray, TStore } from './index';
+import { TRoot, TStore, TStoreArray } from './index';
 
 const template: Template = {
     options: {

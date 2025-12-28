@@ -156,23 +156,25 @@ interface templateCommandObj {
 declare type templateCommand = templateCommandFunc | templateCommandObj;
 
 /* template properties */
+type templatePropertyGetter = (this: IElement) => any;
+type templatePropertySetter = (this: IElement, val: any) => void;
+
 interface templatePropertyGetterSetter {
-	get(this: IElement): any;
-	set?(this: IElement, val: any): void;
+	get: templatePropertyGetter;
+	set: templatePropertySetter;
 }
-interface templatePropertyGetter { (this: IElement): any; }
 
 interface templatePropDefault {
-	type: StringConstructor | BooleanConstructor | NumberConstructor;
+	type: StringConstructor | BooleanConstructor | NumberConstructor | DateConstructor;
 	value?: any;
 }
 
 declare type templateProperty = templatePropertyGetter | templatePropertyGetterSetter | StringConstructor | BooleanConstructor | NumberConstructor | templatePropDefault;
 
 /* template events */
-interface templateEventChange { (this: IElement, elem: IElement, newVal?: any, oldVal?: any, prop?: string): void; }
-interface templateEventAdd { (this: IElement, array?: IElementArray<IElement>, elem?: IElement): void; }
-interface templateEventUnload { (this: IElement, elem?: IElement): void; }
+type templateEventChange = (this: IElement, elem: IElement, newVal?: any, oldVal?: any, prop?: string) => void;
+type templateEventAdd = (this: IElement, array?: IElementArray<IElement>, elem?: IElement) => void;
+type templateEventUnload = (this: IElement, elem?: IElement) => void;
 
 declare type templateEvent = templateEventChange | templateEventAdd | templateEventUnload;
 
@@ -204,14 +206,14 @@ declare const enum MessageStyle {
 }
 
 /* template defaults */
-interface templateDefaultFunc { (this: IRoot, elem: IElement, prop: string): any; }
+type templateDefaultFunc = (this: IRoot, elem: IElement, prop: string) => any;
 declare type templateDefault = templateDefaultFunc | string | number | boolean | Date | object;
 
 /* template validators */
 
 declare type templateValidatorResult = { msg: string, severity: Severity };
 
-interface tempateValidatorFunc { (elem: IElement, value?: any): boolean | string | templateValidatorResult | Promise<any>; }
+type tempateValidatorFunc = (elem: IElement, value?: any) => boolean | string | templateValidatorResult | Promise<any>;
 
 interface templateValidatorObj {
 	valid: tempateValidatorFunc | StdValidator,

@@ -11,22 +11,30 @@ define(["require", "exports"], function (require, exports) {
             'TDocument.Name'() { return `${this.Operation.Name} № ${this.Number} від ${this.Date.toLocaleDateString()}`; },
             'TDocument.Sum'() { return this.Stock.Sum + this.Service.Sum; },
             'TRow.Sum'() { return this.Price * this.Qty; },
-            'TRowArray.Sum'() { return this.$sum(c => c.Sum); }
+            'TRowArray.Sum'() { return this.$sum(c => c.Sum); },
+            'TRowArray.XVat': {
+                get() { return this.$sum(r => r.Sum); },
+                set(val) { this.Count; }
+            }
         },
         defaults: {
             'Document.Date'() { return du.today(); }
         },
+        events: {
+            'Document.Operation.changing': (newValue, oldValue) => false,
+        },
         validators: {
             'Document.Rows[].VatRate': `@[Error.Required]`,
             'Document.Rows[].Qty': `@[Error.Required]`,
-            'Document.Rows[].Price': `@[Error.Required]`
+            'Document.Rows[].Price': `@[Error.Required]`,
+            'Document': ["dddd", () => ""]
         },
         commands: {
             apply,
             unApply
         }
     };
-    module.exports = template;
+    exports.default = template;
     async function apply() {
         const ctrl = this.$ctrl;
         await ctrl.$invoke('apply', { Id: this.Document.Id }, '/document/stockdocuments');

@@ -1,5 +1,5 @@
 
-import { TRoot, TDocument, TDocumentArray, TOperation, TAgent, TStore } from './index';
+import { TRoot, TItemRoot, TDocument, TDocumentArray, TOperation, TAgent, TStore } from './index';
 
 const template: Template = {
     options: {
@@ -13,13 +13,13 @@ const template: Template = {
 
 export default template;
 
-function handleApply(elem: TRoot) {
+function handleApply(this: TRoot, elem: TItemRoot) {
     let doc = elem.Document;
     let found = this.Documents.find(d => d.Id == doc.Id);
     if (!found) return;
     found.Done = doc.Done;
 }
-function handleSaved(elem : TItemRoot) {
+function handleSaved(this: TRoot, elem : TItemRoot) {
     let doc = elem.Document;
     let found = this.Documents.$find(d => d.Id === doc.Id);
     if (found)

@@ -55,8 +55,9 @@ export interface TDocument extends IElement {
 	Agent: TAgent;
 	StoreFrom: TStore;
 	StoreTo: TStore;
-	Stock: TRowArray;
-	Service: TRowArray;
+	// Details
+    readonly Stock: TRowArray;
+    readonly Service: TRowArray;
 }   
 
 export interface TRoot extends IRoot {

@@ -10,16 +10,19 @@ const template: Template = {
         'TDocument.$$Tab': {type: String, value: 'Stock'},
 		'TDocument.Name'(this: TDocument) { return `${this.Operation.Name} № ${this.Number} від ${this.Date.toLocaleDateString()}`;},
 		'TDocument.Sum'(this: TDocument) { return this.Stock.Sum + this.Service.Sum;},
-        'TRow.Sum'(this: TRow) { return this.Price * this.Qty; },
-        'TRowArray.Sum'(this: TRowArray) { return this.$sum(c => c.Sum); }
+		'TRow.Sum'(this: TRow) { return this.Price * this.Qty;},
+		'TRowArray.Sum'(this: TRowArray) { return this.$sum(c => c.Sum); }
     },
     defaults: {
         'Document.Date'() { return du.today(); }
     },
     validators: {
-        'Document.Rows[].VatRate': `@[Error.Required]`,
-		'Document.Rows[].Qty': `@[Error.Required]`,
-		'Document.Rows[].Price': `@[Error.Required]`
+        'Document.Stock[].VatRate': `@[Error.Required]`,
+		'Document.Stock[].Qty': `@[Error.Required]`,
+		'Document.Stock[].Price': `@[Error.Required]`,
+		'Document.Service[].VatRate': `@[Error.Required]`,
+		'Document.Service[].Qty': `@[Error.Required]`,
+		'Document.Service[].Price': `@[Error.Required]`
     },
     commands: {
         apply,

@@ -29,6 +29,8 @@ export interface TStore extends IElement {
 	Memo: string;
 	readonly IsFolder: boolean;
 	Parent: TStore;
+	// Details
+    readonly Addresses: TAddressArray;
 }   
 
 export interface TRoot extends IRoot {

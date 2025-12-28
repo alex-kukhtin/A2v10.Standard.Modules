@@ -1,5 +1,5 @@
 
-import { TRoot, TStore, TStore } from './edit';
+import { TRoot, TStore } from './edit';
 
 const template : Template = {
     properties: {

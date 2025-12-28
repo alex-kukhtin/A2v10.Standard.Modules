@@ -42,3 +42,7 @@ declare type TDocumentArray = IElementArray<TDocument>;
 export interface TRoot extends IRoot {
     readonly Documents: TDocumentArray;
 }
+
+export interface TItemRoot extends IRoot {
+	readonly Document: TDocument;
+}
