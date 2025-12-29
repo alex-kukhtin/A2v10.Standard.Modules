@@ -1,8 +1,8 @@
 /*
 Copyright © 2025 Oleksandr Kukhtin
 
-Last updated : 23 dec 2025
-module version : 8601
+Last updated : 29 dec 2025
+module version : 8603
 */
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.SCHEMATA where SCHEMA_NAME=N'a2meta')
@@ -100,6 +100,7 @@ create table a2meta.[Columns]
 	[Label] nvarchar(255),
 	[DataType] nvarchar(32),
 	[MaxLength] int,
+	[Scale] int,
 	Reference uniqueidentifier
 		constraint FK_Columns_Reference_Catalog references a2meta.[Catalog](Id),
 	[Order] int,
@@ -310,7 +311,7 @@ begin
 	where c.Parent = @tableId and c.Kind = N'details';
 
 	select [!TColumn!Array] = null, [Id!!Id] = c.Id, c.[Name], c.[Label], c.DataType, 
-		c.[MaxLength], c.[Role], c.Computed, c.[Required], c.[Total], c.[Unique], c.[Order], DbOrder = tvc.column_id,
+		c.[MaxLength], c.Scale, c.[Role], c.Computed, c.[Required], c.[Total], c.[Unique], c.[Order], DbOrder = tvc.column_id,
 		[Reference.RefSchema!TReference!] = case c.DataType 
 		when N'operation' then N'op' 
 		else r.[Schema] 
@@ -388,7 +389,7 @@ begin
 	where c.Id = @tableId;
 
 	select [!TColumn!Array] = null, [Id!!Id] = c.Id, c.[Name], DataType = c.DataType, 
-		c.[MaxLength], c.[Role], c.[Order],
+		c.[MaxLength], c.Scale, c.[Role], c.[Order],
 		[!TTable.Columns!ParentId] = c.[Table]
 	from a2meta.Columns c
 	where c.[Table] = @tableId
@@ -700,7 +701,7 @@ begin
 		left join INFORMATION_SCHEMA.TABLES t on t.TABLE_SCHEMA =  c.[Schema] and t.TABLE_NAME = c.[Name]
 	where c.[Kind] in (N'table', N'details');
 
-	select [!TColumn!Array] = null, [Id!!Id] = c.Id, c.[Name], c.[DataType], c.[MaxLength], c.[Role],
+	select [!TColumn!Array] = null, [Id!!Id] = c.Id, c.[Name], c.[DataType], c.[MaxLength], c.Scale, c.[Role],
 		[Reference.RefSchema!TRef!] = r.[Schema], [Reference.RefTable!TRef!] = r.[Name],
 		DbName = ic.COLUMN_NAME, DbDataType =  ic.DATA_TYPE,
 		[!TTable.Columns!ParentId] = c.[Table]
@@ -769,7 +770,7 @@ begin
 	from a2meta.[Application];
 
 	select [Columns!TColumn!Array] = null, [Id!!Id] = Id, [Table], [Name], [Label], DataType,
-		[MaxLength], Reference, [Order], [Role], Source, Computed, [Required], Total, [Unique]
+		[MaxLength], [Scale], Reference, [Order], [Role], Source, Computed, [Required], Total, [Unique]
 	from a2meta.[Columns];
 
 	select [DetailsKinds!TDetailKind!Array] = null, [Id!!Id] = Id, Details, [Order],
@@ -845,6 +846,7 @@ create type a2meta.[Config.Export.Column.TableType] as table
 	[Label] nvarchar(255),
 	[DataType] nvarchar(32),
 	[MaxLength] int,
+	[Scale] int,
 	Reference uniqueidentifier,
 	[Order] int,
 	[Role] int,
@@ -1050,6 +1052,7 @@ begin
 		t.[Label] = s.[Label],
 		t.[DataType] = s.[DataType],
 		t.[MaxLength] = s.[MaxLength],
+		t.[Scale] = s.Scale,
 		t.Reference = s.Reference,
 		t.[Order] = s.[Order],
 		t.[Role] = isnull(s.[Role], 0),
@@ -1059,9 +1062,9 @@ begin
 		t.[Total] = s.[Total],
 		t.[Unique] = s.[Unique]
 	when not matched then insert 
-	([Id], [Table], [Name], [Label], [DataType], [MaxLength], Reference, [Order],
+	([Id], [Table], [Name], [Label], [DataType], [MaxLength], Scale, Reference, [Order],
 		[Role], Source, Computed, [Required], [Total], [Unique]) values
-	([Id], [Table], [Name], [Label], [DataType], [MaxLength], Reference, [Order],
+	([Id], [Table], [Name], [Label], [DataType], [MaxLength], Scale, Reference, [Order],
 		isnull([Role], 0), Source, Computed, [Required], [Total], [Unique]);
 
 	merge a2meta.DetailsKinds as t

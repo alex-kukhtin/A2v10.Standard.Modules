@@ -203,7 +203,7 @@ begin
 	where t.Id = @Id;
 	
 	select [!TColumn!Array] = null, [Id!!Id] = c.Id, [Name!!Name] = c.[Name], c.[Label],
-		c.DataType, c.[MaxLength], c.[Role], c.Source, c.Computed, c.[Required], c.[Total], c.[Unique],
+		c.DataType, c.[MaxLength], c.Scale, c.[Role], c.Source, c.Computed, c.[Required], c.[Total], c.[Unique],
 		[Reference.Id!TRef!Id] = c.Reference, [Reference.Name!TRef!Name] = a2meta.fn_TableFullName(rt.[Schema], rt.[Name]),
 		[Order!!RowNumber] = c.[Order],
 		[!TTable.Columns!ParentId] = @Id
@@ -288,6 +288,7 @@ create type a2meta.[Table.Column.TableType] as table (
 	[Label] nvarchar(255),
 	[DataType] nvarchar(32),
 	[MaxLength] int,
+	[Scale] int,
 	[Modifier] nvarchar(32),
 	[Role] bigint,
 	Reference uniqueidentifier,
@@ -393,6 +394,7 @@ begin
 		t.[Label] = s.[Label],
 		t.DataType = s.[DataType],
 		t.[MaxLength] = s.[MaxLength],
+		t.[Scale] = s.[Scale],
 		t.Reference = s.Reference,
 		t.[Role] = s.[Role],
 		t.[Order] = s.[Order],
@@ -401,9 +403,9 @@ begin
 		t.[Total] = s.[Total],
 		t.[Unique] = s.[Unique]
 	when not matched then insert
-		([Table], [Name], [Label], DataType, [MaxLength], Reference, [Role], [Order], 
+		([Table], [Name], [Label], DataType, [MaxLength], Scale, Reference, [Role], [Order], 
 			Computed, [Required], [Total], [Unique]) values
-		(@Id, s.[Name], s.[Label], s.[DataType], s.[MaxLength], s.Reference, s.[Role], s.[Order], 
+		(@Id, s.[Name], s.[Label], s.[DataType], s.[MaxLength], Scale, s.Reference, s.[Role], s.[Order], 
 			s.Computed, s.[Required], s.[Total], s.[Unique])
 	when not matched by source and t.[Table] = @Id then delete;
 

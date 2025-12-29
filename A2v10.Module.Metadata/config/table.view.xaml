@@ -93,6 +93,7 @@
 								<ComboBoxItem Content="Bit" Value="bit"/>
 								<ComboBoxItem Content="String" Value="string"/>
 								<ComboBoxItem Content="Float" Value="float"/>
+								<ComboBoxItem Content="Decimal" Value="decimal"/>
 								<ComboBoxItem Content="Date" Value="date"/>
 								<ComboBoxItem Content="Money" Value="money"/>
 								<ComboBoxItem Content="DateTime" Value="datetime"/>
@@ -120,7 +121,14 @@
 								</ComboBox>
 							</TableCell>
 							<TableCell>
-								<TextBox Value="{Bind MaxLength}" If="{Bind $HasLength}" Align="Right"/>
+								<Group>
+									<TextBox Value="{Bind MaxLength}" If="{Bind $HasLength}" Align="Right"/>
+									<StackPanel If="{Bind $HasPrecision}" Orientation="Horizontal">
+										<TextBox Value="{Bind MaxLength}" Align="Right"/>
+										<Span Margin="0,5px">/</Span>
+										<TextBox Value="{Bind Scale}" Align="Right"/>
+									</StackPanel>
+								</Group>
 							</TableCell>
 							<TableCell>
 								<SelectorSimple If="{Bind $IsReference}" 

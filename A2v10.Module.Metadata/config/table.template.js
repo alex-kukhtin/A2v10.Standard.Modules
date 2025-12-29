@@ -44,8 +44,10 @@ define(["require", "exports"], function (require, exports) {
             'TTable.$ItemsLabelPlaceholder'() { return this.ItemsName ? `@${this.ItemsName}` : `@${this.Name}`; },
             'TTable.$ItemLabelPlaceholder'() { return `@${this.ItemName || this.$ItemPlaceholder}`; },
             'TTable.$OtherColumns'() { return this.Columns.filter(normalColumn); },
+            'TColumn.Scale': Number,
             'TColumn.$LabelPlaceholder'() { return `@${this.Name}`; },
             'TColumn.$HasLength'() { return this.DataType === 'string'; },
+            'TColumn.$HasPrecision'() { return this.DataType === 'decimal'; },
             'TColumn.$IsReference'() { return this.DataType === 'reference' || this.DataType === 'enum'; },
             'TColumn.$ReferenceData'() { return { DataType: this.DataType }; },
             'TColumn.$DataTypeDisabled': dataTypeDisabled,
@@ -106,6 +108,10 @@ define(["require", "exports"], function (require, exports) {
     function dataTypeChange(el, dt) {
         if (dt === 'string' && !el.MaxLength)
             el.MaxLength = 50;
+        else if (dt === 'decimal' && !el.Precision) {
+            el.MaxLength = 10;
+            el.Scale = 5;
+        }
     }
     function dataTypeDisabled() {
         let role = this.Role;
