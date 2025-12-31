@@ -11,23 +11,18 @@ define(["require", "exports"], function (require, exports) {
             'TDocument.Name'() { return `${this.Operation.Name} № ${this.Number} від ${this.Date.toLocaleDateString()}`; },
             'TDocument.Sum'() { return this.Stock.Sum + this.Service.Sum; },
             'TRow.Sum'() { return this.Price * this.Qty; },
-            'TRowArray.Sum'() { return this.$sum(c => c.Sum); },
-            'TRowArray.XVat': {
-                get() { return this.$sum(r => r.Sum); },
-                set(val) { this.Count; }
-            }
+            'TRowArray.Sum'() { return this.$sum(c => c.Sum); }
         },
         defaults: {
             'Document.Date'() { return du.today(); }
         },
-        events: {
-            'Document.Operation.changing': (newValue, oldValue) => false,
-        },
         validators: {
-            'Document.Rows[].VatRate': `@[Error.Required]`,
-            'Document.Rows[].Qty': `@[Error.Required]`,
-            'Document.Rows[].Price': `@[Error.Required]`,
-            'Document': ["dddd", () => ""]
+            'Document.Stock[].VatRate': `@[Error.Required]`,
+            'Document.Stock[].Qty': `@[Error.Required]`,
+            'Document.Stock[].Price': `@[Error.Required]`,
+            'Document.Service[].VatRate': `@[Error.Required]`,
+            'Document.Service[].Qty': `@[Error.Required]`,
+            'Document.Service[].Price': `@[Error.Required]`
         },
         commands: {
             apply,

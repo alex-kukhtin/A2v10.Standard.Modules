@@ -1,7 +1,7 @@
 ﻿
 /* Copyright © 2019-2026 Oleksandr Kukhtin. All rights reserved. */
 
-/* Version 10.0.7989 */
+/* Version 10.0.7990 */
 
 declare function require(url: string): any;
 
@@ -181,7 +181,7 @@ declare type templateProperty = templatePropertyGetter | templatePropertyGetterS
 /* template events */
 type templateEventChange = (this: IElement, elem: IElement, newVal?: any, oldVal?: any, prop?: string) => void;
 type templateEventChanging = (this: IElement, elem: IElement, newVal?: any, oldVal?: any, prop?: string) => boolean;
-type templateEventAdd = (this: IElement, array?: IElementArray<IElement>, elem?: IElement) => void; 
+type templateEventAdd = (this: IElement, array?: IElementArray<IElement>, elem?: IElement) => void;
 type templateEventUnload = (this: IElement, elem?: IElement) => void;
 
 declare type templateEvent = templateEventChange | templateEventChanging | templateEventAdd | templateEventUnload;
@@ -214,7 +214,7 @@ declare const enum MessageStyle {
 }
 
 /* template defaults */
-type templateDefaultFunc = (this: IRoot, elem: IElement, prop: string) => any; 
+type templateDefaultFunc = (this: IRoot, elem: IElement, prop: string) => any;
 declare type templateDefault = templateDefaultFunc | string | number | boolean | Date | object;
 
 /* template validators */

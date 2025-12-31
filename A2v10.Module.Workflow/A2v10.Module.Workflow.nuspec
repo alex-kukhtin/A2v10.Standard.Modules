@@ -1,10 +1,10 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
 	<metadata>
 		<id>A2v10.Module.Workflow</id>
-		<version>10.1.1084</version>
+		<version>10.1.1085</version>
 		<authors>Oleksandr Kukthin</authors>
 		<description>A2v10 Platform Application Workflow UI</description>
-		<copyright>Copyright © 2025 Oleksandr Kukthin. All rights reserved.</copyright>
+		<copyright>Copyright © 2025-2026 Oleksandr Kukthin. All rights reserved.</copyright>
 		<tags>A2v10 Platform Business WebApp BPMN</tags>
 		<repository type="git" url="https://github.com/alex-kukhtin/A2v10.Standard.Modules" branch="master"/>
 		<license type="expression">MIT</license>
@@ -12,14 +12,14 @@
 		<dependencies>
 			<group targetFramework="net8.0">
 				<dependency id="A2v10.Workflow.WebAssets" version="10.1.8119" />
-				<dependency id="A2v10.Workflow.Engine" version="10.1.8312" />
+				<dependency id="A2v10.Workflow.Engine" version="10.1.8313" />
 				<dependency id="A2v10.Scheduling" version="10.1.8601" />
 				<dependency id="A2v10.Infrastructure" version="10.1.8601" />
 				<dependency id="Newtonsoft.Json" version="13.0.4" />
 			</group>
 			<group targetFramework="net9.0">
 				<dependency id="A2v10.Workflow.WebAssets" version="10.1.8119" />
-				<dependency id="A2v10.Workflow.Engine" version="10.1.8312" />
+				<dependency id="A2v10.Workflow.Engine" version="10.1.8313" />
 				<dependency id="A2v10.Scheduling" version="10.1.8601" />
 				<dependency id="A2v10.Infrastructure" version="10.1.8601" />
 				<dependency id="Newtonsoft.Json" version="13.0.4" />
