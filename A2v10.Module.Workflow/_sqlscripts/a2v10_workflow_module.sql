@@ -89,7 +89,8 @@ if not exists (select * from INFORMATION_SCHEMA.ROUTINES where ROUTINE_SCHEMA=N'
 	create procedure a2wf.[Instance.Inbox.Remove]
 	@UserId bigint = null,
 	@Id uniqueidentifier,
-	@InstanceId uniqueidentifier
+	@InstanceId uniqueidentifier,
+	@Answer nvarchar(255) = null
 	as
 	begin
 		set nocount on;
