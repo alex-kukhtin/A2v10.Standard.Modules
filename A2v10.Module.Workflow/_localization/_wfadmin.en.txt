@@ -15,6 +15,7 @@
 @WfAdm.Filters=Filters
 @WfAdm.Backup=Backup
 @WfAdm.Restore=Restore
+@WfAdm.CopySelected=Copy Selected
 ; Columns	
 @WfAdm.Id=Id
 @WfAdm.Parent=Parent

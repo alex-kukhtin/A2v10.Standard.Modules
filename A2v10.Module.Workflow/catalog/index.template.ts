@@ -30,7 +30,8 @@ const template: Template = {
 		},
 		backup,
 		restore,
-		copy
+		copy,
+		instances
 	}
 }
 
@@ -109,4 +110,15 @@ async function copy(wf) {
 	const ctrl: IController = this.$ctrl;
 	let np = await ctrl.$invoke('copy', { Id: wf.Id }, '/$workflow/catalog');
 	this.Workflows.$append(np.Workflow);
+}
+
+function instances(itm) {
+	if (!itm)
+		return;
+	const ctrl: IController = this.$ctrl;
+	let q = {
+		Id: 0,
+		Workflow: itm.Id 
+	};
+	ctrl.$navigate('/$workflow/instance/index', q);
 }

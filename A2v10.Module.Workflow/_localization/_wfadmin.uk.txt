@@ -15,6 +15,7 @@
 @WfAdm.Filters=Фільтри
 @WfAdm.Backup=Резервне копіювання
 @WfAdm.Restore=Відновити з резервної копії
+@WfAdm.CopySelected=Скопіювати виділений
 ; Columns	
 @WfAdm.Id=Ідентифікатор
 @WfAdm.Parent=Батьківський екземпляр

@@ -32,7 +32,8 @@ define(["require", "exports"], function (require, exports) {
             },
             backup,
             restore,
-            copy
+            copy,
+            instances
         }
     };
     exports.default = template;
@@ -101,5 +102,15 @@ define(["require", "exports"], function (require, exports) {
         const ctrl = this.$ctrl;
         let np = await ctrl.$invoke('copy', { Id: wf.Id }, '/$workflow/catalog');
         this.Workflows.$append(np.Workflow);
+    }
+    function instances(itm) {
+        if (!itm)
+            return;
+        const ctrl = this.$ctrl;
+        let q = {
+            Id: 0,
+            Workflow: itm.Id
+        };
+        ctrl.$navigate('/$workflow/instance/index', q);
     }
 });
