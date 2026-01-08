@@ -23,7 +23,7 @@
 			<Button Render="Hide" Icon="Bookmark" Command="{BindCmd Dialog, Action=ShowSelected, Argument={Bind Instances}, Url='/$workflow/instance/bookmarks'}"/>
 			<Separator />
 			<Button Icon="UnlockOutline" Command="{BindCmd ExecuteSelected, CommandName=unlock, Argument={Bind Instances}}"/>
-			<Button Icon="Delete" Command="{BindCmd ExecuteSelected, CommandName=remove, Argument={Bind Instances}, Confirm='@[Confirm.Delete.Element]'}"/>
+			<Button Icon="Clear" Command="{BindCmd ExecuteSelected, CommandName=remove, Argument={Bind Instances}, Confirm='@[Confirm.Delete.Element]'}"/>
 			<Separator />
 			<Button Icon="Reload" Command="{BindCmd Reload}"/>
 			<ToolbarAligner />

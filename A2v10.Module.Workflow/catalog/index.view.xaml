@@ -16,7 +16,7 @@
 			<Button Icon="ArrowOpen" Content="@[Edit]" Command="{BindCmd OpenSelected, Argument={Bind Parent.ItemsSource}, Url='/$workflow/catalog/edit'}"/>
 			<Button Icon="Copy"  Command="{BindCmd ExecuteSelected, CommandName=copy, Argument={Bind Parent.ItemsSource}, Confirm='@[WfAdm.Confirm.Copy]'}"
 					Tip="@[WfAdm.CopySelected]"/>
-			<Button Icon="Delete" Command="{BindCmd ExecuteSelected, CommandName=delete, Argument={Bind Parent.ItemsSource}}" />
+			<Button Icon="Clear" Command="{BindCmd ExecuteSelected, CommandName=delete, Argument={Bind Parent.ItemsSource}}" />
 			<Separator />
 			<Button Icon="Workflow1" Content="@[WfAdm.Instances]" 
 					Command="{BindCmd ExecuteSelected, CommandName=instances, Argument={Bind Workflows}}"/>
