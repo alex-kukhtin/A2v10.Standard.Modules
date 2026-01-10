@@ -1,0 +1,12 @@
+﻿<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
+		Title="Test INCLUDE" Padding="1rem">
+	<Grid AlignItems="Stretch" Height="100%" Padding="0"
+			Rows="100,100,1*" Columns="1*,1*,1*" Width="Clamp(400px,70vw,80%)">
+		<Block Grid.Row="1" Grid.Col="1" Background="LightYellow" Border="True"/>
+		<Block Grid.Row="2" Grid.Col="2" Background="LightYellow" Border="True"/>
+		<DataGrid Grid.Row="3" Grid.ColSpan="2">
+			<DataGridColumn Header="1" Width="Min(20px,20vw)"></DataGridColumn>
+			<DataGridColumn Header="2" MinWidth="Max(100px,30vw)"></DataGridColumn>
+		</DataGrid>
+	</Grid>
+</Page>

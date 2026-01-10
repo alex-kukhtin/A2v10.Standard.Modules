@@ -9,13 +9,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="A2v10.Platform" Version="10.1.8607" />
+		<PackageReference Include="A2v10.Platform" Version="10.1.8609" />
 		<PackageReference Include="A2v10.Web.Assets" Version="10.1.8606" />
 		<PackageReference Include="A2v10.Workflow.WebAssets" Version="10.1.8119" />
-		<PackageReference Include="A2v10.Workflow.Engine" Version="10.1.8315" />
+		<PackageReference Include="A2v10.Workflow.Engine" Version="10.1.8316" />
 		<PackageReference Include="A2v10.Scheduling" Version="10.1.8601" />
 		<PackageReference Include="A2v10.MailClient" Version="10.1.8601" />
-		<PackageReference Include="A2v10.Metadata" Version="10.1.8607" />
+		<PackageReference Include="A2v10.Metadata" Version="10.1.8609" />
 		<!--!!!UPDATE versions in A2v10.Module.Workflow.nuspec && _layout !!!-->
 		<!--
 		<PackageReference Include="A2v10.Module.Metadata" Version="10.1.1055" />
