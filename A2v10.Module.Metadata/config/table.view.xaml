@@ -27,10 +27,10 @@
 			<Case Value="">
 				<Grid AlignItems="Top" Padding="0,0,0,10" Height="100%" Overflow="Auto"
 					  Columns="20rem,25rem,25rem,1*" Gap=".5rem,1rem" Rows="Repeat(5;Auto),1*">
-					<TextBox Grid.Row="1" Label="@[Name]" Value="{Bind Table.Name}"/>
-					<TextBox Grid.Row="2" Label="Collection Name" Value="{Bind Table.ItemsName}" Placeholder="{Bind Table.Name}"/>
-					<TextBox Grid.Row="3" Label="Element Name" Value="{Bind Table.ItemName}" Placeholder="{Bind Table.$ItemPlaceholder}"/>
-					<TextBox Grid.Row="4" Label="Type Name" Value="{Bind Table.TypeName}" Placeholder="{Bind Table.$TypePlaceholder}"/>
+					<TextBox Grid.Row="1" Label="@[Name]" Value="{Bind Table.Name, Filters=Trim}"/>
+					<TextBox Grid.Row="2" Label="Collection Name" Value="{Bind Table.ItemsName, Filters=Trim}" Placeholder="{Bind Table.Name}"/>
+					<TextBox Grid.Row="3" Label="Element Name" Value="{Bind Table.ItemName, Filters=Trim}" Placeholder="{Bind Table.$ItemPlaceholder}"/>
+					<TextBox Grid.Row="4" Label="Type Name" Value="{Bind Table.TypeName, Filters=Trim}" Placeholder="{Bind Table.$TypePlaceholder}"/>
 
 					<Static Grid.Row="1" Grid.Col="3" Label="Source" Value="{Bind Table.Source}"/>
 
