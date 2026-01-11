@@ -132,7 +132,16 @@
 							</TableCell>
 							<TableCell>
 								<SelectorSimple If="{Bind $IsReference}" 
-									Value="{Bind Reference}" Url="/$meta/config/reference" Data="{Bind $ReferenceData}"/>
+									Value="{Bind Reference}" Url="/$meta/config/reference" Data="{Bind $ReferenceData}"
+												ListSize="20rem,Auto">
+									<SelectorSimple.ItemsPanel>
+										<DataGrid HeadersVisibility="None"
+												  GridLines="None"
+												  GroupBy="Schema">
+											<DataGridColumn Content="{Bind Name}"/>
+										</DataGrid>
+									</SelectorSimple.ItemsPanel>
+								</SelectorSimple>
 							</TableCell>
 							<TableCell Wrap="NoWrap">
 								<TextBox If="{Bind Source}"

@@ -14,11 +14,11 @@
 		<Toolbar AlignItems="Baseline">
 			<Button Icon="Refresh"/>
 			<ToolbarAligner/>
-			<TextBox Value="{Bind Parent.Filter.Fragment}" ShowSearch="True" ShowClear="True"
-					 TabIndex="1" Placeholder="Search"/>
+			<SearchBox Value="{Bind Parent.Filter.Fragment}"
+					 TabIndex="1" Placeholder="@[Search]"/>
 		</Toolbar>
 		<DataGrid GridLines="Horizontal" FixedHeader="True" Height="20rem"
-				  ItemsSource="{Bind Parent.ItemsSource}"
+				  ItemsSource="{Bind Parent.ItemsSource}" GroupBy="Schema"
 				  DoubleClick="{BindCmd Select, Argument={Bind Tables}}">
 			<DataGridColumn Header="Name" Content="{Bind Name}" Wrap="NoWrap"/>
 		</DataGrid>

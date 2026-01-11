@@ -664,7 +664,7 @@ begin
 		)
 		and (@Schema is null or [Schema] = @Schema)
 		and (@fr is null or [Name] like @fr)
-	order by [Name];		
+	order by a2meta.fn_Schema2Text([Schema]), [Name];		
 end
 go
 ------------------------------------------------
@@ -680,13 +680,15 @@ begin
 
 	declare @fr nvarchar(255) = N'%' + @Text + N'%';
 
-	select [Tables!TRefTable!Array] = null, [Id!!Id] = Id, [Name!!Name] = a2meta.fn_TableFullName([Schema], [Name])
+	select [Tables!TRefTable!Array] = null, [Id!!Id] = Id, [Name!!Name] = a2meta.fn_TableFullName([Schema], [Name]),
+		[Schema] = a2meta.fn_Schema2Text([Schema])
 	from a2meta.[Catalog] where 
 		(@DataType = N'reference' and Kind in (N'table', N'details')
 			or @DataType = N'enum' and Kind in (N'enum'))
 		and [Name] like @fr
 		and (@Schema is null or [Schema] = @Schema)
-	order by [Name];		
+	-- order by Schema is significant for fetch!
+	order by a2meta.fn_Schema2Text([Schema]), [Name];		
 end
 go
 ------------------------------------------------
