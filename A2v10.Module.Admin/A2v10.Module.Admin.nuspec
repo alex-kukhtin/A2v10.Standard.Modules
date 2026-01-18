@@ -4,7 +4,7 @@
 		<version>10.1.1021</version>
 		<authors>Oleksandr Kukthin</authors>
 		<description>A2v10 Platform Application Admin UI</description>
-		<copyright>Copyright © 2025 Oleksandr Kukthin. All rights reserved.</copyright>
+		<copyright>Copyright © 2025-2026 Oleksandr Kukthin. All rights reserved.</copyright>
 		<tags>A2v10 Platform Admin</tags>
 		<repository type="git" url="https://github.com/alex-kukhtin/A2v10.Standard.Modules" branch="master"/>
 		<license type="expression">MIT</license>
