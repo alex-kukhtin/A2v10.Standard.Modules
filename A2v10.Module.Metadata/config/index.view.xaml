@@ -23,8 +23,9 @@
 				<Button Icon="Delete"
 				Command="{BindCmd Command=ExecuteSelected, CommandName=deleteItem, Argument={Bind Elems}}"/>
 				<Separator />
-				<Button Icon="Database" Content="@[Deploy]"
+				<Button Icon="Database" Tip="@[Deploy]"
 					Command="{BindCmd Open, Url='/$meta/config/deploy/index', Argument=0}"/>
+				<Button Icon="Devices" Tip="Generate SQL" Command="{BindCmdExec generateSql}"/>
 				<SpanIcon Icon="WarningOutlineYellow" Tip="@[NeedDeploy]" Render="Hide"/>
 				<Separator />
 				<Button Icon="Reload" Command="{BindCmd Reload}"/>

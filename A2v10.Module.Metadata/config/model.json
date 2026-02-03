@@ -98,6 +98,10 @@
 		"resetForm": {
 			"type": "clr",
 			"clrType": "clr-type:A2v10.Metadata.ResetFormHandler;assembly=A2v10.Metadata"
+		},
+		"generateSql": {
+			"type": "clr",
+			"clrType": "clr-type:A2v10.Metadata.GenerateSqlHandler;assembly=A2v10.Metadata"
 		}
 	},
 	"files": {

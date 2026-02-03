@@ -23,7 +23,8 @@ define(["require", "exports"], function (require, exports) {
                 canExec: canCopy
             },
             exportApp,
-            importApp
+            importApp,
+            generateSql
         },
         events: {
             'ch.table.saved': tableSaved
@@ -147,5 +148,9 @@ define(["require", "exports"], function (require, exports) {
         if (!res)
             return;
         alert('Copy is not implemented yet');
+    }
+    async function generateSql() {
+        const ctrl = this.$ctrl;
+        await ctrl.$invoke('generatesql', {}, BASE_URL);
     }
 });

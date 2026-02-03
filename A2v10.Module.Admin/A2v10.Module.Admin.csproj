@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
-		<Version>10.1.1000</Version>
+		<Version>10.1.1022</Version>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<LangVersion>Latest</LangVersion>
@@ -14,7 +14,7 @@
 		<Authors>Oleksandr Kukthin</Authors>
 		<Company>Oleksandr Kukthin</Company>
 		<Description>A2v10 Platform Admin UI</Description>
-		<Copyright>Copyright © 2025 Oleksandr Kukthin. All rights reserved.</Copyright>
+		<Copyright>Copyright © 2025-2026 Oleksandr Kukthin. All rights reserved.</Copyright>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/alex-kukhtin/A2v10.Standard.Modules</RepositoryUrl>
 		<PackageTags>A2v10 Platform</PackageTags>
@@ -26,14 +26,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="A2v10.App.Assets" Version="10.1.8603" />
+		<PackageReference Include="A2v10.App.Assets" Version="10.1.8620" />
 		<PackageReference Include="A2v10.AppCompiler" Version="10.1.8118" />
-		<PackageReference Include="A2v10.Sql.MSBuild" Version="10.1.8105" />
+		<PackageReference Include="A2v10.Sql.MSBuild" Version="10.1.8200" />
 		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.9.3">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.102" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup>

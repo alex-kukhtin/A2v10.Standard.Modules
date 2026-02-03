@@ -1,4 +1,4 @@
-<Page Title="@[Agents]" xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml">
+<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml" Title="@[Agents]">
 	<Page.Taskpad>
 		<Taskpad Collapsible="True">
 			<Panel Header="@[Filters]" Collapsible="True" Style="Transparent">
@@ -22,7 +22,7 @@
 		<Toolbar>
 			<Button Icon="Plus" Command="{BindCmd Dialog, Action=Append, Url='/catalog/agents/edit', Argument={Bind Parent.ItemsSource}}" Content="@[Create]" />
 			<Button Icon="Edit" Command="{BindCmd Dialog, Action=EditSelected, Url='/catalog/agents/edit', Argument={Bind Parent.ItemsSource}}" />
-			<Button Icon="Clear" Command="{BindCmd DbRemoveSelected, Argument={Bind Parent.ItemsSource}}" />
+			<Button Icon="Clear" Command="{BindCmd DbRemoveSelected, Argument={Bind Parent.ItemsSource}, Confirm='@[Confirm.Delete.Element]'}" />
 			<Separator />
 			<Button Icon="Reload" Command="{BindCmd Reload}" />
 			<ToolbarAligner />
@@ -30,8 +30,8 @@
 		</Toolbar>
 		<DataGrid Sort="True" FixedHeader="True" ItemsSource="{Bind Parent.ItemsSource}" DoubleClick="{BindCmd Dialog, Action=EditSelected, Url='/catalog/agents/edit', Argument={Bind Parent.ItemsSource}}" Height="100%" Grid.Row="2">
 			<DataGridColumn Content="{Bind Id}" Header="@[Id]" Role="Id" />
-			<DataGridColumn Content="{Bind Name}" Header="@[Name]" />
 			<DataGridColumn Content="{Bind Date, DataType=Date}" Header="@[Date]" Role="Date" />
+			<DataGridColumn Content="{Bind Name}" Header="@[Name]" />
 			<DataGridColumn Content="{Bind Memo}" Header="@[Memo]" LineClamp="2" />
 			<DataGridColumn Content="{Bind Store.Name}" Header="@[Store]" SortProperty="Store" />
 		</DataGrid>

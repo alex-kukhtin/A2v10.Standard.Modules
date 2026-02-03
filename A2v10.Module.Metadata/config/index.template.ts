@@ -21,7 +21,8 @@ const template: Template = {
 			canExec: canCopy
 		},
 		exportApp,
-		importApp
+		importApp,
+		generateSql
 	},
 	events: {
 		'ch.table.saved': tableSaved
@@ -151,4 +152,8 @@ async function copy() {
 	if (!res)
 		return;
 	alert('Copy is not implemented yet');
+}
+async function generateSql() {
+	const ctrl: IController = this.$ctrl;
+	await ctrl.$invoke('generatesql', { }, BASE_URL)
 }
