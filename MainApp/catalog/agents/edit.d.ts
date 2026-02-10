@@ -1,22 +1,24 @@
 
 
-export interface TUnit extends IElement {
+export interface TStore extends IElement {
 	readonly Id: number;
 	readonly IsSystem: boolean;
 	Name: string;
-	Short: string;
 	Memo: string;
+	readonly IsFolder: boolean;
+	Parent: TStore;
 }
 
-export interface TItem extends IElement {
+
+export interface TAgent extends IElement {
 	readonly Id: number;
 	readonly IsSystem: boolean;
 	Name: string;
-	Unit: TUnit;
-	VatRate: string;
+	Date: Date;
 	Memo: string;
+	Store: TStore;
 }   
 
 export interface TRoot extends IRoot {
-    readonly Item: TItem; 
+    readonly Agent: TAgent; 
 }

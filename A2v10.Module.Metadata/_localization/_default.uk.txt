@@ -28,6 +28,9 @@
 @Filters=Фільтри
 @PrintForms=Друковані форми
 @Other=Інше
+@Bit.All=Всі
+@Bit.Yes=Так
+@Bit.No=Ні
 ; Reports
 @TurnOverSheet=Оборотна відомість
 @TurnOver.Start=На початок

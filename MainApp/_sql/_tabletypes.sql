@@ -10,7 +10,8 @@ create type cat.[Items.TableType] as table
     [Name] nvarchar(100),
     [Unit] bigint,
     [VatRate] nvarchar(16),
-    [Memo] nvarchar(255)
+    [Memo] nvarchar(255),
+    [UseSeries] bit
 );
 go
 ------------------------------------------------

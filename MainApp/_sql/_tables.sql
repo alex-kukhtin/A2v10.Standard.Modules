@@ -17,6 +17,7 @@ create table cat.[Items]
     [Unit] bigint,
     [VatRate] nvarchar(16),
     [Memo] nvarchar(255),
+    [UseSeries] bit,
     constraint PK_Items primary key ([Id])
 );
 go
