@@ -1200,6 +1200,7 @@ create table cat.[Items]
     [Unit] bigint,
     [VatRate] nvarchar(16),
     [Memo] nvarchar(255),
+    [UseSeries] bit,
     constraint PK_Items primary key ([Id])
 );
 go
@@ -1392,7 +1393,8 @@ create type cat.[Items.TableType] as table
     [Name] nvarchar(100),
     [Unit] bigint,
     [VatRate] nvarchar(16),
-    [Memo] nvarchar(255)
+    [Memo] nvarchar(255),
+    [UseSeries] bit
 );
 go
 ------------------------------------------------

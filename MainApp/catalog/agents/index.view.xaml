@@ -23,6 +23,7 @@
 			<Button Icon="Plus" Command="{BindCmd Dialog, Action=Append, Url='/catalog/agents/edit', Argument={Bind Parent.ItemsSource}}" Content="@[Create]" />
 			<Button Icon="Edit" Command="{BindCmd Dialog, Action=EditSelected, Url='/catalog/agents/edit', Argument={Bind Parent.ItemsSource}}" />
 			<Button Icon="Clear" Command="{BindCmd DbRemoveSelected, Argument={Bind Parent.ItemsSource}, Confirm='@[Confirm.Delete.Element]'}" />
+			<Button Icon="Devices" Command="{BindCmdExec shareUrl}"/>
 			<Separator />
 			<Button Icon="Reload" Command="{BindCmd Reload}" />
 			<ToolbarAligner />
