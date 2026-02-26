@@ -1,10 +1,10 @@
 ﻿/* _sqlscripts/a2v10_platform_meta.sql */
 
 /*
-Copyright © 2008-2025 Oleksandr Kukhtin
+Copyright © 2008-2026 Oleksandr Kukhtin
 
-Last updated : 31 may 2025
-module version : 8553
+Last updated : 26 feb 2026
+module version : 8624
 */
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.SCHEMATA where SCHEMA_NAME=N'a2sys')
@@ -449,6 +449,21 @@ begin
 	insert into a2security.ExternalUserLogins([User], LoginProvider, ProviderKey)
 	values (@Id, @LoginProvider, @ProviderKey);
 	commit tran;
+end
+go
+------------------------------------------------
+create or alter procedure a2security.[User.EnsureExternalLogin]
+@UserName nvarchar(255),
+@PersonName nvarchar(255)
+as
+begin
+	set nocount on;
+	set transaction isolation level read committed;
+	set xact_abort on;
+
+	if not exists(select * from a2security.Users where UserName = @UserName)
+		insert into a2security.Users (UserName, PersonName, SecurityStamp, EmailConfirmed, IsExternalLogin) 
+		values (@UserName, @PersonName, N'', 1, 1);
 end
 go
 ------------------------------------------------
