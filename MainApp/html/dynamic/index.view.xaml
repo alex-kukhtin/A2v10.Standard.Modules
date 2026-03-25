@@ -1,0 +1,11 @@
+﻿<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
+		Title="Test DYNAMIC HTML" Padding="1rem">
+	<Grid AutoFlow="Row" Width="50rem">
+		<Button Style="Cyan" Content="Set HTML" Width="10rem"
+				Command="{BindCmdExec setHtml}"/>
+
+		<Button Icon="Robot" Style="Toolbar"/>
+		<Label>Result</Label>
+		<Html HandleClick="testClick" Content="{Bind Root.$Text}"></Html>
+	</Grid>
+</Page>

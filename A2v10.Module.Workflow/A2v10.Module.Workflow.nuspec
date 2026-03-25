@@ -12,16 +12,16 @@
 		<dependencies>
 			<group targetFramework="net8.0">
 				<dependency id="A2v10.Workflow.WebAssets" version="10.1.8120" />
-				<dependency id="A2v10.Workflow.Engine" version="10.1.8325" />
-				<dependency id="A2v10.Scheduling" version="10.1.8625" />
-				<dependency id="A2v10.Infrastructure" version="10.1.8622" />
+				<dependency id="A2v10.Workflow.Engine" version="10.1.8330" />
+				<dependency id="A2v10.Scheduling" version="10.1.8630" />
+				<dependency id="A2v10.Infrastructure" version="10.1.8630" />
 				<dependency id="Newtonsoft.Json" version="13.0.4" />
 			</group>
 			<group targetFramework="net9.0">
 				<dependency id="A2v10.Workflow.WebAssets" version="10.1.8120" />
-				<dependency id="A2v10.Workflow.Engine" version="10.1.8325" />
-				<dependency id="A2v10.Scheduling" version="10.1.8625" />
-				<dependency id="A2v10.Infrastructure" version="10.1.8622" />
+				<dependency id="A2v10.Workflow.Engine" version="10.1.8330" />
+				<dependency id="A2v10.Scheduling" version="10.1.8630" />
+				<dependency id="A2v10.Infrastructure" version="10.1.8630" />
 				<dependency id="Newtonsoft.Json" version="13.0.4" />
 			</group>
 		</dependencies>

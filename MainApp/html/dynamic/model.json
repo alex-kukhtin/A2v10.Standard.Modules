@@ -1,0 +1,11 @@
+﻿{
+	"$schema": "../../@schemas/model-json-schema.json#",
+	"schema": "cat",
+	"model": "",
+	"actions": {
+		"index": {
+			"template": "index.template",
+			"view": "index.view"
+		}
+	}
+}
