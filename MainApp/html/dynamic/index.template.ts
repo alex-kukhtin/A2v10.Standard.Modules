@@ -23,5 +23,5 @@ function setHtml() {
 
 function testClick(elem: HTMLElement, name) {
 	console.log('delegate', this.$ctrl, elem, name);
-	console.log(JSON.parse(elem.dataset.info));
+	console.log(JSON.parse(elem.dataset.info!));
 }
