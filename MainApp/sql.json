@@ -7,7 +7,8 @@
 			"_sql/_schemas.sql",
 			"_sql/_tables.sql",
 			"_sql/_tabletypes.sql",
-			"_sql/_ui.sql"
+			"_sql/_ui.sql",
+			"/**/logic.sql"
 		]
 	}
 ]
