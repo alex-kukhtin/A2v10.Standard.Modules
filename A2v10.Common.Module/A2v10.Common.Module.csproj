@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+		<TargetFrameworks>net8.0</TargetFrameworks>
 		<Version>10.1.1023</Version>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
@@ -10,10 +10,10 @@
 		<NoWarn>$(NoWarn);MSB3245</NoWarn>
 		<NoWin32Manifest>true</NoWin32Manifest>
 		<IsPackable>true</IsPackable>
-		<PackageId>A2v10.Module.Admin</PackageId>
+		<PackageId>A2v10.Module.Common</PackageId>
 		<Authors>Oleksandr Kukthin</Authors>
 		<Company>Oleksandr Kukthin</Company>
-		<Description>A2v10 Platform Admin UI</Description>
+		<Description>A2v10 Platform Common Services</Description>
 		<Copyright>Copyright © 2025-2026 Oleksandr Kukthin. All rights reserved.</Copyright>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/alex-kukhtin/A2v10.Standard.Modules</RepositoryUrl>
@@ -22,7 +22,7 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<IncludeContentInPack>False</IncludeContentInPack>
-		<NuspecFile>A2v10.Module.Admin.nuspec</NuspecFile>
+		<NuspecFile>A2v10.Module.Common.nuspec</NuspecFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -56,7 +56,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="README.md" Pack="true" PackagePath="\" />
+		<None Include="README.md" />
 	</ItemGroup>
 
 </Project>

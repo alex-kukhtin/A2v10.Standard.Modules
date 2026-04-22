@@ -25,14 +25,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="A2v10.App.Assets" Version="10.1.8632" />
+		<PackageReference Include="A2v10.App.Assets" Version="10.1.8634" />
 		<PackageReference Include="A2v10.AppCompiler" Version="10.1.8118" />
 		<PackageReference Include="A2v10.Sql.MSBuild" Version="10.1.8220" />
 		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="6.0.3">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.201" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup>
