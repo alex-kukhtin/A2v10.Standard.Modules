@@ -1,0 +1,15 @@
+{
+	"kind": "Catalog",
+	"schema": "cat",
+	"table": "Agents",
+	"model": "Agent",
+	"fields": {
+		"Date": {
+			"type": "Date"
+		},
+		"Store": {
+			"type": "Ref",
+			"target": "catalog/store"
+		}
+	}
+}

@@ -103,8 +103,9 @@ async function modelLoad() {
 	});
 
 
-	// save commands
 	template.commands.togglePanel = () => { propPanel.classList.toggle('open') };
+
+	// save command
 
 	template.commands.save = {
 		canExec() { return this.$dirty },
@@ -129,6 +130,8 @@ async function modelLoad() {
 
 async function checkSyntax() {
 	const ctrl: IController = this.$ctrl;
+	if (this.$dirty)
+		await this.$template.commands.save.exec.call(this);
 	let res = await ctrl.$invoke('checkSyntax', { WorkflowId: this.Workflow.Id }, '/$workflow/catalog');
 	if (!res.Errors.length)
 		ctrl.$msg('Помилок не знайдено', 'Перевірка синтаксису', CommonStyle.info);

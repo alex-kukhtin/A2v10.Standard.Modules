@@ -79,6 +79,8 @@ app.modules['std:signalR'] = function () {
 			hasLicense: Boolean,
 			profileText: String,
 			licenseText: String,
+			enableDark: Boolean,
+			isDark: Boolean,
 			logo: String
 		},
 		computed: {
@@ -96,6 +98,11 @@ app.modules['std:signalR'] = function () {
 			license() {
 				const dlgData = { promise: null, rd: true, raw: true };
 				eventBus.$emit('modal', '/viewlicense', dlgData);
+			},
+			async setTheme(theme) {
+				let res = await fetch(`/account/darkmode?theme=${theme}`, { method: 'POST' });
+				if (res.ok)
+					window.location.reload();
 			}
 		},
 		mounted() {
@@ -355,6 +362,18 @@ app.modules['std:signalR'] = function () {
 					this.lockRoute = false;
 				});
 				this.storeTabs();
+			},
+			async tabLoadError(url, err) {
+				if (err) err = err.replace('\\n', '\n');
+				let tab = this.activeTab || this.tabs.find(t => t.url == url);
+				if (tab) {
+					if (err.indexOf('UI:') === 0)
+						await this._alert(err.substring(3));
+					else
+						alert(err);
+					this.closeTab(tab);
+				} else
+					alert(err);
 			},
 			tabLoadComplete(page) {
 				if (page) {
@@ -865,6 +884,15 @@ app.modules['std:signalR'] = function () {
 					let dlg = this.modals.pop();
 					dlg.resolve(false);
 				}
+			},
+			_alert(msg) {
+				let dlgData = {
+					promise: null, data: {
+						message: msg, style: 'alert'
+					}
+				};
+				this._eventConfirm(dlgData);
+				return dlgData.promise;
 			},
 			_eventConfirm(prms) {
 				let dlg = prms.data;

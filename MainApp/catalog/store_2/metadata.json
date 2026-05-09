@@ -1,0 +1,6 @@
+{
+	"kind": "Catalog",
+	"schema": "cat",
+	"table": "Stores",
+	"model": "Store"
+}

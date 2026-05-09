@@ -102,6 +102,8 @@ async function modelLoad() {
 }
 async function checkSyntax() {
     const ctrl = this.$ctrl;
+    if (this.$dirty)
+        await this.$template.commands.save.exec.call(this);
     let res = await ctrl.$invoke('checkSyntax', { WorkflowId: this.Workflow.Id }, '/$workflow/catalog');
     if (!res.Errors.length)
         ctrl.$msg('Помилок не знайдено', 'Перевірка синтаксису', "info");
