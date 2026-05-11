@@ -1,0 +1,95 @@
+﻿[
+	{
+		"title": "@[Sales]",
+		"icon": "shopping",
+		"items": [
+			{
+				"title": "@[Documents]",
+				"items": [
+					{
+						"title": "Прибуткові накладні",
+						"url": "/document/waybillin"
+					},
+					{
+						"title": "Видаткові накладні",
+						"url": "/document/waybillout"
+					},
+					{
+						"title": "Накладні на переміщення",
+						"url": "/document/waybillmove"
+					},
+					{
+						"title": "Журнал запасів",
+						"url": "/journal/stock"
+					}
+				]
+			},
+			{
+				"title": "@[Catalogs]",
+				"items": [
+					{
+						"title": "@[Agents]",
+						"url": "/catalog/agent",
+						"create": true
+					},
+					{
+						"title": "@[Stores]",
+						"url": "/catalog/store",
+						"create": true
+					},
+					{
+						"title": "@[OtherCatalogs]",
+						"items": [
+							{
+								"title": "@[Units]",
+								"categroy": "",
+								"url": "/catalog/unit"
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	{
+		"title": "@[Purchase]",
+		"icon": "cart",
+		"underline": true,
+		"items": [
+			{
+				"title": "@[Documents]"
+			}
+		]
+	},
+	{
+		"grow": true
+	},
+	{
+		"title": "@[Settings]",
+		"icon": "gear-outline",
+		"items": [
+			{
+				"title": "Розробка",
+				"items": [
+					{
+						"title": "Application Designer",
+						"url": "/$meta/config"
+					}
+				]
+			},
+			{
+				"title": "BPMN",
+				"items": [
+					{
+						"title": "Catalog",
+						"url": "/$workflow/catalog"
+					},
+					{
+						"title": "Instances",
+						"url": "/$workflow/instance"
+					}
+				]
+			}
+		]
+	}
+]

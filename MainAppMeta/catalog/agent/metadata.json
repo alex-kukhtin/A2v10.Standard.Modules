@@ -1,0 +1,43 @@
+{
+	"kind": "Catalog",
+	"schema": "cat",
+	"table": "Agents",
+	"model": "Agent",
+	"traits": ["tags", "audit"],
+	"fields": {
+		"Date": {
+			"type": "Date"
+		},
+		"Store": {
+			"type": "Ref",
+			"target": "catalog/store"
+		}
+	},
+	"forms2": {
+		"index": {
+			"commands": ["add", "edit", "delete", "sep", "show", "sep", "reload", "toRight", "search"],
+			"columns": {
+				"Id": {},
+				"Name": { "clamp": 2 },
+				"Date": {},
+				"Store": {},
+				"Memo": { "clamp": 2 }
+			},
+			"filters": {
+				"Store": {}
+			}
+		},
+		"edit": {
+			"in": "dialog"
+		},
+		"show": {
+			"tabs": [
+				{
+				},
+				{
+
+				}
+			]
+		}
+	}
+}

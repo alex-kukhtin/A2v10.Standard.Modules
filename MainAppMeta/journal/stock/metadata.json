@@ -1,0 +1,16 @@
+{
+	"kind": "Journal",
+	"schema": "jrn",
+	"table": "StockJournal",
+	"model": "Trans",
+	"fields": {
+		"Store": {
+			"type": "Ref",
+			"target": "catalog/store"
+		},
+		"Agent": {
+			"type": "Ref",
+			"target": "catalog/store"
+		}
+	}
+}
