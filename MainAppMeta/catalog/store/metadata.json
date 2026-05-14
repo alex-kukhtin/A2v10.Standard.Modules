@@ -1,0 +1,10 @@
+{
+	"details": {
+		"Address" : {
+			"model": "Address",
+			"fields": {
+				"Text": {}
+			}
+		}
+	}
+}

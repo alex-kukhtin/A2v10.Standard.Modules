@@ -2,15 +2,29 @@
 	"kind": "Journal",
 	"schema": "jrn",
 	"table": "StockJournal",
-	"model": "Trans",
+	"model": "Transaction",
 	"fields": {
+		"Qty": {
+			"type": "Float"
+		},
+		"Sum": {
+			"type": "Money"
+		},
 		"Store": {
 			"type": "Ref",
 			"target": "catalog/store"
 		},
 		"Agent": {
 			"type": "Ref",
-			"target": "catalog/store"
+			"target": "catalog/agent"
+		},
+		"Item": {
+			"type": "Ref",
+			"target": "catalog/item"
+		},
+		"Document": {
+			"type": "Document",
+			"target": "document"
 		}
 	}
 }

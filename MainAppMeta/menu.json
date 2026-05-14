@@ -38,6 +38,11 @@
 						"create": true
 					},
 					{
+						"title": "@[Items]",
+						"url": "/catalog/item",
+						"create": true
+					},
+					{
 						"title": "@[OtherCatalogs]",
 						"items": [
 							{
@@ -58,6 +63,15 @@
 		"items": [
 			{
 				"title": "@[Documents]"
+			},
+			{
+				"title": "@[Journals]",
+				"items": [
+					{
+						"title": "StockJournal",
+						"url": "/journal/stock"
+					}
+				]
 			}
 		]
 	},
