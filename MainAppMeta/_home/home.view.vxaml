@@ -1,0 +1,10 @@
+﻿<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
+		Title="Home" Components="{Components './components'}">
+	<EmptyPanel>
+		Yet not implemented
+		<StackPanel AlignItems="Center" Gap="10">
+			<Button Content="Report" Command="{BindCmd Report, Report=test, Url='/_home'}"/>
+			<Component Name="Text"/>
+		</StackPanel>
+	</EmptyPanel>
+</Page>

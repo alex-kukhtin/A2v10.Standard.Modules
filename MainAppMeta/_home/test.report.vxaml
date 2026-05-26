@@ -1,0 +1,5 @@
+﻿<Page xmlns="clr-namespace:A2v10.Xaml.Report;assembly=A2v10.Xaml.Report">
+	<Column>
+		<Text>I AM THE XAMLA REPORT</Text>
+	</Column>
+</Page>

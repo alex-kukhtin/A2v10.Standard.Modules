@@ -2,7 +2,14 @@
 	"$schema": "../@schemas/model-json-schema.json#",
 	"model": "",
 	"actions": {
-		"index": {			"view": "home.view"
+		"index": {
+			"view": "home.view"
+		}
+	},
+	"reports": {
+		"test": {
+			"type": "pdf",
+			"report": "test.report"
 		}
 	}
 }

@@ -14,5 +14,29 @@
 			"type": "Ref",
 			"target": "catalog/agent"
 		}
+	},
+	"details": {
+		"Rows": {
+			"model": "Row",
+			"kinds": ["Stock", "Service"],
+			"fields": {
+				"Kind": {
+					"type": "RowKind"
+				},
+				"Qty": {
+					"type": "Float"
+				},
+				"Price": {
+					"type": "Money"
+				},
+				"Sum": {
+					"type": "Money"
+				},
+				"Item": {
+					"type": "Ref",
+					"target": "catalog/item"
+				}
+			}
+		}
 	}
 }

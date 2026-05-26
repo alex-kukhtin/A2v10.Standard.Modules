@@ -1,6 +1,6 @@
 {
 	"details": {
-		"Address" : {
+		"Addresses" : {
 			"model": "Address",
 			"fields": {
 				"Text": {}

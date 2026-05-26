@@ -1,2 +1,18 @@
 {
+	"apply": [
+		{
+			"journal": "journal/stock",
+			"dir": "in",
+			"each": "Stock",
+			/* mapping можно сделать auto */
+			"mapping": {
+				"Document": "Id",
+				"Store": "Store",
+				"Agent": "Agent",
+				"Item": "row.Item",
+				"Qty": "row.Qty",
+				"Sum": "row.Sum"
+			}
+		}
+	]
 }

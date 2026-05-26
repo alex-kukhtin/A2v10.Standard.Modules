@@ -44,11 +44,16 @@
 					},
 					{
 						"title": "@[OtherCatalogs]",
+						"id": "sales",
 						"items": [
 							{
 								"title": "@[Units]",
-								"categroy": "",
+								"category": "@[General]",
 								"url": "/catalog/unit"
+							},
+							{
+								"title": "@[Stores]",
+								"url": "/catalog/store"
 							}
 						]
 					}

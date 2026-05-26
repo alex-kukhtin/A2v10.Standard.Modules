@@ -3,7 +3,8 @@
 		<Taskpad Collapsible="True">
 			<Panel Header="@[Filters]" Collapsible="True" Style="Transparent">
 				<Grid Rows="Auto, Auto, Auto" Columns="1*">
-					<PeriodPicker Align="Center" Placement="BottomRight" Display="Name" Value="{Bind Parent.Filter.Period}" Label="@[Period]" Description="{Bind Parent.Filter.Period.Name}" />
+					<PeriodPicker Align="Center" Placement="BottomRight" 
+								  Display="Name" Value="{Bind Parent.Filter.Period}" Label="@[Period]" Description="{Bind Parent.Filter.Period.Name}" />
 					<SelectorSimple Url="/operation/operations" Placeholder="@[Operation.AllData]" ShowClear="True" LineClamp="2" Highlight="True" Value="{Bind Parent.Filter.Operation}" Label="@[Operation]" Grid.Row="2" />
 					<SelectorSimple Url="/catalog/agents" Placeholder="@[Agent.AllData]" ShowClear="True" LineClamp="2" Highlight="True" Value="{Bind Parent.Filter.Agent}" Label="@[Agent]" Grid.Row="3" />
 				</Grid>

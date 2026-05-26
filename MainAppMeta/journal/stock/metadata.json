@@ -9,7 +9,7 @@
 		},
 		"Sum": {
 			"type": "Money"
-		},
+		},		
 		"Store": {
 			"type": "Ref",
 			"target": "catalog/store"
