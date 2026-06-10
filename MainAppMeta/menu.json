@@ -1,114 +1,118 @@
-﻿[
-	{
-		"title": "@[Sales]",
-		"icon": "shopping",
-		"items": [
-			{
-				"title": "@[Documents]",
-				"items": [
-					{
-						"title": "Прибуткові накладні",
-						"url": "/document/waybillin"
-					},
-					{
-						"title": "Видаткові накладні",
-						"url": "/document/waybillout"
-					},
-					{
-						"title": "Накладні на переміщення",
-						"url": "/document/waybillmove"
-					},
-					{
-						"title": "Журнал запасів",
-						"url": "/journal/stock"
-					}
-				]
-			},
-			{
-				"title": "@[Catalogs]",
-				"items": [
-					{
-						"title": "@[Agents]",
-						"url": "/catalog/agent",
-						"create": true
-					},
-					{
-						"title": "@[Stores]",
-						"url": "/catalog/store",
-						"create": true
-					},
-					{
-						"title": "@[Items]",
-						"url": "/catalog/item",
-						"create": true
-					},
-					{
-						"title": "@[OtherCatalogs]",
-						"id": "sales",
-						"items": [
-							{
-								"title": "@[Units]",
-								"category": "@[General]",
-								"url": "/catalog/unit"
-							},
-							{
-								"title": "@[Stores]",
-								"url": "/catalog/store"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"title": "@[Purchase]",
-		"icon": "cart",
-		"underline": true,
-		"items": [
-			{
-				"title": "@[Documents]"
-			},
-			{
-				"title": "@[Journals]",
-				"items": [
-					{
-						"title": "StockJournal",
-						"url": "/journal/stock"
-					}
-				]
-			}
-		]
-	},
-	{
-		"grow": true
-	},
-	{
-		"title": "@[Settings]",
-		"icon": "gear-outline",
-		"items": [
-			{
-				"title": "Розробка",
-				"items": [
-					{
-						"title": "Application Designer",
-						"url": "/$meta/config"
-					}
-				]
-			},
-			{
-				"title": "BPMN",
-				"items": [
-					{
-						"title": "Catalog",
-						"url": "/$workflow/catalog"
-					},
-					{
-						"title": "Instances",
-						"url": "/$workflow/instance"
-					}
-				]
-			}
-		]
-	}
-]
+﻿{
+	"$schema": "@schemas/menu-json-schema.json#",
+	"appTitle": "Application Title Here",
+	"menu": [
+		{
+			"title": "@[Sales]",
+			"icon": "cart",
+			"items": [
+				{
+					"title": "@[Documents]",
+					"items": [
+						{
+							"title": "Прибуткові накладні",
+							"url": "/document/waybillin"
+						},
+						{
+							"title": "Видаткові накладні",
+							"url": "/document/waybillout"
+						},
+						{
+							"title": "Накладні на переміщення",
+							"url": "/document/waybillmove"
+						},
+						{
+							"title": "Журнал запасів",
+							"url": "/journal/stock"
+						}
+					]
+				},
+				{
+					"title": "@[Catalogs]",
+					"items": [
+						{
+							"title": "@[Agents]",
+							"url": "/catalog/agent",
+							"create": true
+						},
+						{
+							"title": "@[Stores]",
+							"url": "/catalog/store",
+							"create": true
+						},
+						{
+							"title": "@[Items]",
+							"url": "/catalog/item",
+							"create": true
+						},
+						{
+							"title": "@[OtherCatalogs]",
+							"id": "sales",
+							"items": [
+								{
+									"title": "@[Units]",
+									"category": "@[General]",
+									"url": "/catalog/unit"
+								},
+								{
+									"title": "@[Stores]",
+									"url": "/catalog/store"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"title": "@[Purchase]",
+			"icon": "cart",
+			"underline": true,
+			"items": [
+				{
+					"title": "@[Documents]"
+				},
+				{
+					"title": "@[Journals]",
+					"items": [
+						{
+							"title": "StockJournal",
+							"url": "/journal/stock"
+						}
+					]
+				}
+			]
+		},
+		{
+			"grow": true
+		},
+		{
+			"title": "@[Settings]",
+			"icon": "gear-outline",
+			"items": [
+				{
+					"title": "Розробка",
+					"items": [
+						{
+							"title": "Application Designer",
+							"url": "/$meta/config"
+						}
+					]
+				},
+				{
+					"title": "BPMN",
+					"items": [
+						{
+							"title": "Catalog",
+							"url": "/$workflow/catalog"
+						},
+						{
+							"title": "Instances",
+							"url": "/$workflow/instance"
+						}
+					]
+				}
+			]
+		}
+	]
+}

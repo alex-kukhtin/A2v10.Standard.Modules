@@ -1,0 +1,11 @@
+{
+	"$schema": "../../@schemas/model-json-schema.json#"
+	"schema": "cat",
+	"model": "Agent",
+	"actions": {
+		"edit": {
+			"template": "edit.temlate",
+			"view": "view.dialog"
+		}
+	}
+}

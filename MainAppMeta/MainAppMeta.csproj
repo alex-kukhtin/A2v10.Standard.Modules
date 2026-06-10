@@ -12,8 +12,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="A2v10.App.Assets" Version="10.1.8637" />
-		<PackageReference Include="A2v10.AppCompiler2026" Version="10.1.8636" />
+		<PackageReference Include="A2v10.App.Assets" Version="10.1.8638" />
+		<PackageReference Include="A2v10.AppCompiler2026" Version="10.1.8639" PrivateAssets="all"/>
 		<PackageReference Include="A2v10.Sql.MSBuild" Version="10.1.8220" />
 		<!--
 		-->
@@ -33,10 +33,6 @@
 
 	<ItemGroup>
 		<AdditionalFiles Include="$(ProjectPath)" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="document\waybillout\" />
 	</ItemGroup>
 
 </Project>

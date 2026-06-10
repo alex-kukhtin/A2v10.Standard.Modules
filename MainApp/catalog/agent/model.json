@@ -1,0 +1,17 @@
+{
+	"$schema": "../../@schemas/model-json-schema.json#",
+	"schema": "cat",
+	"model": "Agent",
+	"actions": {
+		"edit": {
+			"template": "edit.template",
+			"view": "view.dialog"
+		}
+	},
+	"popups": {
+		"explain": {
+			"template": "explain.template",
+			"view": "view.dialog"
+		}
+	}
+}

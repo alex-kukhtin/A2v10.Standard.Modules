@@ -1,4 +1,4 @@
-﻿<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml"
+﻿<Page xmlns="clr-namespace:A2v10.Xaml; assembly=A2v10.Xaml"
 		Title="Home" Components="{Components './components'}">
 	<EmptyPanel>
 		Yet not implemented
