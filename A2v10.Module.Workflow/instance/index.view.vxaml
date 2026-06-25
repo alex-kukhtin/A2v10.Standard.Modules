@@ -32,13 +32,16 @@
 		</Toolbar>
 		<DataGrid Grid.Row="2" Grid.Col="1" Sort="True" Mark="{Bind $Mark}" MarkerStyle="Row"
 				ItemsSource="{Bind Parent.ItemsSource}" FixedHeader="True">
-			<DataGridColumn Header="@[WfAdm.Id]" Content="{Bind Id}" Wrap="NoWrap" Fit="True"
+			<DataGridColumn Header="@[WfAdm.Id]/@[WfAdm.Parent]" Wrap="NoWrap" Fit="True"
 					CssClass="monospace">
+				<StackPanel>
+					<Span Content="{Bind Id}" Wrap="NoWrap" Small="False"/>
+					<Span Content="{Bind ParentInstance}" 
+						Color="Green" Italic="True"/>
+				</StackPanel>
 			</DataGridColumn>
-			<DataGridColumn Header="@[WfAdm.Parent]" Content="{Bind ParentInstance}" Wrap="NoWrap" Fit="True"
-					CssClass="monospace" Sort="False">
-			</DataGridColumn>
-			<DataGridColumn Header="@[WfAdm.Workflow]" Content="{Bind Name}" Sort="False" />
+			<DataGridColumn Header="@[WfAdm.Workflow]" Content="{Bind Name}" Sort="False" 
+				/>
 			<DataGridColumn Header="@[Version]" Content="{BindNumber Version}" Role="Number" Fit="True"
 							Sort="False"/>
 			<DataGridColumn Header="@[WfAdm.State]" SortProperty="ExecutionStatus" Wrap="NoWrap">

@@ -35,6 +35,7 @@
 					</StackPanel>
 				</Group>
 				<Static Label="@[WfAdm.State]" Value="{Bind Instance.ExecutionStatus}" />
+				<Static Label="Correlation Id" Value="{Bind Instance.CorrelationId}" />
 				<Group If="{Bind Root.$ActiveId}">
 					<Static Label="Actitity" Value="{Bind Root.$ActiveName}"/>
 					<DataGrid ItemsSource="{Bind Root.$ActiveLog}" Width="100%" Border="True"

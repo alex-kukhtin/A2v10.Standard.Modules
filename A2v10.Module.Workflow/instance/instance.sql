@@ -144,7 +144,7 @@ begin
 		[Track!TTrack!Array] = null, [UserTrack!TUserTrack!Array] = null,
 		[FullTrack!TFullTrack!Array] = null,
 		[Children!TInst!Array] = null,
-		i.ExecutionStatus
+		i.ExecutionStatus, i.CorrelationId
 	from a2wf.Instances i inner join a2wf.Workflows w on i.WorkflowId = w.Id and i.[Version] = w.[Version]
 	where i.Id = @Id;
 
@@ -246,7 +246,7 @@ begin
 	set nocount on;
 	set transaction isolation level read committed;
 
-	update a2wf.Instances set Lock = null, LockDate = null, Halted = 1 where Id = @Id;
+	update a2wf.Instances set Lock = null, LockDate = null, Halted = 0 where Id = @Id;
 end
 go
 ------------------------------------------------
