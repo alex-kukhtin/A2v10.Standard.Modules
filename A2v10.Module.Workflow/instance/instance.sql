@@ -74,7 +74,7 @@ begin
 		i.ExecutionStatus, Lock, [LockDate!!Utc] = LockDate, i.CorrelationId,
 		[DateCreated!!Utc] = i.DateCreated, [DateModified!!Utc] = i.DateModified,
 		[Inboxes!TInbox!Array] = null, [Bookmarks!TBookmark!Array] = null,
-		ParentInstance = i.Parent, Halted,
+		ParentInstance = i.Parent, Halted, WorkflowId = c.Id,
 		[!!RowCount] = t.rowcnt
 	from a2wf.Instances i inner join @inst t on i.Id = t.Id
 		inner join a2wf.[Workflows] w on i.WorkflowId = w.Id and i.[Version] = w.[Version]

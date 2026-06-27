@@ -4,7 +4,7 @@
 		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<Version>10.1.1101</Version>
+		<Version>10.1.1102</Version>
 		<LangVersion>Latest</LangVersion>
 		<OutputType>Library</OutputType>
 		<NoWarn>$(NoWarn);MSB3245</NoWarn>
@@ -25,9 +25,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="A2v10.Infrastructure" Version="10.1.8634" />
+		<PackageReference Include="A2v10.Infrastructure" Version="10.1.8642" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-		<PackageReference Include="A2v10.App.Assets" Version="10.1.8638" />
+		<PackageReference Include="A2v10.App.Assets2026" Version="10.1.8643" />
 		<PackageReference Include="A2v10.AppCompiler2026" Version="10.1.8639" PrivateAssets="All"/>
 		<PackageReference Include="A2v10.Sql.MSBuild" Version="10.1.8220" />
 		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="6.0.3">
