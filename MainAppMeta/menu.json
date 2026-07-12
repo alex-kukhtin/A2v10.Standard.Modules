@@ -1,6 +1,7 @@
 ﻿{
 	"$schema": "@schemas/menu-json-schema.json#",
 	"appTitle": "Application Title Here",
+	"columns": 3,
 	"menu": [
 		{
 			"title": "@[Sales]",
@@ -8,6 +9,8 @@
 			"items": [
 				{
 					"title": "@[Documents]",
+					"col": 1,
+					"row": 1,
 					"items": [
 						{
 							"title": "Прибуткові накладні",
@@ -29,6 +32,8 @@
 				},
 				{
 					"title": "@[Catalogs]",
+					"row": 2,
+					"col": 1,
 					"items": [
 						{
 							"title": "@[Agents]",

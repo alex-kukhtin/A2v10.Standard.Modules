@@ -3,7 +3,7 @@
 	"schema": "cat",
 	"table": "Agents",
 	"model": "Agent",
-	"traits": ["tags", "audit", "color"],
+	"traits": ["tags", "audit"],
 	"fields": {
 		"Date": {
 			"type": "Date"
@@ -23,7 +23,17 @@
 	},
 	"forms2": {
 		"index": {
-			"commands": ["add", "edit", "delete", "sep", "show", "sep", "reload", "toRight", "search"],
+			"page": {
+				"toolbar": [ "add", "edit", "delete", "sep", "show", "sep", "reload", "toRight", "search" ],
+				"datagrid": {
+					"Id": {},
+					"Name": { "clamp": 2 },
+					"Date": {},
+					"Store": {},
+					"Memo": { "clamp": 2 }
+				}
+			},
+			"commands": [ "add", "edit", "delete", "sep", "show", "sep", "reload", "toRight", "search" ],
 			"columns": {
 				"Id": {},
 				"Name": { "clamp": 2 },
@@ -36,7 +46,14 @@
 			}
 		},
 		"edit": {
-			"in": "dialog"
+			"dialog": {
+				"controls": {
+					"Name": { "clamp": 2 },
+					"Date": {},
+					"Store": {},
+					"Memo": { "multiline": true }
+				}
+			}
 		},
 		"show": {
 			"tabs": [

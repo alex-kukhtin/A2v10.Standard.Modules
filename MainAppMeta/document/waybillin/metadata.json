@@ -14,5 +14,71 @@
 				"Sum": "row.Sum"
 			}
 		}
-	]
-}
+	],
+	"forms": {
+		"index": {
+			"is": "page",
+			"scope": "Documents",
+			// collection view always
+			"body": [
+				{
+					"is": "toolbar",
+					"commands": [ "Create", "Edit", "Delete" ]
+				},
+				{
+					"is": "datagrid", // height: 1*
+					"fields": [ "Id, Date, Agent, StoreFrom, StoreTo" ]
+				},
+				{
+					"is": "pager"
+				}
+			],
+			"taskpad": {
+				"is": "taskpad",
+				"body": [
+					{
+						"is": "panel",
+						"fields": "Date,Agent,Store"
+					}
+				]
+			}
+		},
+		"edit": {
+			"is": "page",
+			"scope": "Document",
+			"taskpad": {
+				"is": "taskpad",
+				"fields": [ "Company", "Project" ]
+			},
+			"body": [
+				{
+					"is": "group",
+					"fields": [ "Number", "Date" ]
+				},
+				{
+					"is": "group",
+					"fields": [ "Agent", "StoreFrom", "StoreTo" ]
+				},
+				{
+					"is": "tabs",
+					"elements": [
+						{
+							"is": "tab",
+							"scope": "StockRows",
+							"fields": [ "RowNo", "Item", "Qty", "Price", "Sum" ]
+						},
+						{
+							"is": "tab",
+							"scope": "ServiceRows",
+							"fields": [ "RowNo", "Item", "Qty", "Price", "Sum" ]
+						}
+					]
+				},
+				{
+					"is": "group",
+					"fields": [ "Memo" ]
+				}
+			]
+		}
+	}
+} 
