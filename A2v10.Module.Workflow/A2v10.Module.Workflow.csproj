@@ -25,7 +25,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="A2v10.Infrastructure" Version="10.1.8642" />
+		<PackageReference Include="A2v10.Infrastructure" Version="10.1.8647" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="A2v10.App.Assets2026" Version="10.1.8643" />
 		<PackageReference Include="A2v10.AppCompiler2026" Version="10.1.8639" PrivateAssets="All"/>
@@ -34,7 +34,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.300" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.301" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup>
