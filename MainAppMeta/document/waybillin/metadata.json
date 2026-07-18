@@ -1,4 +1,10 @@
 {
+	"autonum": "waybill",
+	"initialValues": {
+		"StoreFrom": {"source": "profile", "value": "Store" },
+		"Agent": {"source": "profile", "value": "Agent" },
+		"Date":  {"source": "context", "value":  "today" }
+	},
 	"apply": [
 		{
 			"journal": "journal/stock",
@@ -7,7 +13,7 @@
 			/* mapping можно сделать auto */
 			"mapping": {
 				"Document": "Id",
-				"Store": "Store",
+				"Store": "StoreFrom",
 				"Agent": "Agent",
 				"Item": "row.Item",
 				"Qty": "row.Qty",

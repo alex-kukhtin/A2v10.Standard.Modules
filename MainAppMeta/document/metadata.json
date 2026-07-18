@@ -2,6 +2,12 @@
 	"table": "StockDocuments",
 	"model": "Document",
 	"fields": {
+		"Number": {
+			"type": "Autonum"
+		},
+		"Operation": {
+			"type": "Operation"
+		},
 		"StoreFrom": {
 			"type": "Ref",
 			"target": "catalog/store"

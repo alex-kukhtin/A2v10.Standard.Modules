@@ -13,7 +13,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="A2v10.App.Assets2026" Version="10.1.8643" />
-		<PackageReference Include="A2v10.AppCompiler2026" Version="10.1.8639" PrivateAssets="all"/>
+		<PackageReference Include="A2v10.AppCompiler2026" Version="10.1.8639" PrivateAssets="all" />
 		<PackageReference Include="A2v10.Sql.MSBuild" Version="10.1.8220" />
 		<!--
 		-->
@@ -25,6 +25,10 @@
 
 	<ItemGroup>
 		<None Remove="**\*.js" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Remove="autonum\metadata.json" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,0 +1,3 @@
+{
+	"waybill": {"pattern": "ПН-{nnnnn}/{yy}", "period": "year"}
+} 
