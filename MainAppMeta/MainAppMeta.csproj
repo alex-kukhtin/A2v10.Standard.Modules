@@ -28,10 +28,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Remove="autonum\metadata.json" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Content Update="**\*.json" CopyToPublishDirectory="Never" CopyToOutputDirectory="Never" Pack="false" />
 	</ItemGroup>
 

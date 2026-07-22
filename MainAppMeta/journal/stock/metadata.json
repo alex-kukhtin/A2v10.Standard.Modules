@@ -12,15 +12,15 @@
 		},		
 		"Store": {
 			"type": "Ref",
-			"target": "catalog/store"
+			"target": "/catalog/store"
 		},
 		"Agent": {
 			"type": "Ref",
-			"target": "catalog/agent"
+			"target": "/catalog/agent"
 		},
 		"Item": {
 			"type": "Ref",
-			"target": "catalog/item"
+			"target": "/catalog/item"
 		},
 		"Document": {
 			"type": "Document",

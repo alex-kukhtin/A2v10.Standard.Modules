@@ -10,7 +10,7 @@
 		},
 		"Store": {
 			"type": "Ref",
-			"target": "catalog/store"
+			"target": "/catalog/store"
 		}
 	},
 	"details": {

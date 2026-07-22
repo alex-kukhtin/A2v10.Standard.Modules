@@ -1,0 +1,12 @@
+{
+	"presentation": "{Short}",
+	"fields": {
+		"Short": {
+			"type": "String",
+			"maxLength": 8
+		},
+		"Denom": {
+			"type": "Money"
+		}
+	}
+}

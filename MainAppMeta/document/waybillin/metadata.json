@@ -7,7 +7,7 @@
 	},
 	"apply": [
 		{
-			"journal": "journal/stock",
+			"journal": "/journal/stock",
 			"dir": "in",
 			"each": "Stock",
 			/* mapping можно сделать auto */

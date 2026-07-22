@@ -1,0 +1,8 @@
+{
+	"fields": {
+		"Unit": {
+			"type": "Ref",
+			"target": "/catalog/unit"
+		}
+	}
+}

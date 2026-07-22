@@ -10,21 +10,21 @@
 		},
 		"StoreFrom": {
 			"type": "Ref",
-			"target": "catalog/store"
+			"target": "/catalog/store"
 		},
 		"StoreTo": {
 			"type": "Ref",
-			"target": "catalog/store"
+			"target": "/catalog/store"
 		},
 		"Agent": {
 			"type": "Ref",
-			"target": "catalog/agent"
+			"target": "/catalog/agent"
 		}
 	},
 	"details": {
 		"Rows": {
 			"model": "Row",
-			"kinds": ["Stock", "Service"],
+			"kinds": [ "Stock", "Service" ],
 			"fields": {
 				"Kind": {
 					"type": "RowKind"
@@ -40,8 +40,21 @@
 				},
 				"Item": {
 					"type": "Ref",
-					"target": "catalog/item"
+					"target": "/catalog/item"
+				},
+				"Unit": {
+					"type": "Ref",
+					"target": "/catalog/unit"
 				}
+			},
+			"inherit": {
+				"Unit": {
+					"ref": "Item",
+					"field": "Unit"
+				}
+			},
+			"lookup": {
+				"Item": ["Article", "Barcode"]
 			}
 		}
 	}
