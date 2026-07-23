@@ -5,19 +5,13 @@
 		"Agent": {"source": "profile", "value": "Agent" },
 		"Date":  {"source": "context", "value":  "today" }
 	},
-	"apply": [
+	"post": [
 		{
 			"journal": "/journal/stock",
 			"dir": "in",
-			"each": "Stock",
-			/* mapping можно сделать auto */
-			"mapping": {
-				"Document": "Id",
-				"Store": "StoreFrom",
-				"Agent": "Agent",
-				"Item": "row.Item",
-				"Qty": "row.Qty",
-				"Sum": "row.Sum"
+			"each": [ "Stock" ],
+			"document": {
+				"Store": "StoreFrom"
 			}
 		}
 	],

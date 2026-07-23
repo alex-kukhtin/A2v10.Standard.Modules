@@ -1,15 +1,26 @@
 {
-	"kind": "Journal",
 	"schema": "jrn",
 	"table": "StockJournal",
 	"model": "Transaction",
 	"fields": {
+		"InOut": {
+			"type": "Direction"
+		},
+		"Document": {
+			"type": "Document", "target": "/document"
+		},
+		"Operation": {
+			"type": "Operation"
+		},
+		"Detail": {
+			"type": "Row"
+		},
 		"Qty": {
 			"type": "Float"
 		},
 		"Sum": {
 			"type": "Money"
-		},		
+		},
 		"Store": {
 			"type": "Ref",
 			"target": "/catalog/store"
@@ -21,10 +32,6 @@
 		"Item": {
 			"type": "Ref",
 			"target": "/catalog/item"
-		},
-		"Document": {
-			"type": "Document",
-			"target": "document"
 		}
 	}
 }
