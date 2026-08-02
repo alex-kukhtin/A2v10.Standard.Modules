@@ -1,4 +1,5 @@
 {
+	"table": "Items",
 	"fields": {
 		"Unit": {
 			"type": "Ref",

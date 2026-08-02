@@ -15,7 +15,7 @@
 	},
 	"details": {
 		"Addresses": {
-			"model": "Address",
+			"model": "AgentAddress",
 			"fields": {
 				"Text": {}
 			}

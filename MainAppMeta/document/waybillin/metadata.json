@@ -1,9 +1,19 @@
 {
+	"storage": "/document",
 	"autonum": "waybill",
 	"initialValues": {
-		"StoreFrom": {"source": "profile", "value": "Store" },
-		"Agent": {"source": "profile", "value": "Agent" },
-		"Date":  {"source": "context", "value":  "today" }
+		"StoreFrom": {
+			"source": "profile",
+			"value": "Store"
+		},
+		"Agent": {
+			"source": "profile",
+			"value": "Agent"
+		},
+		"Date": {
+			"source": "context",
+			"value": "today"
+		}
 	},
 	"post": [
 		{

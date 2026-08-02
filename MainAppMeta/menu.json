@@ -1,6 +1,6 @@
 ﻿{
 	"$schema": "@schemas/menu-json-schema.json#",
-	"appTitle": "Application Title Here",
+	"appTitle": "Application Title From Menu",
 	"columns": 3,
 	"menu": [
 		{

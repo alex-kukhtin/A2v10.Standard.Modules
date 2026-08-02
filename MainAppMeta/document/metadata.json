@@ -30,13 +30,13 @@
 					"type": "RowKind"
 				},
 				"Qty": {
-					"type": "Float"
+					"type": "Qty"
 				},
 				"Price": {
-					"type": "Money"
+					"type": "Price"
 				},
 				"Sum": {
-					"type": "Money"
+					"type": "Amount"
 				},
 				"Item": {
 					"type": "Ref",
@@ -54,7 +54,10 @@
 				}
 			},
 			"lookup": {
-				"Item": ["Article", "Barcode"]
+				"Item": [ "Article", "Barcode" ]
+			},
+			"rules": {
+				"Sum": {"value": "this.Qty * this.Price" }
 			}
 		}
 	}

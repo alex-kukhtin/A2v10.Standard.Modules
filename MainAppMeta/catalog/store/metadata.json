@@ -1,6 +1,7 @@
 {
+	"table": "Stores",
 	"details": {
-		"Addresses" : {
+		"Addresses": {
 			"model": "Address",
 			"fields": {
 				"Text": {}

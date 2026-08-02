@@ -1,9 +1,10 @@
 {
+	"table": "Units",
 	"presentation": "{Short}",
 	"fields": {
 		"Short": {
 			"type": "String",
-			"maxLength": 8
+			"length": 8
 		},
 		"Denom": {
 			"type": "Money"
