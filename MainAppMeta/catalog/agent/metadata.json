@@ -3,7 +3,7 @@
 	"schema": "cat",
 	"table": "Agents",
 	"model": "Agent",
-	"traits": ["tags", "audit"],
+	"traits": ["Tags", "Audit"],
 	"fields": {
 		"Date": {
 			"type": "Date"

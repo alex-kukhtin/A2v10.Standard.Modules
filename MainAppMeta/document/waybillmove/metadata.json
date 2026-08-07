@@ -16,9 +16,17 @@
 		}
 	},
 	"rules": {
-		"required": [ "StoreTo", "Agent" ]
+		"required": [ "StoreFrom", "StoreTo", "Agent" ]
 	},
 	"post": [
+		{
+			"journal": "/journal/stock",
+			"dir": "out",
+			"each": { "details": "Rows", "kinds": ["Stock"] },
+			"document": {
+				"Store": "StoreTo"
+			}
+		},
 		{
 			"journal": "/journal/stock",
 			"dir": "in",
@@ -28,9 +36,6 @@
 			},
 			"document": {
 				"Store": "StoreFrom"
-			},
-			"row": {
-				"Sum" : "Sum"
 			}
 		}
 	],
@@ -46,7 +51,7 @@
 				},
 				{
 					"is": "datagrid", // height: 1*
-					"fields": [ "Id, Date, Agent, StoreFrom, StoreTo" ]
+					"fields": [ "Id, Date, Agent, StoreFrom" ]
 				},
 				{
 					"is": "pager"

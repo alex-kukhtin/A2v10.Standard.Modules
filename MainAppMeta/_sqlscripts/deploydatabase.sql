@@ -43,6 +43,7 @@ begin
 		(N'cat', N'Items', N'Unit', N'platformid', null, null, null, 1, N'cat', N'Units', null),
 		(N'cat', N'Items', N'Void', N'bit', null, null, null, 0, null, null, N'0'),
 		(N'cat', N'Items', N'rv', N'timestamp', null, null, null, 0, null, null, null),
+		(N'cat', N'Stores', N'Agent', N'platformid', null, null, null, 1, N'cat', N'Agents', null),
 		(N'cat', N'Stores', N'Id', N'platformid', null, null, null, 0, null, null, null),
 		(N'cat', N'Stores', N'IsSystem', N'bit', null, null, null, 0, null, null, N'0'),
 		(N'cat', N'Stores', N'Memo', N'nvarchar', 255, null, null, 1, null, null, null),
@@ -76,9 +77,10 @@ begin
 		(N'doc', N'StockDocuments', N'Id', N'platformid', null, null, null, 0, null, null, null),
 		(N'doc', N'StockDocuments', N'Memo', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'doc', N'StockDocuments', N'Number', N'nvarchar', 64, null, null, 1, null, null, null),
-		(N'doc', N'StockDocuments', N'Operation', N'nvarchar', 64, null, null, 1, N'op', N'operations', null),
+		(N'doc', N'StockDocuments', N'Operation', N'nvarchar', 64, null, null, 1, N'doc', N'Operations', null),
 		(N'doc', N'StockDocuments', N'StoreFrom', N'platformid', null, null, null, 1, N'cat', N'Stores', null),
 		(N'doc', N'StockDocuments', N'StoreTo', N'platformid', null, null, null, 1, N'cat', N'Stores', null),
+		(N'doc', N'StockDocuments', N'Sum', N'decimal', null, 19, 4, 1, null, null, null),
 		(N'doc', N'StockDocuments', N'Void', N'bit', null, null, null, 0, null, null, N'0'),
 		(N'doc', N'StockDocuments', N'rv', N'timestamp', null, null, null, 0, null, null, null),
 		(N'jrn', N'StockJournal', N'Agent', N'platformid', null, null, null, 1, N'cat', N'Agents', null),
@@ -88,10 +90,10 @@ begin
 		(N'jrn', N'StockJournal', N'Id', N'platformid', null, null, null, 0, null, null, null),
 		(N'jrn', N'StockJournal', N'InOut', N'smallint', null, null, null, 1, null, null, null),
 		(N'jrn', N'StockJournal', N'Item', N'platformid', null, null, null, 1, N'cat', N'Items', null),
-		(N'jrn', N'StockJournal', N'Operation', N'nvarchar', 64, null, null, 1, N'op', N'operations', null),
-		(N'jrn', N'StockJournal', N'Qty', N'float', null, null, null, 1, null, null, null),
+		(N'jrn', N'StockJournal', N'Operation', N'nvarchar', 64, null, null, 1, N'doc', N'Operations', null),
+		(N'jrn', N'StockJournal', N'Qty', N'decimal', null, 19, 6, 1, null, null, null),
 		(N'jrn', N'StockJournal', N'Store', N'platformid', null, null, null, 1, N'cat', N'Stores', null),
-		(N'jrn', N'StockJournal', N'Sum', N'money', null, null, null, 1, null, null, null);
+		(N'jrn', N'StockJournal', N'Sum', N'decimal', null, 19, 4, 1, null, null, null);
 
     -- merge tables
     merge a2meta.Tables as t
@@ -144,6 +146,7 @@ create table doc.[StockDocuments]
     [StoreFrom] platformid,
     [StoreTo] platformid,
     [Agent] platformid,
+    [Sum] decimal(19, 4),
     constraint PK_StockDocuments primary key (Id)
 );
 go
@@ -253,6 +256,7 @@ create table cat.[Stores]
     [rv] rowversion not null,
     [Name] nvarchar(255),
     [Memo] nvarchar(255),
+    [Agent] platformid,
     constraint PK_Stores primary key (Id)
 );
 go
@@ -306,8 +310,8 @@ create table jrn.[StockJournal]
     [Document] platformid,
     [Operation] nvarchar(64),
     [Detail] platformid,
-    [Qty] float,
-    [Sum] money,
+    [Qty] decimal(19, 6),
+    [Sum] decimal(19, 4),
     [Store] platformid,
     [Agent] platformid,
     [Item] platformid,
@@ -345,7 +349,8 @@ create type doc.[Document.Meta.TableType] as table
     [Operation] nvarchar(64),
     [StoreFrom] platformid,
     [StoreTo] platformid,
-    [Agent] platformid
+    [Agent] platformid,
+    [Sum] decimal(19, 4)
 );
 go
 ------------------------------------------------
@@ -409,7 +414,8 @@ create type cat.[Store.Meta.TableType] as table
     [IsSystem] bit,
     [rv] varbinary(8),
     [Name] nvarchar(255),
-    [Memo] nvarchar(255)
+    [Memo] nvarchar(255),
+    [Agent] platformid
 );
 go
 ------------------------------------------------
@@ -481,6 +487,11 @@ go
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Items' and CONSTRAINT_NAME = N'FK_Items_Unit_Units')
     alter table cat.[Items] add 
         constraint FK_Items_Unit_Units foreign key ([Unit]) references cat.[Units]([Id]);
+go
+------------------------------------------------
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Stores' and CONSTRAINT_NAME = N'FK_Stores_Agent_Agents')
+    alter table cat.[Stores] add 
+        constraint FK_Stores_Agent_Agents foreign key ([Agent]) references cat.[Agents]([Id]);
 go
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Addresses' and CONSTRAINT_NAME = N'FK_Addresses_Owner_Stores')

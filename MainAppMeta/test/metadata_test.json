@@ -1,0 +1,18 @@
+{
+	"table": "StockDocuments",
+	"model": "Document",
+	"details": {
+		"Rows": {
+			"model": "Row",
+			"fields": {
+				"Kind": {
+					"type": "RowKind"
+				}
+			},
+			"kinds": {
+				"Stock": {},
+				"Service": {}
+			}
+		}
+	}
+}

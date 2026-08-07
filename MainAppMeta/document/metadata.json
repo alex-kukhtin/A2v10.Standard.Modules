@@ -1,6 +1,7 @@
 {
 	"table": "StockDocuments",
 	"model": "Document",
+	"traits": [ "Print", "Attachments" ],
 	"fields": {
 		"Number": {
 			"type": "Autonum"
@@ -19,12 +20,20 @@
 		"Agent": {
 			"type": "Ref",
 			"target": "/catalog/agent"
+		},
+		"Sum": {
+			"type": "Amount"
+		}
+	},
+	"rules": {
+		"required": [ "Date" ],
+		"computed": {
+			"Sum": "this.StockRows.$sum(r => r.Sum) + this.ServiceRows.$sum(r => r.Sum)"
 		}
 	},
 	"details": {
 		"Rows": {
 			"model": "Row",
-			"kinds": [ "Stock", "Service" ],
 			"fields": {
 				"Kind": {
 					"type": "RowKind"
@@ -47,17 +56,34 @@
 					"target": "/catalog/unit"
 				}
 			},
-			"inherit": {
-				"Unit": {
-					"ref": "Item",
-					"field": "Unit"
-				}
-			},
 			"lookup": {
 				"Item": [ "Article", "Barcode" ]
 			},
 			"rules": {
-				"Sum": {"value": "this.Qty * this.Price" }
+				"inherit": {
+					"Unit": {
+						"ref": "Item",
+						"field": "Unit"
+					}
+				}
+			},
+			"kinds": {
+				"Stock": {
+					"rules": {
+						"computed": {
+							"Sum": "this.Qty * this.Price"
+						},
+						"required": [ "Item", "Qty", "Price" ]
+					}
+				},
+				"Service": {
+					"computed": {
+						"Sum": "this.Qty * this.Price"
+					},
+					"rules": {
+						"required": [ "Item" ]
+					}
+				}
 			}
 		}
 	}

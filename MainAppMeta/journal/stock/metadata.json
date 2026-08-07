@@ -16,10 +16,10 @@
 			"type": "Row"
 		},
 		"Qty": {
-			"type": "Float"
+			"type": "Qty"
 		},
 		"Sum": {
-			"type": "Money"
+			"type": "Amount"
 		},
 		"Store": {
 			"type": "Ref",

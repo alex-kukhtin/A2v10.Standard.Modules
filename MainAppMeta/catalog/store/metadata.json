@@ -1,5 +1,11 @@
 {
 	"table": "Stores",
+	"fields": {
+		"Agent": {
+			"type": "Ref",
+			"target": "/catalog/agent"
+		}
+	},
 	"details": {
 		"Addresses": {
 			"model": "Address",
