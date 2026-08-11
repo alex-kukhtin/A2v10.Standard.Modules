@@ -1,0 +1,12 @@
+{
+	"$schema": "../../@schemas/metadata-reoport-json-schema.json#",
+	"surface": "journal/stock",
+	"type": "turnover",
+	"groups": [ "Agent", "Store", "Item" ],
+	"filters": [ "Agent", "Store", "Item" ],
+	"data": [ "Qty", "Sum" ],
+	"defaults": {
+		"groups": [ "Store", "Item" ],
+		"data": [ "Qty", "Sum" ]
+	}
+}

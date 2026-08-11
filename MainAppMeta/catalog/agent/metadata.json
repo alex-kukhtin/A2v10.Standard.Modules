@@ -3,7 +3,7 @@
 	"schema": "cat",
 	"table": "Agents",
 	"model": "Agent",
-	"traits": ["Tags", "Audit"],
+	"traits": [ "Tags", "Audit" ],
 	"fields": {
 		"Date": {
 			"type": "Date"
@@ -12,6 +12,9 @@
 			"type": "Ref",
 			"target": "/catalog/store"
 		}
+	},
+	"rules": {
+		"required": [ "Date" ]
 	},
 	"details": {
 		"Addresses": {

@@ -5,7 +5,7 @@
 	"menu": [
 		{
 			"title": "@[Sales]",
-			"icon": "cart",
+			"icon": "shopping",
 			"items": [
 				{
 					"title": "@[Documents]",
@@ -66,13 +66,21 @@
 							]
 						}
 					]
+				},
+				{
+					"title": "@[Reports]",
+					"items": [
+						{
+							"title": "Оборотка по складу",
+							"url": "/report/stockturnover"
+						}
+					]
 				}
 			]
 		},
 		{
 			"title": "@[Purchase]",
 			"icon": "cart",
-			"underline": true,
 			"items": [
 				{
 					"title": "@[Documents]"
@@ -85,6 +93,16 @@
 							"url": "/journal/stock"
 						}
 					]
+				}
+			]
+		},
+		{
+			"title": "@[Store]",
+			"icon": "warehouse",
+			"underline": true,
+			"items": [
+				{
+					"title": "@[Documents]"
 				}
 			]
 		},

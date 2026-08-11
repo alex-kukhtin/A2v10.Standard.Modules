@@ -30,6 +30,7 @@
 	<ItemGroup>
 	  <Content Remove="document\waybillmove\metadata.json" />
 	  <Content Remove="document\waybillout\metadata.json" />
+	  <Content Remove="report\stockturnover\metadata.json" />
 	  <Content Remove="test\metadata_test.json" />
 	</ItemGroup>
 
