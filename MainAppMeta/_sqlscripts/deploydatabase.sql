@@ -1,4 +1,4 @@
-﻿/* METADATA SEED. Version: 10.1.8650 */
+﻿/* METADATA SEED. Version: 10.1.8653 */
 begin
     set nocount on;
     declare @tables table([schema] sysname, [table] sysname);
@@ -7,23 +7,28 @@ begin
         [ref_schema] nvarchar(128), [ref_table] nvarchar(128), [default] nvarchar(128));
 
     insert into @tables([schema], [table]) values
-    	(N'cat', N'Addresses'),
+    	(N'cat', N'$Tags'),
+		(N'cat', N'Agent$TagEntries'),
 		(N'cat', N'AgentAddresses'),
 		(N'cat', N'Agents'),
 		(N'cat', N'Items'),
+		(N'cat', N'StoreAddresses'),
 		(N'cat', N'Stores'),
-		(N'cat', N'Tags'),
 		(N'cat', N'Units'),
-		(N'doc', N'Rows'),
+		(N'doc', N'DocumentRows'),
 		(N'doc', N'StockDocuments'),
 		(N'jrn', N'StockJournal');
 
     insert into @columns([schema], [table], [column], [datatype],
         [length], [precision], [scale], [nullable], [ref_schema], [ref_table], [default]) values
-    	(N'cat', N'Addresses', N'Id', N'platformid', null, null, null, 0, null, null, null),
-		(N'cat', N'Addresses', N'Owner', N'platformid', null, null, null, 0, null, null, null),
-		(N'cat', N'Addresses', N'RowNo', N'int', null, null, null, 1, null, null, null),
-		(N'cat', N'Addresses', N'Text', N'nvarchar', 255, null, null, 1, null, null, null),
+    	(N'cat', N'$Tags', N'Color', N'nvarchar', 32, null, null, 1, null, null, null),
+		(N'cat', N'$Tags', N'For', N'nvarchar', 64, null, null, 1, null, null, null),
+		(N'cat', N'$Tags', N'Id', N'platformid', null, null, null, 0, null, null, null),
+		(N'cat', N'$Tags', N'Memo', N'nvarchar', 255, null, null, 1, null, null, null),
+		(N'cat', N'$Tags', N'Name', N'nvarchar', 255, null, null, 1, null, null, null),
+		(N'cat', N'Agent$TagEntries', N'Id', N'platformid', null, null, null, 0, null, null, null),
+		(N'cat', N'Agent$TagEntries', N'Owner', N'platformid', null, null, null, 0, null, null, null),
+		(N'cat', N'Agent$TagEntries', N'Tag', N'platformid', null, null, null, 1, null, null, null),
 		(N'cat', N'AgentAddresses', N'Id', N'platformid', null, null, null, 0, null, null, null),
 		(N'cat', N'AgentAddresses', N'Owner', N'platformid', null, null, null, 0, null, null, null),
 		(N'cat', N'AgentAddresses', N'RowNo', N'int', null, null, null, 1, null, null, null),
@@ -43,6 +48,10 @@ begin
 		(N'cat', N'Items', N'Unit', N'platformid', null, null, null, 1, N'cat', N'Units', null),
 		(N'cat', N'Items', N'Void', N'bit', null, null, null, 0, null, null, N'0'),
 		(N'cat', N'Items', N'rv', N'timestamp', null, null, null, 0, null, null, null),
+		(N'cat', N'StoreAddresses', N'Id', N'platformid', null, null, null, 0, null, null, null),
+		(N'cat', N'StoreAddresses', N'Owner', N'platformid', null, null, null, 0, null, null, null),
+		(N'cat', N'StoreAddresses', N'RowNo', N'int', null, null, null, 1, null, null, null),
+		(N'cat', N'StoreAddresses', N'Text', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'cat', N'Stores', N'Agent', N'platformid', null, null, null, 1, N'cat', N'Agents', null),
 		(N'cat', N'Stores', N'Id', N'platformid', null, null, null, 0, null, null, null),
 		(N'cat', N'Stores', N'IsSystem', N'bit', null, null, null, 0, null, null, N'0'),
@@ -50,10 +59,6 @@ begin
 		(N'cat', N'Stores', N'Name', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'cat', N'Stores', N'Void', N'bit', null, null, null, 0, null, null, N'0'),
 		(N'cat', N'Stores', N'rv', N'timestamp', null, null, null, 0, null, null, null),
-		(N'cat', N'Tags', N'Color', N'nvarchar', 32, null, null, 1, null, null, null),
-		(N'cat', N'Tags', N'For', N'nvarchar', 64, null, null, 1, null, null, null),
-		(N'cat', N'Tags', N'Id', N'platformid', null, null, null, 0, null, null, null),
-		(N'cat', N'Tags', N'Name', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'cat', N'Units', N'Denom', N'money', null, null, null, 1, null, null, null),
 		(N'cat', N'Units', N'Id', N'platformid', null, null, null, 0, null, null, null),
 		(N'cat', N'Units', N'IsSystem', N'bit', null, null, null, 0, null, null, N'0'),
@@ -62,15 +67,15 @@ begin
 		(N'cat', N'Units', N'Short', N'nvarchar', 8, null, null, 1, null, null, null),
 		(N'cat', N'Units', N'Void', N'bit', null, null, null, 0, null, null, N'0'),
 		(N'cat', N'Units', N'rv', N'timestamp', null, null, null, 0, null, null, null),
-		(N'doc', N'Rows', N'Id', N'platformid', null, null, null, 0, null, null, null),
-		(N'doc', N'Rows', N'Item', N'platformid', null, null, null, 1, N'cat', N'Items', null),
-		(N'doc', N'Rows', N'Kind', N'nvarchar', 64, null, null, 1, null, null, null),
-		(N'doc', N'Rows', N'Owner', N'platformid', null, null, null, 0, null, null, null),
-		(N'doc', N'Rows', N'Price', N'decimal', null, 19, 6, 1, null, null, null),
-		(N'doc', N'Rows', N'Qty', N'decimal', null, 19, 6, 1, null, null, null),
-		(N'doc', N'Rows', N'RowNo', N'int', null, null, null, 1, null, null, null),
-		(N'doc', N'Rows', N'Sum', N'decimal', null, 19, 4, 1, null, null, null),
-		(N'doc', N'Rows', N'Unit', N'platformid', null, null, null, 1, N'cat', N'Units', null),
+		(N'doc', N'DocumentRows', N'Id', N'platformid', null, null, null, 0, null, null, null),
+		(N'doc', N'DocumentRows', N'Item', N'platformid', null, null, null, 1, N'cat', N'Items', null),
+		(N'doc', N'DocumentRows', N'Kind', N'nvarchar', 64, null, null, 1, null, null, null),
+		(N'doc', N'DocumentRows', N'Owner', N'platformid', null, null, null, 0, null, null, null),
+		(N'doc', N'DocumentRows', N'Price', N'decimal', null, 19, 6, 1, null, null, null),
+		(N'doc', N'DocumentRows', N'Qty', N'decimal', null, 19, 6, 1, null, null, null),
+		(N'doc', N'DocumentRows', N'RowNo', N'int', null, null, null, 1, null, null, null),
+		(N'doc', N'DocumentRows', N'Sum', N'decimal', null, 19, 4, 1, null, null, null),
+		(N'doc', N'DocumentRows', N'Unit', N'platformid', null, null, null, 1, N'cat', N'Units', null),
 		(N'doc', N'StockDocuments', N'Agent', N'platformid', null, null, null, 1, N'cat', N'Agents', null),
 		(N'doc', N'StockDocuments', N'Date', N'date', null, null, null, 1, null, null, null),
 		(N'doc', N'StockDocuments', N'Done', N'bit', null, null, null, 0, null, null, N'0'),
@@ -124,6 +129,28 @@ begin
     when not matched by source then delete;
 end
 go
+
+-- PLATFORM ID TYPE
+------------------------------------------------
+if type_id(N'dbo.platformid') is null
+	create type dbo.platformid from bigint;
+go        
+-- SCHEMAS
+------------------------------------------------
+if not exists(select * from INFORMATION_SCHEMA.SCHEMATA where SCHEMA_NAME=N'doc')
+	exec sp_executesql N'create schema doc authorization dbo';
+go
+if not exists(select * from INFORMATION_SCHEMA.SCHEMATA where SCHEMA_NAME=N'cat')
+	exec sp_executesql N'create schema cat authorization dbo';
+go
+if not exists(select * from INFORMATION_SCHEMA.SCHEMATA where SCHEMA_NAME=N'jrn')
+	exec sp_executesql N'create schema jrn authorization dbo';
+go
+grant select, insert, update, execute on schema::doc to public;
+grant select, insert, update, execute on schema::cat to public;
+grant select, insert, update, execute on schema::jrn to public;
+go
+
 -- TABLES
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.SEQUENCES where SEQUENCE_SCHEMA = N'doc' and SEQUENCE_NAME = N'SQ_StockDocuments')
@@ -151,14 +178,14 @@ create table doc.[StockDocuments]
 );
 go
 ------------------------------------------------
-if not exists(select * from INFORMATION_SCHEMA.SEQUENCES where SEQUENCE_SCHEMA = N'doc' and SEQUENCE_NAME = N'SQ_Rows')
-	create sequence doc.[SQ_Rows] as bigint start with 1000 increment by 1;
+if not exists(select * from INFORMATION_SCHEMA.SEQUENCES where SEQUENCE_SCHEMA = N'doc' and SEQUENCE_NAME = N'SQ_DocumentRows')
+	create sequence doc.[SQ_DocumentRows] as bigint start with 1000 increment by 1;
 
-if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA=N'doc' and TABLE_NAME=N'Rows')
-create table doc.[Rows]
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA=N'doc' and TABLE_NAME=N'DocumentRows')
+create table doc.[DocumentRows]
 (
     [Id] platformid not null
-       constraint DF_Rows_Id default(next value for doc.[SQ_Rows]),
+       constraint DF_DocumentRows_Id default(next value for doc.[SQ_DocumentRows]),
     [Owner] platformid not null,
     [RowNo] int,
     [Kind] nvarchar(64),
@@ -167,7 +194,7 @@ create table doc.[Rows]
     [Sum] decimal(19, 4),
     [Item] platformid,
     [Unit] platformid,
-    constraint PK_Rows primary key (Id)
+    constraint PK_DocumentRows primary key (Id)
 );
 go
 ------------------------------------------------
@@ -192,17 +219,17 @@ create table cat.[Agents]
 );
 go
 ------------------------------------------------
-if not exists(select * from INFORMATION_SCHEMA.SEQUENCES where SEQUENCE_SCHEMA = N'cat' and SEQUENCE_NAME = N'SQ_AgentTagEntries')
-	create sequence cat.[SQ_AgentTagEntries] as bigint start with 1000 increment by 1;
+if not exists(select * from INFORMATION_SCHEMA.SEQUENCES where SEQUENCE_SCHEMA = N'cat' and SEQUENCE_NAME = N'SQ_Agent$TagEntries')
+	create sequence cat.[SQ_Agent$TagEntries] as bigint start with 1000 increment by 1;
 
-if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA=N'cat' and TABLE_NAME=N'AgentTagEntries')
-create table cat.[AgentTagEntries]
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA=N'cat' and TABLE_NAME=N'Agent$TagEntries')
+create table cat.[Agent$TagEntries]
 (
     [Id] platformid not null
-       constraint DF_AgentTagEntries_Id default(next value for cat.[SQ_AgentTagEntries]),
+       constraint DF_Agent$TagEntries_Id default(next value for cat.[SQ_Agent$TagEntries]),
     [Owner] platformid not null,
     [Tag] platformid,
-    constraint PK_AgentTagEntries primary key (Id)
+    constraint PK_Agent$TagEntries primary key (Id)
 );
 go
 ------------------------------------------------
@@ -261,18 +288,18 @@ create table cat.[Stores]
 );
 go
 ------------------------------------------------
-if not exists(select * from INFORMATION_SCHEMA.SEQUENCES where SEQUENCE_SCHEMA = N'cat' and SEQUENCE_NAME = N'SQ_Addresses')
-	create sequence cat.[SQ_Addresses] as bigint start with 1000 increment by 1;
+if not exists(select * from INFORMATION_SCHEMA.SEQUENCES where SEQUENCE_SCHEMA = N'cat' and SEQUENCE_NAME = N'SQ_StoreAddresses')
+	create sequence cat.[SQ_StoreAddresses] as bigint start with 1000 increment by 1;
 
-if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA=N'cat' and TABLE_NAME=N'Addresses')
-create table cat.[Addresses]
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA=N'cat' and TABLE_NAME=N'StoreAddresses')
+create table cat.[StoreAddresses]
 (
     [Id] platformid not null
-       constraint DF_Addresses_Id default(next value for cat.[SQ_Addresses]),
+       constraint DF_StoreAddresses_Id default(next value for cat.[SQ_StoreAddresses]),
     [Owner] platformid not null,
     [RowNo] int,
     [Text] nvarchar(255),
-    constraint PK_Addresses primary key (Id)
+    constraint PK_StoreAddresses primary key (Id)
 );
 go
 ------------------------------------------------
@@ -319,22 +346,30 @@ create table jrn.[StockJournal]
 );
 go
 ------------------------------------------------
-if not exists(select * from INFORMATION_SCHEMA.SEQUENCES where SEQUENCE_SCHEMA = N'cat' and SEQUENCE_NAME = N'SQ_Tags')
-	create sequence cat.[SQ_Tags] as bigint start with 1000 increment by 1;
+if not exists(select * from INFORMATION_SCHEMA.SEQUENCES where SEQUENCE_SCHEMA = N'cat' and SEQUENCE_NAME = N'SQ_$Tags')
+	create sequence cat.[SQ_$Tags] as bigint start with 1000 increment by 1;
 
-if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA=N'cat' and TABLE_NAME=N'Tags')
-create table cat.[Tags]
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA=N'cat' and TABLE_NAME=N'$Tags')
+create table cat.[$Tags]
 (
     [Id] platformid not null
-       constraint DF_Tags_Id default(next value for cat.[SQ_Tags]),
+       constraint DF_$Tags_Id default(next value for cat.[SQ_$Tags]),
     [For] nvarchar(64),
     [Name] nvarchar(255),
     [Color] nvarchar(32),
-    constraint PK_Tags primary key (Id)
+    [Memo] nvarchar(255),
+    constraint PK_$Tags primary key (Id)
 );
 go
 
 -- TABLE TYPES
+------------------------------------------------
+drop type if exists dbo.[PlatformId.TableType];
+create type dbo.[PlatformId.TableType] as table
+(
+    [Id] platformid
+);
+go
 ------------------------------------------------
 drop type if exists doc.[Document.Meta.TableType];
 create type doc.[Document.Meta.TableType] as table
@@ -442,6 +477,17 @@ create type cat.[Unit.Meta.TableType] as table
     [Denom] money
 );
 go
+------------------------------------------------
+drop type if exists cat.[Tag.Meta.TableType];
+create type cat.[Tag.Meta.TableType] as table
+(
+    [Id] platformid,
+    [For] nvarchar(64),
+    [Name] nvarchar(255),
+    [Color] nvarchar(32),
+    [Memo] nvarchar(255)
+);
+go
 
 -- SYNC DATABASE SCHEMA
 exec a2meta.[SyncSchema]
@@ -450,69 +496,77 @@ go
 -- FOREIGN KEYS
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'StockDocuments' and CONSTRAINT_NAME = N'FK_StockDocuments_Operation_Operations')
-    alter table doc.[StockDocuments] add 
+    alter table doc.[StockDocuments] add
         constraint FK_StockDocuments_Operation_Operations foreign key ([Operation]) references op.[Operations]([Id]);
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'StockDocuments' and CONSTRAINT_NAME = N'FK_StockDocuments_StoreFrom_Stores')
-    alter table doc.[StockDocuments] add 
+    alter table doc.[StockDocuments] add
         constraint FK_StockDocuments_StoreFrom_Stores foreign key ([StoreFrom]) references cat.[Stores]([Id]);
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'StockDocuments' and CONSTRAINT_NAME = N'FK_StockDocuments_StoreTo_Stores')
-    alter table doc.[StockDocuments] add 
+    alter table doc.[StockDocuments] add
         constraint FK_StockDocuments_StoreTo_Stores foreign key ([StoreTo]) references cat.[Stores]([Id]);
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'StockDocuments' and CONSTRAINT_NAME = N'FK_StockDocuments_Agent_Agents')
-    alter table doc.[StockDocuments] add 
+    alter table doc.[StockDocuments] add
         constraint FK_StockDocuments_Agent_Agents foreign key ([Agent]) references cat.[Agents]([Id]);
 go
 ------------------------------------------------
-if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'Rows' and CONSTRAINT_NAME = N'FK_Rows_Owner_StockDocuments')
-    alter table doc.[Rows] add 
-        constraint FK_Rows_Owner_StockDocuments foreign key ([Owner]) references doc.[StockDocuments]([Id]);
-if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'Rows' and CONSTRAINT_NAME = N'FK_Rows_Item_Items')
-    alter table doc.[Rows] add 
-        constraint FK_Rows_Item_Items foreign key ([Item]) references cat.[Items]([Id]);
-if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'Rows' and CONSTRAINT_NAME = N'FK_Rows_Unit_Units')
-    alter table doc.[Rows] add 
-        constraint FK_Rows_Unit_Units foreign key ([Unit]) references cat.[Units]([Id]);
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'DocumentRows' and CONSTRAINT_NAME = N'FK_DocumentRows_Owner_StockDocuments')
+    alter table doc.[DocumentRows] add
+        constraint FK_DocumentRows_Owner_StockDocuments foreign key ([Owner]) references doc.[StockDocuments]([Id]);
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'DocumentRows' and CONSTRAINT_NAME = N'FK_DocumentRows_Item_Items')
+    alter table doc.[DocumentRows] add
+        constraint FK_DocumentRows_Item_Items foreign key ([Item]) references cat.[Items]([Id]);
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'DocumentRows' and CONSTRAINT_NAME = N'FK_DocumentRows_Unit_Units')
+    alter table doc.[DocumentRows] add
+        constraint FK_DocumentRows_Unit_Units foreign key ([Unit]) references cat.[Units]([Id]);
 go
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Agents' and CONSTRAINT_NAME = N'FK_Agents_Store_Stores')
-    alter table cat.[Agents] add 
+    alter table cat.[Agents] add
         constraint FK_Agents_Store_Stores foreign key ([Store]) references cat.[Stores]([Id]);
 go
 ------------------------------------------------
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Agent$TagEntries' and CONSTRAINT_NAME = N'FK_Agent$TagEntries_Owner_Agents')
+    alter table cat.[Agent$TagEntries] add
+        constraint FK_Agent$TagEntries_Owner_Agents foreign key ([Owner]) references cat.[Agents]([Id]);
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Agent$TagEntries' and CONSTRAINT_NAME = N'FK_Agent$TagEntries_Tag_$Tags')
+    alter table cat.[Agent$TagEntries] add
+        constraint FK_Agent$TagEntries_Tag_$Tags foreign key ([Tag]) references cat.[$Tags]([Id]);
+go
+------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'AgentAddresses' and CONSTRAINT_NAME = N'FK_AgentAddresses_Owner_Agents')
-    alter table cat.[AgentAddresses] add 
+    alter table cat.[AgentAddresses] add
         constraint FK_AgentAddresses_Owner_Agents foreign key ([Owner]) references cat.[Agents]([Id]);
 go
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Items' and CONSTRAINT_NAME = N'FK_Items_Unit_Units')
-    alter table cat.[Items] add 
+    alter table cat.[Items] add
         constraint FK_Items_Unit_Units foreign key ([Unit]) references cat.[Units]([Id]);
 go
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Stores' and CONSTRAINT_NAME = N'FK_Stores_Agent_Agents')
-    alter table cat.[Stores] add 
+    alter table cat.[Stores] add
         constraint FK_Stores_Agent_Agents foreign key ([Agent]) references cat.[Agents]([Id]);
 go
 ------------------------------------------------
-if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Addresses' and CONSTRAINT_NAME = N'FK_Addresses_Owner_Stores')
-    alter table cat.[Addresses] add 
-        constraint FK_Addresses_Owner_Stores foreign key ([Owner]) references cat.[Stores]([Id]);
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'StoreAddresses' and CONSTRAINT_NAME = N'FK_StoreAddresses_Owner_Stores')
+    alter table cat.[StoreAddresses] add
+        constraint FK_StoreAddresses_Owner_Stores foreign key ([Owner]) references cat.[Stores]([Id]);
 go
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'jrn' and TABLE_NAME = N'StockJournal' and CONSTRAINT_NAME = N'FK_StockJournal_Document_StockDocuments')
-    alter table jrn.[StockJournal] add 
+    alter table jrn.[StockJournal] add
         constraint FK_StockJournal_Document_StockDocuments foreign key ([Document]) references doc.[StockDocuments]([Id]);
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'jrn' and TABLE_NAME = N'StockJournal' and CONSTRAINT_NAME = N'FK_StockJournal_Operation_Operations')
-    alter table jrn.[StockJournal] add 
+    alter table jrn.[StockJournal] add
         constraint FK_StockJournal_Operation_Operations foreign key ([Operation]) references op.[Operations]([Id]);
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'jrn' and TABLE_NAME = N'StockJournal' and CONSTRAINT_NAME = N'FK_StockJournal_Store_Stores')
-    alter table jrn.[StockJournal] add 
+    alter table jrn.[StockJournal] add
         constraint FK_StockJournal_Store_Stores foreign key ([Store]) references cat.[Stores]([Id]);
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'jrn' and TABLE_NAME = N'StockJournal' and CONSTRAINT_NAME = N'FK_StockJournal_Agent_Agents')
-    alter table jrn.[StockJournal] add 
+    alter table jrn.[StockJournal] add
         constraint FK_StockJournal_Agent_Agents foreign key ([Agent]) references cat.[Agents]([Id]);
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'jrn' and TABLE_NAME = N'StockJournal' and CONSTRAINT_NAME = N'FK_StockJournal_Item_Items')
-    alter table jrn.[StockJournal] add 
+    alter table jrn.[StockJournal] add
         constraint FK_StockJournal_Item_Items foreign key ([Item]) references cat.[Items]([Id]);
 go
 

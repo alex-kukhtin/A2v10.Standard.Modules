@@ -18,7 +18,7 @@
 @Stock=Запаси
 @Service=Послуги
 @RowNo=#
-@ShowTrans=Показати проводки
+@Transactions=Проводки
 ; Fields
 @Id=#
 @Number=Номер

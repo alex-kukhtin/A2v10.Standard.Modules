@@ -1,7 +1,8 @@
 {
+	"$schema": "../@schemas/metadata-endpoint-json-schema.json#",
 	"table": "StockDocuments",
 	"model": "Document",
-	"traits": [ "Print", "Attachments" ],
+	"traits": [ "Attachments" ],
 	"fields": {
 		"Number": {
 			"type": "Autonum"

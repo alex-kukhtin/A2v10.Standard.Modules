@@ -1,0 +1,6 @@
+<Page xmlns="clr-namespace:A2v10.Xaml;assembly=A2v10.Xaml">
+	<Block>
+		<Graphics Delegate="drawGraphics" CssClass="my-graphics"
+			CenterContent="True" Height="500"/>
+	</Block>
+</Page>

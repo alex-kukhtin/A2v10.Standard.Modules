@@ -1,7 +1,7 @@
 ﻿{
 	"$schema": "@schemas/menu-json-schema.json#",
 	"appTitle": "Application Title From Menu",
-	"columns": 3,
+	"columns2": 2,
 	"menu": [
 		{
 			"title": "@[Sales]",
@@ -69,6 +69,8 @@
 				},
 				{
 					"title": "@[Reports]",
+					"row": 1,
+					"col": 2,
 					"items": [
 						{
 							"title": "Оборотка по складу",
@@ -132,6 +134,10 @@
 						{
 							"title": "Instances",
 							"url": "/$workflow/instance"
+						},
+						{
+							"title": "Graphics",
+							"url": "/test/graphics"
 						}
 					]
 				}

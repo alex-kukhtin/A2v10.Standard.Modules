@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
@@ -12,7 +12,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="A2v10.App.Assets2026" Version="10.1.8643" />
+		<PackageReference Include="A2v10.App.Assets2026" Version="10.1.8650" />
 		<PackageReference Include="A2v10.AppCompiler2026" Version="10.1.8639" PrivateAssets="all"/>
 		<PackageReference Include="A2v10.Sql.MSBuild" Version="10.1.8220" />
 		<!--

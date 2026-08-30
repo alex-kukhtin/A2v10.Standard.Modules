@@ -1,4 +1,5 @@
 {
+	"$schema": "../../@schemas/metadata-endpoint-json-schema.json#",
 	"schema": "jrn",
 	"table": "StockJournal",
 	"model": "Transaction",

@@ -1,4 +1,5 @@
 {
+	"$schema": "../../@schemas/metadata-endpoint-json-schema.json#",
 	"storage": "/document",
 	"autonum": "waybill",
 	"initialValues": {
@@ -34,7 +35,7 @@
 			}
 		}
 	],
-	"forms": {
+	"forms2": {
 		"index": {
 			"is": "page",
 			"scope": "Documents",
@@ -46,7 +47,7 @@
 				},
 				{
 					"is": "datagrid", // height: 1*
-					"fields": [ "Id, Date, Agent, StoreFrom, StoreTo" ]
+					"fields": [ "Id", "Date", "Agent", "StoreFrom", "StoreTo" ]
 				},
 				{
 					"is": "pager"
@@ -65,10 +66,6 @@
 		"edit": {
 			"is": "page",
 			"scope": "Document",
-			"taskpad": {
-				"is": "taskpad",
-				"fields": [ "Company", "Project" ]
-			},
 			"body": [
 				{
 					"is": "group",
@@ -83,12 +80,14 @@
 					"elements": [
 						{
 							"is": "tab",
-							"scope": "StockRows",
+							"scope": "Rows",
+							"kind": "Stock",
 							"fields": [ "RowNo", "Item", "Qty", "Price", "Sum" ]
 						},
 						{
 							"is": "tab",
-							"scope": "ServiceRows",
+							"scope": "Rows",
+							"kind": "Service",
 							"fields": [ "RowNo", "Item", "Qty", "Price", "Sum" ]
 						}
 					]
@@ -99,5 +98,6 @@
 				}
 			]
 		}
-	}
+	},
+	"printForms": [{"path": "print/printform1", "title": "Прибуткова накладна"}]
 } 

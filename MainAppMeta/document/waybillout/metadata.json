@@ -1,4 +1,5 @@
 {
+	"$schema": "../../@schemas/metadata-endpoint-json-schema.json#",
 	"storage": "/document",
 	"autonum": "waybill",
 	"initialValues": {
@@ -39,11 +40,11 @@
 			"body": [
 				{
 					"is": "toolbar",
-					"commands": [ "Create", "Edit", "Delete" ]
+					"commands": [ "Create", "Edit", "Delete", "$sep", "Print", "$sep", "Reload", "$toRight", "Search" ]
 				},
 				{
 					"is": "datagrid", // height: 1*
-					"fields": [ "Id, Date, Agent, StoreFrom" ]
+					"fields": [ "Id", "Date", "Number", "Operation", "Sum", "Agent", "StoreFrom", "Memo" ]
 				},
 				{
 					"is": "pager"
@@ -51,10 +52,10 @@
 			],
 			"taskpad": {
 				"is": "taskpad",
-				"body": [
+				"elements": [
 					{
-						"is": "panel",
-						"fields": "Date,Agent,Store"
+						"is": "filters",
+						"fields": [ "Date", "Agent", "StoreFrom" ]
 					}
 				]
 			}
@@ -62,30 +63,30 @@
 		"edit": {
 			"is": "page",
 			"scope": "Document",
-			"taskpad": {
-				"is": "taskpad",
-				"fields": [ "Company", "Project" ]
+			"toolbar": {
+				"is": "toolbar",
+				"commands": ["SaveAndClose", "Save", "$sep", "Reload"]
 			},
 			"body": [
 				{
-					"is": "group",
-					"fields": [ "Number", "Date" ]
+					"is": "group", "axis": "rows", "labelAt": "left",
+					"fields": [ "Operation", "Number", "Date" ]
 				},
 				{
-					"is": "group",
-					"fields": [ "Agent", "StoreFrom", "StoreTo" ]
+					"is": "group", "axis": "rows",
+					"fields": [ "Agent", "StoreFrom" ]
 				},
 				{
 					"is": "tabs",
 					"elements": [
 						{
 							"is": "tab",
-							"scope": "StockRows",
+							"scope": "Rows", "kind": "Stock",
 							"fields": [ "RowNo", "Item", "Qty", "Price", "Sum" ]
 						},
 						{
 							"is": "tab",
-							"scope": "ServiceRows",
+							"scope": "Rows", "kind": "Stock",
 							"fields": [ "RowNo", "Item", "Qty", "Price", "Sum" ]
 						}
 					]
