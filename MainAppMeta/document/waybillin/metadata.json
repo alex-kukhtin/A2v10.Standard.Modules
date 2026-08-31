@@ -99,5 +99,5 @@
 			]
 		}
 	},
-	"printForms": [{"path": "print/printform1", "title": "Прибуткова накладна"}]
+	"printForms": [{"path": "print/printform1", "title": "Прибуткова накладна", "header": "ПН № {Document.Number} від {Document.Date}"}]
 } 
