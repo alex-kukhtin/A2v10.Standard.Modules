@@ -5,6 +5,16 @@
 		"Unit": {
 			"type": "Ref",
 			"target": "/catalog/unit"
+		},
+		"VatRate": {
+			"type": "enum",
+			"target": "/enum/vatrate"
 		}
+	},
+	"initialValues": {
+		"VatRate": { "source": "literal", "value": "20" }
+	},
+	"rules": {
+		"required": [ "VatRate", "Name" ],
 	}
 }

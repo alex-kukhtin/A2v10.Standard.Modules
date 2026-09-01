@@ -1,23 +1,24 @@
 ﻿/* METADATA SEED. Version: 10.1.8653 */
 begin
     set nocount on;
-    declare @tables table([schema] sysname, [table] sysname);
+    declare @tables table([schema] sysname, [table] sysname, [xtra] nvarchar(64));
     declare @columns table([schema] sysname, [table] sysname, [column] sysname, [datatype] sysname,
         [length] int, [precision] tinyint, [scale] tinyint, [nullable] bit,
         [ref_schema] nvarchar(128), [ref_table] nvarchar(128), [default] nvarchar(128));
 
-    insert into @tables([schema], [table]) values
-    	(N'cat', N'$Tags'),
-		(N'cat', N'Agent$TagEntries'),
-		(N'cat', N'AgentAddresses'),
-		(N'cat', N'Agents'),
-		(N'cat', N'Items'),
-		(N'cat', N'StoreAddresses'),
-		(N'cat', N'Stores'),
-		(N'cat', N'Units'),
-		(N'doc', N'DocumentRows'),
-		(N'doc', N'StockDocuments'),
-		(N'jrn', N'StockJournal');
+    insert into @tables([schema], [table], [xtra]) values
+    	(N'cat', N'$Tags', null),
+		(N'cat', N'Agent$TagEntries', null),
+		(N'cat', N'AgentAddresses', null),
+		(N'cat', N'Agents', null),
+		(N'cat', N'Items', null),
+		(N'cat', N'StoreAddresses', null),
+		(N'cat', N'Stores', null),
+		(N'cat', N'Units', null),
+		(N'doc', N'DocumentRows', null),
+		(N'doc', N'StockDocuments', null),
+		(N'enm', N'VatRates', N'6ab7079eb35144fc75a7700558c5af29af4bc013ac756bd9ec42242a22da9714'),
+		(N'jrn', N'StockJournal', null);
 
     insert into @columns([schema], [table], [column], [datatype],
         [length], [precision], [scale], [nullable], [ref_schema], [ref_table], [default]) values
@@ -46,6 +47,7 @@ begin
 		(N'cat', N'Items', N'Memo', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'cat', N'Items', N'Name', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'cat', N'Items', N'Unit', N'platformid', null, null, null, 1, N'cat', N'Units', null),
+		(N'cat', N'Items', N'VatRate', N'nvarchar', 64, null, null, 1, N'enm', N'VatRates', null),
 		(N'cat', N'Items', N'Void', N'bit', null, null, null, 0, null, null, N'0'),
 		(N'cat', N'Items', N'rv', N'timestamp', null, null, null, 0, null, null, null),
 		(N'cat', N'StoreAddresses', N'Id', N'platformid', null, null, null, 0, null, null, null),
@@ -76,6 +78,7 @@ begin
 		(N'doc', N'DocumentRows', N'RowNo', N'int', null, null, null, 1, null, null, null),
 		(N'doc', N'DocumentRows', N'Sum', N'decimal', null, 19, 4, 1, null, null, null),
 		(N'doc', N'DocumentRows', N'Unit', N'platformid', null, null, null, 1, N'cat', N'Units', null),
+		(N'doc', N'DocumentRows', N'VatRate', N'nvarchar', 64, null, null, 1, N'enm', N'VatRates', null),
 		(N'doc', N'StockDocuments', N'Agent', N'platformid', null, null, null, 1, N'cat', N'Agents', null),
 		(N'doc', N'StockDocuments', N'Date', N'date', null, null, null, 1, null, null, null),
 		(N'doc', N'StockDocuments', N'Done', N'bit', null, null, null, 0, null, null, N'0'),
@@ -88,6 +91,11 @@ begin
 		(N'doc', N'StockDocuments', N'Sum', N'decimal', null, 19, 4, 1, null, null, null),
 		(N'doc', N'StockDocuments', N'Void', N'bit', null, null, null, 0, null, null, N'0'),
 		(N'doc', N'StockDocuments', N'rv', N'timestamp', null, null, null, 0, null, null, null),
+		(N'enm', N'VatRates', N'Id', N'nvarchar', 64, null, null, 1, null, null, null),
+		(N'enm', N'VatRates', N'Memo', N'nvarchar', 255, null, null, 1, null, null, null),
+		(N'enm', N'VatRates', N'Name', N'nvarchar', 255, null, null, 1, null, null, null),
+		(N'enm', N'VatRates', N'Order', N'int', null, null, null, 1, null, null, null),
+		(N'enm', N'VatRates', N'Void', N'bit', null, null, null, 0, null, null, N'0'),
 		(N'jrn', N'StockJournal', N'Agent', N'platformid', null, null, null, 1, N'cat', N'Agents', null),
 		(N'jrn', N'StockJournal', N'Date', N'date', null, null, null, 1, null, null, null),
 		(N'jrn', N'StockJournal', N'Detail', N'platformid', null, null, null, 1, null, null, null),
@@ -104,8 +112,10 @@ begin
     merge a2meta.Tables as t
     using @tables as s
     on t.[schema] = s.[schema] and t.[table] = s.[table]
-    when not matched then insert([schema], [table]) values
-       (s.[schema], s.[table])
+    when matched then update set
+        t.[xtra] = s.[xtra]
+    when not matched then insert([schema], [table], [xtra]) values
+       (s.[schema], s.[table], s.[xtra])
     when not matched by source then delete;
 
     -- merge columns
@@ -143,11 +153,16 @@ go
 if not exists(select * from INFORMATION_SCHEMA.SCHEMATA where SCHEMA_NAME=N'cat')
 	exec sp_executesql N'create schema cat authorization dbo';
 go
+if not exists(select * from INFORMATION_SCHEMA.SCHEMATA where SCHEMA_NAME=N'enm')
+	exec sp_executesql N'create schema enm authorization dbo';
+go
 if not exists(select * from INFORMATION_SCHEMA.SCHEMATA where SCHEMA_NAME=N'jrn')
 	exec sp_executesql N'create schema jrn authorization dbo';
 go
+
 grant select, insert, update, execute on schema::doc to public;
 grant select, insert, update, execute on schema::cat to public;
+grant select, insert, update, execute on schema::enm to public;
 grant select, insert, update, execute on schema::jrn to public;
 go
 
@@ -194,6 +209,7 @@ create table doc.[DocumentRows]
     [Sum] decimal(19, 4),
     [Item] platformid,
     [Unit] platformid,
+    [VatRate] nvarchar(64),
     constraint PK_DocumentRows primary key (Id)
 );
 go
@@ -264,6 +280,7 @@ create table cat.[Items]
     [Name] nvarchar(255),
     [Memo] nvarchar(255),
     [Unit] platformid,
+    [VatRate] nvarchar(64),
     constraint PK_Items primary key (Id)
 );
 go
@@ -321,6 +338,22 @@ create table cat.[Units]
     [Short] nvarchar(8),
     [Denom] money,
     constraint PK_Units primary key (Id)
+);
+go
+------------------------------------------------
+if not exists(select * from INFORMATION_SCHEMA.SEQUENCES where SEQUENCE_SCHEMA = N'enm' and SEQUENCE_NAME = N'SQ_VatRates')
+	create sequence enm.[SQ_VatRates] as bigint start with 1000 increment by 1;
+
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA=N'enm' and TABLE_NAME=N'VatRates')
+create table enm.[VatRates]
+(
+    [Id] nvarchar(64),
+    [Void] bit not null
+       constraint DF_VatRates_Void default(0),
+    [Name] nvarchar(255),
+    [Memo] nvarchar(255),
+    [Order] int,
+    constraint PK_VatRates primary key (Id)
 );
 go
 ------------------------------------------------
@@ -400,7 +433,8 @@ create type doc.[Row.Meta.TableType] as table
     [Price] decimal(19, 6),
     [Sum] decimal(19, 4),
     [Item] platformid,
-    [Unit] platformid
+    [Unit] platformid,
+    [VatRate] nvarchar(64)
 );
 go
 ------------------------------------------------
@@ -437,7 +471,8 @@ create type cat.[Item.Meta.TableType] as table
     [rv] varbinary(8),
     [Name] nvarchar(255),
     [Memo] nvarchar(255),
-    [Unit] platformid
+    [Unit] platformid,
+    [VatRate] nvarchar(64)
 );
 go
 ------------------------------------------------
@@ -478,6 +513,17 @@ create type cat.[Unit.Meta.TableType] as table
 );
 go
 ------------------------------------------------
+drop type if exists enm.[VatRate.Meta.TableType];
+create type enm.[VatRate.Meta.TableType] as table
+(
+    [Id] nvarchar(64),
+    [Void] bit,
+    [Name] nvarchar(255),
+    [Memo] nvarchar(255),
+    [Order] int
+);
+go
+------------------------------------------------
 drop type if exists cat.[Tag.Meta.TableType];
 create type cat.[Tag.Meta.TableType] as table
 (
@@ -491,6 +537,37 @@ go
 
 -- SYNC DATABASE SCHEMA
 exec a2meta.[SyncSchema]
+go
+
+-- ENUM VALUES
+------------------------------------------------
+begin
+    set nocount on;
+    declare @VatRate table([Id] nvarchar(64), [Name] nvarchar(255), [Memo] nvarchar(255),
+        [Order] int, [Void] bit);
+
+    insert into @VatRate([Id], [Name], [Memo], [Order], [Void]) values
+	(N'', N'@[VatRate.All]', null, -1, 0),
+	(N'20', N'20%', null, 0, 0),
+	(N'7', N'7%', null, 1, 0),
+	(N'14', N'14%', null, 2, 0),
+	(N'901', N'0% (901)', null, 3, 0),
+	(N'902', N'0% (902)', null, 4, 0),
+	(N'903', N'Без ПДВ (903)', null, 5, 0);
+
+    merge enm.[VatRates] as t
+    using @VatRate as s
+    on t.[Id] = s.[Id]
+    when matched then update set
+        t.[Name] = s.[Name],
+        t.[Memo] = s.[Memo],
+        t.[Order] = s.[Order],
+        t.[Void] = s.[Void]
+    when not matched then insert ([Id], [Name], [Memo], [Order], [Void]) values
+        (s.[Id], s.[Name], s.[Memo], s.[Order], s.[Void])
+    when not matched by source then update set
+        t.[Void] = 1;
+end
 go
 
 -- FOREIGN KEYS
@@ -518,6 +595,9 @@ if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TAB
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'DocumentRows' and CONSTRAINT_NAME = N'FK_DocumentRows_Unit_Units')
     alter table doc.[DocumentRows] add
         constraint FK_DocumentRows_Unit_Units foreign key ([Unit]) references cat.[Units]([Id]);
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'DocumentRows' and CONSTRAINT_NAME = N'FK_DocumentRows_VatRate_VatRates')
+    alter table doc.[DocumentRows] add
+        constraint FK_DocumentRows_VatRate_VatRates foreign key ([VatRate]) references enm.[VatRates]([Id]);
 go
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Agents' and CONSTRAINT_NAME = N'FK_Agents_Store_Stores')
@@ -541,6 +621,9 @@ go
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Items' and CONSTRAINT_NAME = N'FK_Items_Unit_Units')
     alter table cat.[Items] add
         constraint FK_Items_Unit_Units foreign key ([Unit]) references cat.[Units]([Id]);
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Items' and CONSTRAINT_NAME = N'FK_Items_VatRate_VatRates')
+    alter table cat.[Items] add
+        constraint FK_Items_VatRate_VatRates foreign key ([VatRate]) references enm.[VatRates]([Id]);
 go
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Stores' and CONSTRAINT_NAME = N'FK_Stores_Agent_Agents')
