@@ -1,3 +1,9 @@
 {
-	"waybill": {"pattern": "ПН-{nnnnn}/{yy}", "period": "year"}
+	"$schema": "../@schemas/metadata-autonum-json-schema.json#",
+	"autonums": {
+		"waybill": {
+			"pattern": "Н-{yyyy}/{nnnnn}",
+			"period": "year"
+		}
+	}
 } 

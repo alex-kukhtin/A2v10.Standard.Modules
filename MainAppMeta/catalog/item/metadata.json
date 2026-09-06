@@ -7,7 +7,7 @@
 			"target": "/catalog/unit"
 		},
 		"VatRate": {
-			"type": "enum",
+			"type": "Enum",
 			"target": "/enum/vatrate"
 		}
 	},
@@ -15,6 +15,6 @@
 		"VatRate": { "source": "literal", "value": "20" }
 	},
 	"rules": {
-		"required": [ "VatRate", "Name" ],
+		"required": [ "VatRate", "Name" ]
 	}
 }

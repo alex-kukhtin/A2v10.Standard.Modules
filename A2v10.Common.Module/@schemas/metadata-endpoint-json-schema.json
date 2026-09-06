@@ -70,7 +70,7 @@
         },
         "autonum": {
             "type": "string",
-            "description": "Id of the series in the 'autonum' endpoint. Required exactly when the storage declares a field of type Autonum."
+            "description": "Which numbering this endpoint draws from - a key of autonum/metadata.json, refused at load if that file does not declare it. The number lands in the shape's column of type 'autonum', so writing this without such a column is refused too. The other way round is legitimate and is not checked: a column with no 'autonum' is a document numbered by hand. Layered like every other key - an operation with none of its own draws from the storage's. The number is issued when the row is INSERTED and only if it arrived empty, so a document may be renumbered by hand and re-saving never overwrites it."
         }
     },
 
@@ -104,7 +104,7 @@
 
         "details": {
             "type": "object",
-            "description": "Collection key -> the rows of that collection. The key is what the generated side composes names from.",
+            "description": "Collection key -> the rows of that collection. The key is what the generated side composes names from, the SQL table among them: rows live in '<owner model><key>' and there is no key to write it - a row set is not addressable on its own, so its table is the platform's to name.",
             "additionalProperties": { "$ref": "#/definitions/detail" }
         },
 
@@ -112,7 +112,6 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "table": { "type": "string" },
                 "model": { "type": "string" },
                 "label": { "type": "string" },
                 "fields": { "$ref": "#/definitions/fields" },
@@ -212,6 +211,41 @@
         },
 
         "post": {
+            "oneOf": [
+                { "$ref": "#/definitions/postMapped" },
+                { "$ref": "#/definitions/postSql" }
+            ]
+        },
+
+        "postSql": {
+            "type": "object",
+            "description": "Posting done by a stored procedure. It posts the whole document, so it is the only entry of 'post' - the platform maps nothing alongside it.",
+            "additionalProperties": false,
+            "required": [ "sql", "journals" ],
+            "properties": {
+                "sql": {
+                    "type": "object",
+                    "description": "The procedures. Both are called with @Id and @UserId and nothing else, inside a transaction they do not own: they must not commit or roll back, and fail by throwing.",
+                    "additionalProperties": false,
+                    "required": [ "post" ],
+                    "properties": {
+                        "post": { "type": "string" },
+                        "unpost": {
+                            "type": "string",
+                            "description": "Optional. Without it the rows are deleted by provenance, like any other posting; write it only when the inverse is not a delete."
+                        }
+                    }
+                },
+                "journals": {
+                    "type": "array",
+                    "description": "Every journal the procedure writes into. Nothing can read this out of the procedure, and the transactions dialog is built from it - as is the unpost, when it is not declared.",
+                    "minItems": 1,
+                    "items": { "type": "string" }
+                }
+            }
+        },
+
+        "postMapped": {
             "type": "object",
             "additionalProperties": false,
             "required": [ "journal" ],

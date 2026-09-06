@@ -1,5 +1,5 @@
 {
-	"$schema": "../../@schemas/metadata-reoport-json-schema.json#",
+	"$schema": "../../@schemas/metadata-report-json-schema.json#",
 	"surface": "journal/stock",
 	"type": "turnover",
 	"groups": [ "Agent", "Store", "Item" ],

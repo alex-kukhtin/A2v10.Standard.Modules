@@ -29,9 +29,6 @@
 			},
 			"document": {
 				"Store": "StoreFrom"
-			},
-			"row": {
-				"Sum" : "Sum"
 			}
 		}
 	],

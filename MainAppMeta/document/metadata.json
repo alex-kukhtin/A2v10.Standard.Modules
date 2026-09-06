@@ -57,7 +57,7 @@
 					"target": "/catalog/unit"
 				},
 				"VatRate": {
-					"type": "enum",
+					"type": "Enum",
 					"target": "/enum/vatrate"
 				}
 			},

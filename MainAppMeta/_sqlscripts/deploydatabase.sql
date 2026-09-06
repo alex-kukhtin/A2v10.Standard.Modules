@@ -15,6 +15,8 @@ begin
 		(N'cat', N'StoreAddresses', null),
 		(N'cat', N'Stores', null),
 		(N'cat', N'Units', null),
+		(N'doc', N'Autonum$Values', null),
+		(N'doc', N'Autonums', N'950f0f94c55e5f5c8b759845d52be6d4865d117d247089d03421f2c7a857da35'),
 		(N'doc', N'DocumentRows', null),
 		(N'doc', N'StockDocuments', null),
 		(N'enm', N'VatRates', N'6ab7079eb35144fc75a7700558c5af29af4bc013ac756bd9ec42242a22da9714'),
@@ -69,6 +71,16 @@ begin
 		(N'cat', N'Units', N'Short', N'nvarchar', 8, null, null, 1, null, null, null),
 		(N'cat', N'Units', N'Void', N'bit', null, null, null, 0, null, null, N'0'),
 		(N'cat', N'Units', N'rv', N'timestamp', null, null, null, 0, null, null, null),
+		(N'doc', N'Autonum$Values', N'Autonum', N'nvarchar', 64, null, null, 1, null, null, null),
+		(N'doc', N'Autonum$Values', N'CurrentNumber', N'int', null, null, null, 1, null, null, null),
+		(N'doc', N'Autonum$Values', N'Id', N'platformid', null, null, null, 0, null, null, null),
+		(N'doc', N'Autonum$Values', N'Month', N'int', null, null, null, 1, null, null, null),
+		(N'doc', N'Autonum$Values', N'Quart', N'int', null, null, null, 1, null, null, null),
+		(N'doc', N'Autonum$Values', N'Year', N'int', null, null, null, 1, null, null, null),
+		(N'doc', N'Autonums', N'Id', N'nvarchar', 64, null, null, 0, null, null, null),
+		(N'doc', N'Autonums', N'Name', N'nvarchar', 255, null, null, 1, null, null, null),
+		(N'doc', N'Autonums', N'Pattern', N'nvarchar', 255, null, null, 1, null, null, null),
+		(N'doc', N'Autonums', N'Period', N'nvarchar', 16, null, null, 1, null, null, null),
 		(N'doc', N'DocumentRows', N'Id', N'platformid', null, null, null, 0, null, null, null),
 		(N'doc', N'DocumentRows', N'Item', N'platformid', null, null, null, 1, N'cat', N'Items', null),
 		(N'doc', N'DocumentRows', N'Kind', N'nvarchar', 64, null, null, 1, null, null, null),
@@ -91,7 +103,7 @@ begin
 		(N'doc', N'StockDocuments', N'Sum', N'decimal', null, 19, 4, 1, null, null, null),
 		(N'doc', N'StockDocuments', N'Void', N'bit', null, null, null, 0, null, null, N'0'),
 		(N'doc', N'StockDocuments', N'rv', N'timestamp', null, null, null, 0, null, null, null),
-		(N'enm', N'VatRates', N'Id', N'nvarchar', 64, null, null, 1, null, null, null),
+		(N'enm', N'VatRates', N'Id', N'nvarchar', 64, null, null, 0, null, null, null),
 		(N'enm', N'VatRates', N'Memo', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'enm', N'VatRates', N'Name', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'enm', N'VatRates', N'Order', N'int', null, null, null, 1, null, null, null),
@@ -167,6 +179,37 @@ grant select, insert, update, execute on schema::jrn to public;
 go
 
 -- TABLES
+------------------------------------------------
+if not exists(select * from INFORMATION_SCHEMA.SEQUENCES where SEQUENCE_SCHEMA = N'doc' and SEQUENCE_NAME = N'SQ_Autonums')
+	create sequence doc.[SQ_Autonums] as bigint start with 1000 increment by 1;
+
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA=N'doc' and TABLE_NAME=N'Autonums')
+create table doc.[Autonums]
+(
+    [Id] nvarchar(64) not null,
+    [Name] nvarchar(255),
+    [Pattern] nvarchar(255),
+    [Period] nvarchar(16),
+    constraint PK_Autonums primary key (Id)
+);
+go
+------------------------------------------------
+if not exists(select * from INFORMATION_SCHEMA.SEQUENCES where SEQUENCE_SCHEMA = N'doc' and SEQUENCE_NAME = N'SQ_Autonum$Values')
+	create sequence doc.[SQ_Autonum$Values] as bigint start with 1000 increment by 1;
+
+if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA=N'doc' and TABLE_NAME=N'Autonum$Values')
+create table doc.[Autonum$Values]
+(
+    [Id] platformid not null
+       constraint DF_Autonum$Values_Id default(next value for doc.[SQ_Autonum$Values]),
+    [Autonum] nvarchar(64),
+    [Year] int,
+    [Quart] int,
+    [Month] int,
+    [CurrentNumber] int,
+    constraint PK_Autonum$Values primary key (Id)
+);
+go
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.SEQUENCES where SEQUENCE_SCHEMA = N'doc' and SEQUENCE_NAME = N'SQ_StockDocuments')
 	create sequence doc.[SQ_StockDocuments] as bigint start with 1000 increment by 1;
@@ -347,7 +390,7 @@ if not exists(select * from INFORMATION_SCHEMA.SEQUENCES where SEQUENCE_SCHEMA =
 if not exists(select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA=N'enm' and TABLE_NAME=N'VatRates')
 create table enm.[VatRates]
 (
-    [Id] nvarchar(64),
+    [Id] nvarchar(64) not null,
     [Void] bit not null
        constraint DF_VatRates_Void default(0),
     [Name] nvarchar(255),
@@ -401,6 +444,16 @@ drop type if exists dbo.[PlatformId.TableType];
 create type dbo.[PlatformId.TableType] as table
 (
     [Id] platformid
+);
+go
+------------------------------------------------
+drop type if exists doc.[Autonum.Meta.TableType];
+create type doc.[Autonum.Meta.TableType] as table
+(
+    [Id] nvarchar(64),
+    [Name] nvarchar(255),
+    [Pattern] nvarchar(255),
+    [Period] nvarchar(16)
 );
 go
 ------------------------------------------------
@@ -570,6 +623,81 @@ begin
 end
 go
 
+-- AUTONUMS
+------------------------------------------------
+begin
+    set nocount on;
+    declare @Autonum table([Id] nvarchar(64), [Name] nvarchar(255),
+        [Pattern] nvarchar(255), [Period] nvarchar(16));
+
+    insert into @Autonum([Id], [Name], [Pattern], [Period]) values
+	(N'waybill', N'@[Autonum.waybill]', N'Н-{yyyy}/{nnnnn}', N'Year');
+
+    merge doc.[Autonums] as t
+    using @Autonum as s
+    on t.[Id] = s.[Id]
+    when matched then update set
+        t.[Name] = s.[Name],
+        t.[Pattern] = s.[Pattern],
+        t.[Period] = s.[Period]
+    when not matched then insert ([Id], [Name], [Pattern], [Period]) values
+        (s.[Id], s.[Name], s.[Pattern], s.[Period]);
+end
+go
+
+-- AUTONUM
+------------------------------------------------
+create or alter procedure doc.[Autonum.NextValue]
+@Autonum nvarchar(64),
+@Date date,
+@Number nvarchar(64) output
+as
+begin
+    set nocount on;
+    set transaction isolation level read committed;
+
+    declare @pattern nvarchar(255), @y int, @q int, @m int;
+
+    select @pattern = [Pattern],
+        @y = case when [Period] <> N'None' then year(@Date) else 0 end,
+        @q = case when [Period] = N'Quarter' then datepart(quarter, @Date) else 0 end,
+        @m = case when [Period] = N'Month' then month(@Date) else 0 end
+    from doc.[Autonums] where [Id] = @Autonum;
+
+    if @pattern is null
+        throw 60000, N'UI:@[Error.Autonum.NotFound]', 0;
+
+    /* One statement, and 'holdlock' is what makes it one: update-then-insert lets two
+     * callers both find no row for a period that has just begun and both insert one - a
+     * counter split in two, and from then on every number issued twice. The lock is taken
+     * over the table's unique index, so it is on that one key and not on a range of them.
+     */
+    declare @rtable table(number int);
+    merge into doc.[Autonum$Values] with (holdlock) as t
+    using (select @Autonum, @y, @q, @m) as s([Autonum], [Year], [Quart], [Month])
+        on t.[Autonum] = s.[Autonum] and t.[Year] = s.[Year]
+            and t.[Quart] = s.[Quart] and t.[Month] = s.[Month]
+    when matched then update set t.[CurrentNumber] = t.[CurrentNumber] + 1
+    when not matched then insert ([Autonum], [Year], [Quart], [Month], [CurrentNumber])
+        values (s.[Autonum], s.[Year], s.[Quart], s.[Month], 1)
+    output inserted.[CurrentNumber] into @rtable(number);
+
+    declare @n int;
+    select @n = number from @rtable;
+
+    set @Number = replace(@pattern, N'{yyyy}', format(@Date, N'yyyy'));
+    set @Number = replace(@Number, N'{yy}', format(@Date, N'yy'));
+    set @Number = replace(@Number, N'{mm}', format(@Date, N'MM'));
+    set @Number = replace(@Number, N'{qq}', format(datepart(quarter, @Date), N'00'));
+
+    -- the counter's own token carries its width: '{nnnnn}' is five digits, zero padded
+    declare @p0 int, @p1 int;
+    set @p0 = charindex(N'{n', @Number);
+    set @p1 = charindex(N'n}', @Number);
+    set @Number = stuff(@Number, @p0, @p1 - @p0 + 2, format(@n, replicate(N'0', @p1 - @p0)));
+end
+go
+
 -- FOREIGN KEYS
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'StockDocuments' and CONSTRAINT_NAME = N'FK_StockDocuments_Operation_Operations')
@@ -651,5 +779,11 @@ if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TAB
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'jrn' and TABLE_NAME = N'StockJournal' and CONSTRAINT_NAME = N'FK_StockJournal_Item_Items')
     alter table jrn.[StockJournal] add
         constraint FK_StockJournal_Item_Items foreign key ([Item]) references cat.[Items]([Id]);
+go
+
+-- INDEXES
+------------------------------------------------
+if not exists(select * from sys.indexes where object_id = object_id(N'doc.[Autonum$Values]') and name = N'UX_Autonum$Values_Autonum_Year_Quart_Month')
+    create unique index UX_Autonum$Values_Autonum_Year_Quart_Month on doc.[Autonum$Values] ([Autonum], [Year], [Quart], [Month]);
 go
 

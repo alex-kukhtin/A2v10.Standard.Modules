@@ -21,7 +21,7 @@
 		"Addresses": {
 			"model": "AgentAddress",
 			"fields": {
-				"Text": {"type": "string"}
+				"Text": {"type": "String"}
 			}
 		}
 	},
