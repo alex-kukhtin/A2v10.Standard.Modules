@@ -17,6 +17,7 @@
     ],
     "properties": {
         "$schema": { "type": "string" },
+        "description": { "type": "string", "description": "For the model, not the platform: nothing reads it - no generator, runtime or deploy. Where the model writes down what it must know about this endpoint - its rules and the reasons for them - so the next session finds them here." },
 
         "table": {
             "type": "string",
@@ -56,6 +57,11 @@
             "type": "object",
             "additionalProperties": { "$ref": "#/definitions/form" }
         },
+        "printForms": {
+            "type": "array",
+            "description": "The print blanks this endpoint offers, in menu order. Declared per endpoint and never inherited from 'storage': a blank is paper under one act, and two operations over one table print different papers. A non-empty list is what puts the Print command on the toolbars - there is no trait for it.",
+            "items": { "$ref": "#/definitions/printForm" }
+        },
 
         "initialValues": { "$ref": "#/definitions/initialValues" },
         "rules": { "$ref": "#/definitions/rules" },
@@ -65,7 +71,7 @@
         },
         "autonum": {
             "type": "string",
-            "description": "Id of the series in the 'autonum' endpoint. Required exactly when the storage declares a field of type Autonum."
+            "description": "Which numbering this endpoint draws from - a key of autonum/metadata.json, refused at load if that file does not declare it. The number lands in the shape's column of type 'autonum', so writing this without such a column is refused too. The other way round is legitimate and is not checked: a column with no 'autonum' is a document numbered by hand. Layered like every other key - an operation with none of its own draws from the storage's. The number is issued when the row is INSERTED and only if it arrived empty, so a document may be renumbered by hand and re-saving never overwrites it."
         }
     },
 
@@ -99,7 +105,7 @@
 
         "details": {
             "type": "object",
-            "description": "Collection key -> the rows of that collection. The key is what the generated side composes names from.",
+            "description": "Collection key -> the rows of that collection. The key is what the generated side composes names from, the SQL table among them: rows live in '<owner model><key>' and there is no key to write it - a row set is not addressable on its own, so its table is the platform's to name.",
             "additionalProperties": { "$ref": "#/definitions/detail" }
         },
 
@@ -107,7 +113,6 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "table": { "type": "string" },
                 "model": { "type": "string" },
                 "label": { "type": "string" },
                 "fields": { "$ref": "#/definitions/fields" },
@@ -207,6 +212,41 @@
         },
 
         "post": {
+            "oneOf": [
+                { "$ref": "#/definitions/postMapped" },
+                { "$ref": "#/definitions/postSql" }
+            ]
+        },
+
+        "postSql": {
+            "type": "object",
+            "description": "Posting done by a stored procedure. It posts the whole document, so it is the only entry of 'post' - the platform maps nothing alongside it.",
+            "additionalProperties": false,
+            "required": [ "sql", "journals" ],
+            "properties": {
+                "sql": {
+                    "type": "object",
+                    "description": "The procedures. Both are called with @Id and @UserId and nothing else, inside a transaction they do not own: they must not commit or roll back, and fail by throwing.",
+                    "additionalProperties": false,
+                    "required": [ "post" ],
+                    "properties": {
+                        "post": { "type": "string" },
+                        "unpost": {
+                            "type": "string",
+                            "description": "Optional. Without it the rows are deleted by provenance, like any other posting; write it only when the inverse is not a delete."
+                        }
+                    }
+                },
+                "journals": {
+                    "type": "array",
+                    "description": "Every journal the procedure writes into. Nothing can read this out of the procedure, and the transactions dialog is built from it - as is the unpost, when it is not declared.",
+                    "minItems": 1,
+                    "items": { "type": "string" }
+                }
+            }
+        },
+
+        "postMapped": {
             "type": "object",
             "additionalProperties": false,
             "required": [ "journal" ],
@@ -294,8 +334,28 @@
             "enum": [
                 "$sep", "$toRight",
                 "Create", "Edit", "Delete", "Save", "SaveAndClose", "Print", "Copy",
-                "Show", "Search", "Reload", "Post", "UnPost", "Attachments"
+                "Show", "ShowTrans", "Search", "Reload", "Post", "UnPost", "Attachments"
             ]
+        },
+
+        "printForm": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [ "path", "title" ],
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "Path of the blank file, relative to the endpoint folder and WITHOUT an extension - named the way a view is; '.json' is appended. A blank has no window of its own and is not an endpoint, so it need not lie next to this file."
+                },
+                "title": {
+                    "type": "string",
+                    "description": "Caption of the menu item that prints it. Localized like any other caption: '@[...]' is resolved at render."
+                },
+                "header": {
+                    "type": "string",
+                    "description": "Title of the page that hosts the viewer, as a template over the record: 'Prykhodna nakladna No {Document.Number} vid {Document.Date}'. Every path starts with the model name and is resolved against the shape, so a typo fails like any other; the values are substituted in the browser. Omitted, the menu caption stands in. This is NOT the blank's own heading - the paper draws that in a cell of its layout, which is never read."
+                }
+            }
         },
 
         "endpointKind": {
@@ -312,8 +372,8 @@
         "trait": {
             "type": "string",
             "enum": [
-                "Audit", "Hierarchy", "Folders", "Tags", "Print", "Attachments",
-                "audit", "hierarchy", "folders", "tags", "print", "attachments"
+                "Audit", "Hierarchy", "Folders", "Tags", "Attachments",
+                "audit", "hierarchy", "folders", "tags", "attachments"
             ]
         },
 
@@ -361,7 +421,7 @@
             "type": "string",
             "enum": [
                 "String", "Id", "Name", "Memo", "RowNumber", "Done", "Void", "IsSystem",
-                "IsFolder", "Owner", "Parent", "Folder", "User", "RowKind", "Operation",
+                "IsFolder", "Parent", "Folder", "User", "RowKind", "Operation",
                 "Document", "DocumentType", "Row", "RowVersion", "Color", "Enum", "Autonum",
                 "Company", "Direction",
                 "Amount", "Price", "Qty", "Percent", "Factor",
@@ -370,7 +430,7 @@
                 "BigInt", "Bit", "NChar", "Decimal", "Float", "VarBinary", "Uniqueidentifier",
 
                 "string", "id", "name", "memo", "rowNumber", "done", "void", "isSystem",
-                "isFolder", "owner", "parent", "folder", "user", "rowKind", "operation",
+                "isFolder", "parent", "folder", "user", "rowKind", "operation",
                 "document", "documentType", "row", "rowVersion", "color", "enum", "autonum",
                 "company", "direction",
                 "amount", "price", "qty", "percent", "factor",

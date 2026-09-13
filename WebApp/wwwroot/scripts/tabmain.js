@@ -1143,9 +1143,9 @@ app.modules['std:utils'] = function () {
 	}
 };
 
-// Copyright © 2015-2025 Oleksandr Kukhtin. All rights reserved.
+// Copyright © 2015-2026 Oleksandr Kukhtin. All rights reserved.
 
-/*20250913-7983*/
+/*20260830-7984*/
 /* services/url.js */
 
 app.modules['std:url'] = function () {
@@ -1331,6 +1331,8 @@ app.modules['std:url'] = function () {
 		}
 		if (url.endsWith('new') && urlId === 'new')
 			urlId = '';
+		if (url.indexOf('{0}') >= 0)
+			return url.replace('{0}', urlId);
 		// special behaviour for main menu urls
 		if (url.split('/').length === 3 && urlId === 'new')
 			urlId = '';
@@ -9184,6 +9186,43 @@ Vue.component('popover', {
 	});
 })();
 
+// Copyright © 2026 Oleksandr Kukhtin. All rights reserved.
+
+// 20260911-7954
+// components/report.js
+
+(function () {
+
+
+	const url = require('std:url');
+	const utils = require('std:utils');
+
+	const locale = window.$$locale;
+
+	Vue.component('a2-pdfreport-viewer', {
+		template: `
+<div class="a2-pdfreport-viewer">
+	<object type="application/pdf" :data="source" width="100%" height="100%"/>
+</div>
+`,
+		props: {
+			url: String,
+			argument: Object,
+			report: String
+		},
+		computed: {
+			source: function () {
+				let root = window.$$rootUrl;
+				let arg = this.argument || 0;
+				if (utils.isObjectExact(this.argument)) {
+					arg = this.argument.$id || 0;
+				}
+				return url.combine(root, 'report/show', arg) + url.makeQueryString({ base: this.url, rep: this.report });
+			}
+		}
+	});
+
+})();
 // Copyright © 2015-2025 Oleksandr Kukhtin. All rights reserved.
 
 // 20251226-7986
@@ -11469,9 +11508,9 @@ Vue.component('a2-panel', {
 		}
 	});
 })();
-// Copyright © 2015-2021 Oleksandr Kukhtin. All rights reserved.
+// Copyright © 2015-2026 Oleksandr Kukhtin. All rights reserved.
 
-// 20210208-7745
+// 20260823-7985
 // components/graphics.js
 
 (function () {
@@ -11485,7 +11524,9 @@ Vue.component('a2-panel', {
 
 	Vue.component("a2-graphics", {
 		template:
-			`<div :id="id" class="a2-graphics" ref=canvas></div>`,
+			`<div :id="id" class="a2-graphics" ref=canvas >
+				<div v-if="d3error" class="app-exception"><div class="message">The d3 library is not loaded. Check that the d3.min.js script is included in _layout/_scripts.html.</div></div>
+			</div>`,
 		props: {
 			render: Function,
 			arg: [Object, String, Number, Array, Boolean, Date],
@@ -11500,10 +11541,14 @@ Vue.component('a2-panel', {
 		computed: {
 			controller() {
 				return this.$root;
+			},
+			d3error() {
+				return typeof (window.d3) == 'undefined';
 			}
 		},
 		methods: {
 			draw() {
+				if (this.d3error) return;
 				const domElem = this.$refs.canvas;
 				const chart = d3.select(domElem);
 				chart.selectAll('*').remove();
@@ -11519,8 +11564,10 @@ Vue.component('a2-panel', {
 		beforeDestroy() {
 			if (this.unwatch)
 				this.unwatch();
-			const chart = d3.select('#' + this.id);
-			chart.selectAll('*').remove();
+			if (!this.d3error) {
+				const chart = d3.select('#' + this.id);
+				chart.selectAll('*').remove();
+			}
 			this.$el.remove();
 		}
 	});
@@ -12571,9 +12618,9 @@ Vue.component('a2-panel', {
 		}
 	});
 })();
-// Copyright © 2019-2023 Oleksandr Kukhtin. All rights reserved.
+// Copyright © 2019-2026 Oleksandr Kukhtin. All rights reserved.
 
-// 20230903-7941
+// 20260828-7985
 // components/tagscontrol.js*/
 
 (function () {
@@ -12583,7 +12630,7 @@ Vue.component('a2-panel', {
 	<div class="input-group" :class="{focus: isOpen}" @click.stop.prevent="toggle">
 		<ul class="tags-items" v-if="hasItems">
 			<li v-for="(itm, ix) in value" :key="ix" class="tag-body tag-md-close" :class="tagColor(itm)">
-				<span v-text="tagName(itm)"/>
+				<span v-text="tagName(itm)" :title="tagTitle(itm)"/>
 				<button @click.stop.prevent="itm.$remove()" class="btn-close">×</button>
 			</li>
 		</ul>
@@ -12592,7 +12639,7 @@ Vue.component('a2-panel', {
 			<ul class="tags-pane-items">
 				<li v-for="(itm, ix) in actualItemsSource" :key="ix" class="tag-body tag-md" :class="tagColor(itm)"
 					@click.stop.prevent="addTag(itm)">
-					<span v-text="tagName(itm)"/>
+					<span v-text="tagName(itm)" :title="tagTitle(itm)"/>
 				</li>
 			</ul>
 			<div class="tags-settings" v-if="!disabled">
@@ -12607,7 +12654,7 @@ Vue.component('a2-panel', {
 
 	const templateList = `
 <div class="tags-list" :test-id="testId">
-	<span v-for="(itm, ix) in itemsSource" :key="ix" class="tag-body tag-sm" :class="tagColor(itm)" v-text="tagName(itm)"/>
+	<span v-for="(itm, ix) in itemsSource" :key="ix" class="tag-body tag-sm" :class="tagColor(itm)" v-text="tagName(itm)" :title="tagTitle(itm)"/>
 </div>
 `;
 
@@ -12617,7 +12664,7 @@ Vue.component('a2-panel', {
 	<div class="input-group" :class="{focus: isOpen}" @click.stop.prevent="toggle">
 		<ul class="tags-items" v-if="hasItems">
 			<li v-for="(itm, ix) in valueList" :key="ix" class="tag-body tag-md-close" :class="tagColor(itm)">
-				<span v-text="tagName(itm)"/>
+				<span v-text="tagName(itm)" :title="tagTitle(itm)"/>
 				<button @click.stop.prevent="removeTag(itm)" class="btn-close">×</button>
 			</li>
 		</ul>
@@ -12626,7 +12673,7 @@ Vue.component('a2-panel', {
 			<ul class="tags-pane-items">
 				<li v-for="(itm, ix) in actualItemsSource" :key="ix" class="tag-body tag-md" :class="tagColor(itm)"
 						@click.stop.prevent="addTag(itm)">
-					<span v-text="tagName(itm)"/>
+					<span v-text="tagName(itm)" :title="tagTitle(itm)" />
 				</li>
 			</ul>
 		</div>
@@ -12651,10 +12698,12 @@ Vue.component('a2-panel', {
 			itemsSource: Array,
 			contentProp: { type: String, default: 'Name' },
 			colorProp: { type: String, default: 'Color' },
+			titleProp: { type: String, default: 'Memo'},
 			disabled: Boolean,
 			settingsText: { type: String, default: "Settings" },
 			placeholder: String,
-			settingsFunc: Function
+			settingsFunc: Function,
+			settingsCommand: Function
 		},
 		data() {
 			return {
@@ -12681,6 +12730,9 @@ Vue.component('a2-panel', {
 			tagColor(itm) {
 				return itm[this.colorProp];
 			},
+			tagTitle(itm) {
+				return itm[this.titleProp];
+			},
 			addTag(itm) {
 				if (this.disabled)
 					return;
@@ -12698,7 +12750,9 @@ Vue.component('a2-panel', {
 				this.isOpen = !this.isOpen;
 			},
 			doSettings() {
-				if (this.settingsFunc)
+				if (this.settingsCommand)
+					this.settingsCommand.call(this.item.$root);
+				else if (this.settingsFunc)
 					this.settingsFunc.call(this.item.$root, this.itemsSource);
 			},
 			__clickOutside() {
@@ -12721,6 +12775,7 @@ Vue.component('a2-panel', {
 			itemsSource: Array,
 			contentProp: { type: String, default: 'Name' },
 			colorProp: { type: String, default: 'Color' },
+			titleProp: { type: String, default: 'Memo' },
 		},
 		methods: {
 			tagName(itm) {
@@ -12728,6 +12783,9 @@ Vue.component('a2-panel', {
 			},
 			tagColor(itm) {
 				return itm[this.colorProp];
+			},
+			tagTitle(itm) {
+				return itm[this.titleProp];
 			}
 		}
 	});
@@ -12742,6 +12800,7 @@ Vue.component('a2-panel', {
 			itemsSource: Array,
 			contentProp: { type: String, default: 'Name' },
 			colorProp: { type: String, default: 'Color' },
+			titleProp: { type: String, default: 'Memo' },
 			placeholder: String
 		},
 		data() {
@@ -12776,6 +12835,9 @@ Vue.component('a2-panel', {
 			},
 			tagColor(itm) {
 				return itm[this.colorProp];
+			},
+			tagTitle(itm) {
+				return itm[this.titleProp];
 			},
 			addTag(itm) {
 				if (this.disabled)
@@ -13453,7 +13515,7 @@ Vue.directive('resize', {
 
 // Copyright © 2015-2026 Oleksandr Kukhtin. All rights reserved.
 
-/*20260225-7990*/
+/*20260902-7992*/
 // controllers/base.js
 
 (function () {
@@ -14040,14 +14102,21 @@ Vue.directive('resize', {
 			$navigate(url, data, newWindow, update, opts) {
 				if (this.$isReadOnly(opts)) return;
 				eventBus.$emit('closeAllPopups');
-				let urlToNavigate = urltools.createUrlForNavigate(url, data);
-				if (newWindow === true) {
-					let nwin = window.open(urlToNavigate, "_blank");
-					if (nwin)
-						nwin.$$token = { token: this.__currentToken__, update: update };
-				}
+
+				const doNavigate = () => {
+					let urlToNavigate = urltools.createUrlForNavigate(url, data);
+					if (newWindow === true) {
+						let nwin = window.open(urlToNavigate, "_blank");
+						if (nwin)
+							nwin.$$token = { token: this.__currentToken__, update: update };
+					}
+					else
+						this.$store.commit('navigate', { url: urlToNavigate });
+				};
+				if (opts && opts.saveRequired && this.$isDirty)
+					this.$save().then(() => doNavigate());
 				else
-					this.$store.commit('navigate', { url: urlToNavigate });
+					doNavigate();
 			},
 			$navigateSimple(url, newWindow, update) {
 				eventBus.$emit('closeAllPopups');

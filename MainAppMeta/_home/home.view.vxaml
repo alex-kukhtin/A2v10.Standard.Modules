@@ -5,6 +5,10 @@
 		<StackPanel AlignItems="Center" Gap="10">
 			<Button Content="Report" Command="{BindCmd Report, Report=test, Url='/_home'}"/>
 			<Component Name="Text"/>
+			<Button Content="Test Report Page" Command="{BindCmd Open, Url='/_home/testreportpage', Argument=0}"/>
 		</StackPanel>
 	</EmptyPanel>
+	<StackPanel>
+		<PdfReportViewer Url="/_home" Report="test" Height="500px" />
+	</StackPanel>
 </Page>

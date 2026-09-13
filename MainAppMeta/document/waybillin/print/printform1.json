@@ -8,7 +8,7 @@
 				"Agent": [ "Name", "Memo" ]
 			},
 			{
-				"StoreTo": ["Name", "Memo"]
+				"StoreTo": [ "Name", "Memo" ]
 			},
 			{
 				"Rows[]": [
@@ -48,13 +48,6 @@
 				"ColSpan": 8,
 				"Style": "S32"
 			},
-			"B1": { "Style": "S32" },
-			"C1": { "Style": "S32" },
-			"D1": { "Style": "S32" },
-			"E1": { "Style": "S32" },
-			"F1": { "Style": "S32" },
-			"G1": { "Style": "S32" },
-			"H1": { "Style": "S32" },
 			"A3": {
 				"Value": "Постачальник",
 				"ColSpan": 2,
@@ -66,13 +59,6 @@
 				"ColSpan": 3,
 				"Style": "S30"
 			},
-			"D3": { "Style": "S30" },
-			"E3": { "Style": "S30" },
-			"A4": { "Style": "S14" },
-			"B4": { "Style": "S14" },
-			"C4": { "Style": "S31" },
-			"D4": { "Style": "S31" },
-			"E4": { "Style": "S31" },
 			"A5": {
 				"Value": "Покупець",
 				"ColSpan": 2,
@@ -84,8 +70,6 @@
 				"ColSpan": 3,
 				"Style": "S30"
 			},
-			"D5": { "Style": "S30" },
-			"E5": { "Style": "S30" },
 			"A6": {
 				"Value": "Договір",
 				"ColSpan": 2,
@@ -104,7 +88,6 @@
 				"ColSpan": 2,
 				"Style": "S21"
 			},
-			"B7": { "Style": "S21" },
 			"C7": {
 				"Value": "{Document.StoreTo.Name}",
 				"ColSpan": 3,
@@ -177,12 +160,6 @@
 				"ColSpan": 7,
 				"Style": "S24"
 			},
-			"B11": { "Style": "S25" },
-			"C11": { "Style": "S25" },
-			"D11": { "Style": "S25" },
-			"E11": { "Style": "S25" },
-			"F11": { "Style": "S25" },
-			"G11": { "Style": "S26" },
 			"H11": {
 				"Value": "{Document.Sum}",
 				"Style": "S5"
@@ -192,20 +169,11 @@
 				"ColSpan": 8,
 				"Style": "S20"
 			},
-			"B13": { "Style": "S20" },
-			"C13": { "Style": "S20" },
-			"D13": { "Style": "S20" },
-			"E13": { "Style": "S20" },
-			"F13": { "Style": "S20" },
-			"G13": { "Style": "S20" },
-			"H13": { "Style": "S20" },
 			"A15": {
 				"Value": "Видав",
 				"ColSpan": 2,
 				"Style": "S29"
 			},
-			"B15": { "Style": "S27" },
-			"C15": { "Style": "S4" },
 			"D15": {
 				"Value": "Отримав",
 				"ColSpan": 2,

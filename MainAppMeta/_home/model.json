@@ -4,11 +4,18 @@
 	"actions": {
 		"index": {
 			"view": "home.view"
+		},
+		"testreportpage": {
+			"schema": "dbo",
+			"model": "Test",
+			"view": "testreportpage.view"
 		}
 	},
 	"reports": {
 		"test": {
 			"type": "pdf",
+			"schema": "dbo",
+			"model": "Test",
 			"report": "test.report"
 		}
 	}

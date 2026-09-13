@@ -1,5 +1,91 @@
-﻿<Page xmlns="clr-namespace:A2v10.Xaml.Report;assembly=A2v10.Xaml.Report">
+﻿<Page xmlns="clr-namespace:A2v10.Xaml.Report;assembly=A2v10.Xaml.Report"
+	  Orientation="Portrait" Margin="15mm,10mm" FontSize="9"
+	  Title="{Bind docTitle(this)}">
+
+	<Page.Code>
+		const rowTotal = (row) => row.Price * row.Qty;
+		const docTitle = (doc) => `Видаткова накладна ${Document.Number}`;
+	</Page.Code>
+
+	<Page.Footer>
+		<Column>
+			<Text Align="Right">
+				<Span Content="Сторінка"/>
+				<Span Content="$(PageNumber)"/>
+				<Span Content="з"/>
+				<Span Content="$(TotalPages)"/>
+			</Text>
+		</Column>
+	</Page.Footer>
+
 	<Column>
-		<Text>I AM THE XAMLA REPORT</Text>
+		<Text Style="Title" Align="Center">
+			<Span Content="{Bind Document.Name}"/>
+		</Text>
+
+		<Table Columns="90pt,1fr" Margin="8pt,0">
+			<Table.Body>
+				<TableRow>
+					<TableCell Content="Постачальник:"/>
+					<TableCell Content="{Bind Document.Company.Name}" Bold="True"/>
+				</TableRow>
+				<TableRow>
+					<TableCell Content="Покупець:"/>
+					<TableCell Content="{Bind Document.Agent.Name}" Bold="True"/>
+				</TableRow>
+			</Table.Body>
+		</Table>
+
+		<Table Style="Details" Columns="25pt,1fr,50pt,70pt,70pt,50pt"
+			   ItemsSource="{Bind Document.Rows}">
+			<Table.Header>
+				<TableRow>
+					<TableCell Content="№"/>
+					<TableCell Content="Товар"/>
+					<TableCell Content="Кільк."/>
+					<TableCell Content="Ціна"/>
+					<TableCell Content="Сума"/>
+					<TableCell>Nested</TableCell>
+				</TableRow>
+			</Table.Header>
+			<Table.Body>
+				<TableRow>
+					<TableCell Content="{Bind RowNo}" Align="Center"/>
+					<TableCell Content="{Bind Item.Name}" VAlign="Middle"/>
+					<TableCell Content="{Bind Qty, DataType=Number}" Align="Right"/>
+					<TableCell Content="{Bind Price, DataType=Currency}" Align="Right"/>
+					<TableCell Content="{Bind rowTotal(this), DataType=Currency}" Align="Right"/>
+					<TableCell Padding="0">
+						<Table Style="Simple" Columns="1fr,1fr">
+							<TableRow>
+								<TableCell Content="A"/>
+								<TableCell Content="С"/>
+							</TableRow>
+							<TableRow>
+								<TableCell Content="B"/>
+								<TableCell Content="D"/>
+							</TableRow>
+						</Table>
+					</TableCell>
+				</TableRow>
+			</Table.Body>
+			<Table.Footer>
+				<TableRow>
+					<TableCell ColSpan="4" Content="Всього" Align="Right"/>
+					<TableCell Content="{Bind Document.Sum, DataType=Currency}" Align="Right"/>
+					<TableCell />
+				</TableRow>
+			</Table.Footer>
+		</Table>
+
+		<Text Margin="8pt,0">
+			<Span Content="Всього на суму:"/>
+			<Span Content="{Bind spellMoney(Document.Sum)}" Bold="True"/>
+		</Text>
+
+		<Text>
+			Видано на підставі документу № <Span Content="{Bind Document.Number}"/>
+		</Text>
+		<Line Thickness=".5pt" Margin="10pt,0,0,20pt"/>
 	</Column>
 </Page>

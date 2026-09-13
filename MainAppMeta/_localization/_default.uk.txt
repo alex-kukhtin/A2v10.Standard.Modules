@@ -17,6 +17,7 @@
 @UnitShort=Од. вим.
 @Stock=Запаси
 @Service=Послуги
+@Tags=Теги
 @RowNo=#
 @Transactions=Проводки
 ; Fields
@@ -47,9 +48,11 @@
 ;Filter
 @Filter.Agent.All=Всі контрагенти
 @Filter.Store.All=Всі склади
-@Filter.StoreIn.All=Всі склади
-@Filter.StoreOut.All=Всі склади
+@Filter.StoreIn.All=Склад куди
+@Filter.StoreOut.All=Склад звідки
 @Filter.Project.All=Всі проєкти
+@Filter.Item.All=Всі об'єкти обліку
+@Filter.Tag.All=Всі теги
 
 ; Errors
 @Error.Required=Обов'язкове поле

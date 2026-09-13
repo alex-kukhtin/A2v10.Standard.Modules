@@ -1,0 +1,90 @@
+<Page xmlns="clr-namespace:A2v10.Xaml.Report;assembly=A2v10.Xaml.Report"
+	  Orientation="Portrait" FontFamily="Verdana" FontSize="9" Margin="100">
+	<Page.Model>
+	{
+		"Document": [
+			"Number", "Date", "Sum",
+			{ "Agent": [ "Name" ] },
+			{ "StoreTo": [ "Name" ] },
+			{ "Rows[]": [
+				"RowNo", "Qty", "Price", "Sum",
+				{ "Item": [ "Name" ] },
+				{ "Unit": [ "Short" ] }
+			] }
+		]
+	}
+	</Page.Model>
+	<Page.Footer>
+		<Column>
+			<Text Align="Center" FontSize="7">
+				<Span Content="Сторінка $(PageNumber) з $(TotalPages)"/>
+			</Text>
+		</Column>
+	</Page.Footer>
+
+	<Column>
+		<Text Style="Title" Align="Center" Bold="True">
+			<Span Content="Прибуткова накладна №"/>
+			<Span Content="{Bind Document.Number}"/>
+			<Span Content="від"/>
+			<Span Content="{Bind Document.Date, DataType=Date}"/>
+			<Span Content="р."/>
+		</Text>
+
+		<Table Columns="80pt,1fr" Margin="12pt,0,0,0">
+			<Table.Body>
+				<TableRow>
+					<TableCell Content="Постачальник22" VAlign="Top"/>
+					<TableCell Content="{Bind Document.Agent.Name}" Bold="True"/>
+				</TableRow>
+				<TableRow>
+					<TableCell Content="Склад22" VAlign="Top"/>
+					<TableCell Content="{Bind Document.StoreTo.Name}" Bold="True"/>
+				</TableRow>
+			</Table.Body>
+		</Table>
+
+		<Table Style="Details" Columns="24pt,1fr,44pt,52pt,56pt,62pt"
+			   ItemsSource="{Bind Document.Rows}">
+			<Table.Header>
+				<TableRow>
+					<TableCell Content="№" Align="Right"/>
+					<TableCell Content="Товар/послуга"/>
+					<TableCell Content="Кільк." Align="Right"/>
+					<TableCell Content="Од.вим." Align="Center"/>
+					<TableCell Content="Ціна" Align="Right"/>
+					<TableCell Content="Сума" Align="Right"/>
+				</TableRow>
+			</Table.Header>
+			<Table.Body>
+				<TableRow>
+					<TableCell Content="{Bind RowNo}" Align="Right"/>
+					<TableCell Content="{Bind Item.Name}"/>
+					<TableCell Content="{Bind Qty, DataType=Number}" Align="Right"/>
+					<TableCell Content="{Bind Unit.Short}" Align="Center"/>
+					<TableCell Content="{Bind Price, DataType=Currency}" Align="Right"/>
+					<TableCell Content="{Bind Sum, DataType=Currency}" Align="Right"/>
+				</TableRow>
+			</Table.Body>
+			<Table.Footer>
+				<TableRow>
+					<TableCell Content="Всього" ColSpan="5" Align="Right"/>
+					<TableCell Content="{Bind Document.Sum, DataType=Currency}" Align="Right"/>
+				</TableRow>
+			</Table.Footer>
+		</Table>
+
+		<Text Margin="10pt,0,0,0" Bold="True">
+			<Span Content="{Bind spellMoney(Document.Sum)}"/>
+		</Text>
+
+		<Table Columns="1fr,1fr" Margin="36pt,0,0,0">
+			<Table.Body>
+				<TableRow>
+					<TableCell Content="Видав ______________________"/>
+					<TableCell Content="Отримав ______________________" Align="Right"/>
+				</TableRow>
+			</Table.Body>
+		</Table>
+	</Column>
+</Page>

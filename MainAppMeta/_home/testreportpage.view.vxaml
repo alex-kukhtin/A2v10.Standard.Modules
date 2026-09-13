@@ -1,0 +1,10 @@
+﻿<Page xmlns="clr-namespace:A2v10.Xaml; assembly=A2v10.Xaml"
+		Title="Print Form">
+	<Page.Toolbar>
+		<Toolbar>
+			<Button Content="Print" Icon="Print" Command="{BindCmd Report, Report=test, Url='/_home', Argument={Bind Document}, Print=True}"/>
+			<Button Content="Export" Icon="Download" Command="{BindCmd Report, Report=test, Url='/_home', Argument={Bind Document}, Export=True}"/>
+		</Toolbar>
+	</Page.Toolbar>
+	<PdfReportViewer Url="/_home" Report="test" Argument="{Bind Document}" />
+</Page>

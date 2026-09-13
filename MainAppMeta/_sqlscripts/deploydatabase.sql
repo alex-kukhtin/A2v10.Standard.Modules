@@ -1,26 +1,29 @@
 ﻿/* METADATA SEED. Version: 10.1.8653 */
 begin
     set nocount on;
-    declare @tables table([schema] sysname, [table] sysname, [xtra] nvarchar(64));
+    declare @tables table([schema] sysname, [table] sysname, [xtra] nvarchar(64),
+        [master_schema] nvarchar(128), [master_table] nvarchar(128),
+        [master_column] nvarchar(128));
     declare @columns table([schema] sysname, [table] sysname, [column] sysname, [datatype] sysname,
         [length] int, [precision] tinyint, [scale] tinyint, [nullable] bit,
         [ref_schema] nvarchar(128), [ref_table] nvarchar(128), [default] nvarchar(128));
 
-    insert into @tables([schema], [table], [xtra]) values
-    	(N'cat', N'$Tags', null),
-		(N'cat', N'Agent$TagEntries', null),
-		(N'cat', N'AgentAddresses', null),
-		(N'cat', N'Agents', null),
-		(N'cat', N'Items', null),
-		(N'cat', N'StoreAddresses', null),
-		(N'cat', N'Stores', null),
-		(N'cat', N'Units', null),
-		(N'doc', N'Autonum$Values', null),
-		(N'doc', N'Autonums', N'950f0f94c55e5f5c8b759845d52be6d4865d117d247089d03421f2c7a857da35'),
-		(N'doc', N'DocumentRows', null),
-		(N'doc', N'StockDocuments', null),
-		(N'enm', N'VatRates', N'6ab7079eb35144fc75a7700558c5af29af4bc013ac756bd9ec42242a22da9714'),
-		(N'jrn', N'StockJournal', null);
+    insert into @tables([schema], [table], [xtra],
+        [master_schema], [master_table], [master_column]) values
+    	(N'cat', N'$Tags', null, null, null, null),
+		(N'cat', N'Agent$TagEntries', null, N'cat', N'Agents', N'Agent'),
+		(N'cat', N'AgentAddresses', null, N'cat', N'Agents', N'Agent'),
+		(N'cat', N'Agents', null, null, null, null),
+		(N'cat', N'Items', null, null, null, null),
+		(N'cat', N'StoreAddresses', null, N'cat', N'Stores', N'Store'),
+		(N'cat', N'Stores', null, null, null, null),
+		(N'cat', N'Units', null, null, null, null),
+		(N'doc', N'Autonum$Values', null, null, null, null),
+		(N'doc', N'Autonums', N'950f0f94c55e5f5c8b759845d52be6d4865d117d247089d03421f2c7a857da35', null, null, null),
+		(N'doc', N'DocumentRows', null, N'doc', N'StockDocuments', N'Document'),
+		(N'doc', N'StockDocuments', null, null, null, null),
+		(N'enm', N'VatRates', N'6ab7079eb35144fc75a7700558c5af29af4bc013ac756bd9ec42242a22da9714', null, null, null),
+		(N'jrn', N'StockJournal', null, null, null, null);
 
     insert into @columns([schema], [table], [column], [datatype],
         [length], [precision], [scale], [nullable], [ref_schema], [ref_table], [default]) values
@@ -29,11 +32,15 @@ begin
 		(N'cat', N'$Tags', N'Id', N'platformid', null, null, null, 0, null, null, null),
 		(N'cat', N'$Tags', N'Memo', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'cat', N'$Tags', N'Name', N'nvarchar', 255, null, null, 1, null, null, null),
+		(N'cat', N'$Tags', N'UserCreated', N'bigint', null, null, null, 0, null, null, N'0'),
+		(N'cat', N'$Tags', N'UserModified', N'bigint', null, null, null, 0, null, null, N'0'),
+		(N'cat', N'$Tags', N'UtcDateCreated', N'datetime', null, null, null, 0, null, null, N'getutcdate()'),
+		(N'cat', N'$Tags', N'UtcDateModified', N'datetime', null, null, null, 0, null, null, N'getutcdate()'),
+		(N'cat', N'Agent$TagEntries', N'Agent', N'platformid', null, null, null, 0, null, null, null),
 		(N'cat', N'Agent$TagEntries', N'Id', N'platformid', null, null, null, 0, null, null, null),
-		(N'cat', N'Agent$TagEntries', N'Owner', N'platformid', null, null, null, 0, null, null, null),
 		(N'cat', N'Agent$TagEntries', N'Tag', N'platformid', null, null, null, 1, null, null, null),
+		(N'cat', N'AgentAddresses', N'Agent', N'platformid', null, null, null, 0, null, null, null),
 		(N'cat', N'AgentAddresses', N'Id', N'platformid', null, null, null, 0, null, null, null),
-		(N'cat', N'AgentAddresses', N'Owner', N'platformid', null, null, null, 0, null, null, null),
 		(N'cat', N'AgentAddresses', N'RowNo', N'int', null, null, null, 1, null, null, null),
 		(N'cat', N'AgentAddresses', N'Text', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'cat', N'Agents', N'Date', N'date', null, null, null, 1, null, null, null),
@@ -42,6 +49,10 @@ begin
 		(N'cat', N'Agents', N'Memo', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'cat', N'Agents', N'Name', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'cat', N'Agents', N'Store', N'platformid', null, null, null, 1, N'cat', N'Stores', null),
+		(N'cat', N'Agents', N'UserCreated', N'bigint', null, null, null, 0, null, null, N'0'),
+		(N'cat', N'Agents', N'UserModified', N'bigint', null, null, null, 0, null, null, N'0'),
+		(N'cat', N'Agents', N'UtcDateCreated', N'datetime', null, null, null, 0, null, null, N'getutcdate()'),
+		(N'cat', N'Agents', N'UtcDateModified', N'datetime', null, null, null, 0, null, null, N'getutcdate()'),
 		(N'cat', N'Agents', N'Void', N'bit', null, null, null, 0, null, null, N'0'),
 		(N'cat', N'Agents', N'rv', N'timestamp', null, null, null, 0, null, null, null),
 		(N'cat', N'Items', N'Id', N'platformid', null, null, null, 0, null, null, null),
@@ -49,18 +60,26 @@ begin
 		(N'cat', N'Items', N'Memo', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'cat', N'Items', N'Name', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'cat', N'Items', N'Unit', N'platformid', null, null, null, 1, N'cat', N'Units', null),
+		(N'cat', N'Items', N'UserCreated', N'bigint', null, null, null, 0, null, null, N'0'),
+		(N'cat', N'Items', N'UserModified', N'bigint', null, null, null, 0, null, null, N'0'),
+		(N'cat', N'Items', N'UtcDateCreated', N'datetime', null, null, null, 0, null, null, N'getutcdate()'),
+		(N'cat', N'Items', N'UtcDateModified', N'datetime', null, null, null, 0, null, null, N'getutcdate()'),
 		(N'cat', N'Items', N'VatRate', N'nvarchar', 64, null, null, 1, N'enm', N'VatRates', null),
 		(N'cat', N'Items', N'Void', N'bit', null, null, null, 0, null, null, N'0'),
 		(N'cat', N'Items', N'rv', N'timestamp', null, null, null, 0, null, null, null),
 		(N'cat', N'StoreAddresses', N'Id', N'platformid', null, null, null, 0, null, null, null),
-		(N'cat', N'StoreAddresses', N'Owner', N'platformid', null, null, null, 0, null, null, null),
 		(N'cat', N'StoreAddresses', N'RowNo', N'int', null, null, null, 1, null, null, null),
+		(N'cat', N'StoreAddresses', N'Store', N'platformid', null, null, null, 0, null, null, null),
 		(N'cat', N'StoreAddresses', N'Text', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'cat', N'Stores', N'Agent', N'platformid', null, null, null, 1, N'cat', N'Agents', null),
 		(N'cat', N'Stores', N'Id', N'platformid', null, null, null, 0, null, null, null),
 		(N'cat', N'Stores', N'IsSystem', N'bit', null, null, null, 0, null, null, N'0'),
 		(N'cat', N'Stores', N'Memo', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'cat', N'Stores', N'Name', N'nvarchar', 255, null, null, 1, null, null, null),
+		(N'cat', N'Stores', N'UserCreated', N'bigint', null, null, null, 0, null, null, N'0'),
+		(N'cat', N'Stores', N'UserModified', N'bigint', null, null, null, 0, null, null, N'0'),
+		(N'cat', N'Stores', N'UtcDateCreated', N'datetime', null, null, null, 0, null, null, N'getutcdate()'),
+		(N'cat', N'Stores', N'UtcDateModified', N'datetime', null, null, null, 0, null, null, N'getutcdate()'),
 		(N'cat', N'Stores', N'Void', N'bit', null, null, null, 0, null, null, N'0'),
 		(N'cat', N'Stores', N'rv', N'timestamp', null, null, null, 0, null, null, null),
 		(N'cat', N'Units', N'Denom', N'money', null, null, null, 1, null, null, null),
@@ -69,6 +88,10 @@ begin
 		(N'cat', N'Units', N'Memo', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'cat', N'Units', N'Name', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'cat', N'Units', N'Short', N'nvarchar', 8, null, null, 1, null, null, null),
+		(N'cat', N'Units', N'UserCreated', N'bigint', null, null, null, 0, null, null, N'0'),
+		(N'cat', N'Units', N'UserModified', N'bigint', null, null, null, 0, null, null, N'0'),
+		(N'cat', N'Units', N'UtcDateCreated', N'datetime', null, null, null, 0, null, null, N'getutcdate()'),
+		(N'cat', N'Units', N'UtcDateModified', N'datetime', null, null, null, 0, null, null, N'getutcdate()'),
 		(N'cat', N'Units', N'Void', N'bit', null, null, null, 0, null, null, N'0'),
 		(N'cat', N'Units', N'rv', N'timestamp', null, null, null, 0, null, null, null),
 		(N'doc', N'Autonum$Values', N'Autonum', N'nvarchar', 64, null, null, 1, null, null, null),
@@ -81,10 +104,10 @@ begin
 		(N'doc', N'Autonums', N'Name', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'doc', N'Autonums', N'Pattern', N'nvarchar', 255, null, null, 1, null, null, null),
 		(N'doc', N'Autonums', N'Period', N'nvarchar', 16, null, null, 1, null, null, null),
+		(N'doc', N'DocumentRows', N'Document', N'platformid', null, null, null, 0, null, null, null),
 		(N'doc', N'DocumentRows', N'Id', N'platformid', null, null, null, 0, null, null, null),
 		(N'doc', N'DocumentRows', N'Item', N'platformid', null, null, null, 1, N'cat', N'Items', null),
 		(N'doc', N'DocumentRows', N'Kind', N'nvarchar', 64, null, null, 1, null, null, null),
-		(N'doc', N'DocumentRows', N'Owner', N'platformid', null, null, null, 0, null, null, null),
 		(N'doc', N'DocumentRows', N'Price', N'decimal', null, 19, 6, 1, null, null, null),
 		(N'doc', N'DocumentRows', N'Qty', N'decimal', null, 19, 6, 1, null, null, null),
 		(N'doc', N'DocumentRows', N'RowNo', N'int', null, null, null, 1, null, null, null),
@@ -101,6 +124,12 @@ begin
 		(N'doc', N'StockDocuments', N'StoreFrom', N'platformid', null, null, null, 1, N'cat', N'Stores', null),
 		(N'doc', N'StockDocuments', N'StoreTo', N'platformid', null, null, null, 1, N'cat', N'Stores', null),
 		(N'doc', N'StockDocuments', N'Sum', N'decimal', null, 19, 4, 1, null, null, null),
+		(N'doc', N'StockDocuments', N'UserCreated', N'bigint', null, null, null, 0, null, null, N'0'),
+		(N'doc', N'StockDocuments', N'UserModified', N'bigint', null, null, null, 0, null, null, N'0'),
+		(N'doc', N'StockDocuments', N'UserPosted', N'bigint', null, null, null, 1, null, null, null),
+		(N'doc', N'StockDocuments', N'UtcDateCreated', N'datetime', null, null, null, 0, null, null, N'getutcdate()'),
+		(N'doc', N'StockDocuments', N'UtcDateModified', N'datetime', null, null, null, 0, null, null, N'getutcdate()'),
+		(N'doc', N'StockDocuments', N'UtcDatePosted', N'datetime', null, null, null, 1, null, null, null),
 		(N'doc', N'StockDocuments', N'Void', N'bit', null, null, null, 0, null, null, N'0'),
 		(N'doc', N'StockDocuments', N'rv', N'timestamp', null, null, null, 0, null, null, null),
 		(N'enm', N'VatRates', N'Id', N'nvarchar', 64, null, null, 0, null, null, null),
@@ -125,9 +154,14 @@ begin
     using @tables as s
     on t.[schema] = s.[schema] and t.[table] = s.[table]
     when matched then update set
-        t.[xtra] = s.[xtra]
-    when not matched then insert([schema], [table], [xtra]) values
-       (s.[schema], s.[table], s.[xtra])
+        t.[xtra] = s.[xtra],
+        t.[master_schema] = s.[master_schema],
+        t.[master_table] = s.[master_table],
+        t.[master_column] = s.[master_column]
+    when not matched then insert([schema], [table], [xtra],
+        [master_schema], [master_table], [master_column]) values
+       (s.[schema], s.[table], s.[xtra],
+        s.[master_schema], s.[master_table], s.[master_column])
     when not matched by source then delete;
 
     -- merge columns
@@ -226,6 +260,16 @@ create table doc.[StockDocuments]
     [Date] date,
     [rv] rowversion not null,
     [Memo] nvarchar(255),
+    [UserCreated] bigint not null
+       constraint DF_StockDocuments_UserCreated default(0),
+    [UtcDateCreated] datetime not null
+       constraint DF_StockDocuments_UtcDateCreated default(getutcdate()),
+    [UserModified] bigint not null
+       constraint DF_StockDocuments_UserModified default(0),
+    [UtcDateModified] datetime not null
+       constraint DF_StockDocuments_UtcDateModified default(getutcdate()),
+    [UserPosted] bigint,
+    [UtcDatePosted] datetime,
     [Number] nvarchar(64),
     [Operation] nvarchar(64),
     [StoreFrom] platformid,
@@ -244,7 +288,7 @@ create table doc.[DocumentRows]
 (
     [Id] platformid not null
        constraint DF_DocumentRows_Id default(next value for doc.[SQ_DocumentRows]),
-    [Owner] platformid not null,
+    [Document] platformid not null,
     [RowNo] int,
     [Kind] nvarchar(64),
     [Qty] decimal(19, 6),
@@ -272,6 +316,14 @@ create table cat.[Agents]
     [rv] rowversion not null,
     [Name] nvarchar(255),
     [Memo] nvarchar(255),
+    [UserCreated] bigint not null
+       constraint DF_Agents_UserCreated default(0),
+    [UtcDateCreated] datetime not null
+       constraint DF_Agents_UtcDateCreated default(getutcdate()),
+    [UserModified] bigint not null
+       constraint DF_Agents_UserModified default(0),
+    [UtcDateModified] datetime not null
+       constraint DF_Agents_UtcDateModified default(getutcdate()),
     [Date] date,
     [Store] platformid,
     constraint PK_Agents primary key (Id)
@@ -286,7 +338,7 @@ create table cat.[Agent$TagEntries]
 (
     [Id] platformid not null
        constraint DF_Agent$TagEntries_Id default(next value for cat.[SQ_Agent$TagEntries]),
-    [Owner] platformid not null,
+    [Agent] platformid not null,
     [Tag] platformid,
     constraint PK_Agent$TagEntries primary key (Id)
 );
@@ -300,7 +352,7 @@ create table cat.[AgentAddresses]
 (
     [Id] platformid not null
        constraint DF_AgentAddresses_Id default(next value for cat.[SQ_AgentAddresses]),
-    [Owner] platformid not null,
+    [Agent] platformid not null,
     [RowNo] int,
     [Text] nvarchar(255),
     constraint PK_AgentAddresses primary key (Id)
@@ -322,6 +374,14 @@ create table cat.[Items]
     [rv] rowversion not null,
     [Name] nvarchar(255),
     [Memo] nvarchar(255),
+    [UserCreated] bigint not null
+       constraint DF_Items_UserCreated default(0),
+    [UtcDateCreated] datetime not null
+       constraint DF_Items_UtcDateCreated default(getutcdate()),
+    [UserModified] bigint not null
+       constraint DF_Items_UserModified default(0),
+    [UtcDateModified] datetime not null
+       constraint DF_Items_UtcDateModified default(getutcdate()),
     [Unit] platformid,
     [VatRate] nvarchar(64),
     constraint PK_Items primary key (Id)
@@ -343,6 +403,14 @@ create table cat.[Stores]
     [rv] rowversion not null,
     [Name] nvarchar(255),
     [Memo] nvarchar(255),
+    [UserCreated] bigint not null
+       constraint DF_Stores_UserCreated default(0),
+    [UtcDateCreated] datetime not null
+       constraint DF_Stores_UtcDateCreated default(getutcdate()),
+    [UserModified] bigint not null
+       constraint DF_Stores_UserModified default(0),
+    [UtcDateModified] datetime not null
+       constraint DF_Stores_UtcDateModified default(getutcdate()),
     [Agent] platformid,
     constraint PK_Stores primary key (Id)
 );
@@ -356,7 +424,7 @@ create table cat.[StoreAddresses]
 (
     [Id] platformid not null
        constraint DF_StoreAddresses_Id default(next value for cat.[SQ_StoreAddresses]),
-    [Owner] platformid not null,
+    [Store] platformid not null,
     [RowNo] int,
     [Text] nvarchar(255),
     constraint PK_StoreAddresses primary key (Id)
@@ -378,6 +446,14 @@ create table cat.[Units]
     [rv] rowversion not null,
     [Name] nvarchar(255),
     [Memo] nvarchar(255),
+    [UserCreated] bigint not null
+       constraint DF_Units_UserCreated default(0),
+    [UtcDateCreated] datetime not null
+       constraint DF_Units_UtcDateCreated default(getutcdate()),
+    [UserModified] bigint not null
+       constraint DF_Units_UserModified default(0),
+    [UtcDateModified] datetime not null
+       constraint DF_Units_UtcDateModified default(getutcdate()),
     [Short] nvarchar(8),
     [Denom] money,
     constraint PK_Units primary key (Id)
@@ -434,6 +510,14 @@ create table cat.[$Tags]
     [Name] nvarchar(255),
     [Color] nvarchar(32),
     [Memo] nvarchar(255),
+    [UserCreated] bigint not null
+       constraint DF_$Tags_UserCreated default(0),
+    [UtcDateCreated] datetime not null
+       constraint DF_$Tags_UtcDateCreated default(getutcdate()),
+    [UserModified] bigint not null
+       constraint DF_$Tags_UserModified default(0),
+    [UtcDateModified] datetime not null
+       constraint DF_$Tags_UtcDateModified default(getutcdate()),
     constraint PK_$Tags primary key (Id)
 );
 go
@@ -479,7 +563,7 @@ drop type if exists doc.[Row.Meta.TableType];
 create type doc.[Row.Meta.TableType] as table
 (
     [Id] platformid,
-    [Owner] platformid,
+    [Document] platformid,
     [RowNo] int,
     [Kind] nvarchar(64),
     [Qty] decimal(19, 6),
@@ -509,7 +593,7 @@ drop type if exists cat.[AgentAddress.Meta.TableType];
 create type cat.[AgentAddress.Meta.TableType] as table
 (
     [Id] platformid,
-    [Owner] platformid,
+    [Agent] platformid,
     [RowNo] int,
     [Text] nvarchar(255)
 );
@@ -546,7 +630,7 @@ drop type if exists cat.[Address.Meta.TableType];
 create type cat.[Address.Meta.TableType] as table
 (
     [Id] platformid,
-    [Owner] platformid,
+    [Store] platformid,
     [RowNo] int,
     [Text] nvarchar(255)
 );
@@ -664,8 +748,16 @@ begin
         @m = case when [Period] = N'Month' then month(@Date) else 0 end
     from doc.[Autonums] where [Id] = @Autonum;
 
+    /* Not a 'UI:' message: nothing here is the user's to fix, and the load refuses a
+     * numbering that is not declared (CheckAutonumDeclaredAsync), so what is left to reach
+     * this is a database behind its own metadata. That reader needs the key and the table,
+     * which is exactly what a localized string cannot carry.
+     */
     if @pattern is null
-        throw 60000, N'UI:@[Error.Autonum.NotFound]', 0;
+    begin
+        declare @msg nvarchar(255) = concat(N'Autonum ''', @Autonum, N''' is not found in doc.[Autonums]. Redeploy the database');
+        throw 60000, @msg, 0;
+    end
 
     /* One statement, and 'holdlock' is what makes it one: update-then-insert lets two
      * callers both find no row for a period that has just begun and both insert one - a
@@ -698,6 +790,11 @@ begin
 end
 go
 
+-- SYSTEM USER
+if not exists(select * from a2security.Users where Id = 0)
+    insert into a2security.Users(Id, UserName, SecurityStamp) values (0, N'System', N'');
+go
+
 -- FOREIGN KEYS
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'StockDocuments' and CONSTRAINT_NAME = N'FK_StockDocuments_Operation_Operations')
@@ -712,11 +809,20 @@ if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TAB
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'StockDocuments' and CONSTRAINT_NAME = N'FK_StockDocuments_Agent_Agents')
     alter table doc.[StockDocuments] add
         constraint FK_StockDocuments_Agent_Agents foreign key ([Agent]) references cat.[Agents]([Id]);
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'StockDocuments' and CONSTRAINT_NAME = N'FK_StockDocuments_UserCreated_Users')
+    alter table doc.[StockDocuments] add
+        constraint FK_StockDocuments_UserCreated_Users foreign key ([UserCreated]) references a2security.Users([Id]);
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'StockDocuments' and CONSTRAINT_NAME = N'FK_StockDocuments_UserModified_Users')
+    alter table doc.[StockDocuments] add
+        constraint FK_StockDocuments_UserModified_Users foreign key ([UserModified]) references a2security.Users([Id]);
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'StockDocuments' and CONSTRAINT_NAME = N'FK_StockDocuments_UserPosted_Users')
+    alter table doc.[StockDocuments] add
+        constraint FK_StockDocuments_UserPosted_Users foreign key ([UserPosted]) references a2security.Users([Id]);
 go
 ------------------------------------------------
-if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'DocumentRows' and CONSTRAINT_NAME = N'FK_DocumentRows_Owner_StockDocuments')
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'DocumentRows' and CONSTRAINT_NAME = N'FK_DocumentRows_Document_StockDocuments')
     alter table doc.[DocumentRows] add
-        constraint FK_DocumentRows_Owner_StockDocuments foreign key ([Owner]) references doc.[StockDocuments]([Id]);
+        constraint FK_DocumentRows_Document_StockDocuments foreign key ([Document]) references doc.[StockDocuments]([Id]);
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'doc' and TABLE_NAME = N'DocumentRows' and CONSTRAINT_NAME = N'FK_DocumentRows_Item_Items')
     alter table doc.[DocumentRows] add
         constraint FK_DocumentRows_Item_Items foreign key ([Item]) references cat.[Items]([Id]);
@@ -731,19 +837,25 @@ go
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Agents' and CONSTRAINT_NAME = N'FK_Agents_Store_Stores')
     alter table cat.[Agents] add
         constraint FK_Agents_Store_Stores foreign key ([Store]) references cat.[Stores]([Id]);
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Agents' and CONSTRAINT_NAME = N'FK_Agents_UserCreated_Users')
+    alter table cat.[Agents] add
+        constraint FK_Agents_UserCreated_Users foreign key ([UserCreated]) references a2security.Users([Id]);
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Agents' and CONSTRAINT_NAME = N'FK_Agents_UserModified_Users')
+    alter table cat.[Agents] add
+        constraint FK_Agents_UserModified_Users foreign key ([UserModified]) references a2security.Users([Id]);
 go
 ------------------------------------------------
-if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Agent$TagEntries' and CONSTRAINT_NAME = N'FK_Agent$TagEntries_Owner_Agents')
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Agent$TagEntries' and CONSTRAINT_NAME = N'FK_Agent$TagEntries_Agent_Agents')
     alter table cat.[Agent$TagEntries] add
-        constraint FK_Agent$TagEntries_Owner_Agents foreign key ([Owner]) references cat.[Agents]([Id]);
+        constraint FK_Agent$TagEntries_Agent_Agents foreign key ([Agent]) references cat.[Agents]([Id]);
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Agent$TagEntries' and CONSTRAINT_NAME = N'FK_Agent$TagEntries_Tag_$Tags')
     alter table cat.[Agent$TagEntries] add
         constraint FK_Agent$TagEntries_Tag_$Tags foreign key ([Tag]) references cat.[$Tags]([Id]);
 go
 ------------------------------------------------
-if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'AgentAddresses' and CONSTRAINT_NAME = N'FK_AgentAddresses_Owner_Agents')
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'AgentAddresses' and CONSTRAINT_NAME = N'FK_AgentAddresses_Agent_Agents')
     alter table cat.[AgentAddresses] add
-        constraint FK_AgentAddresses_Owner_Agents foreign key ([Owner]) references cat.[Agents]([Id]);
+        constraint FK_AgentAddresses_Agent_Agents foreign key ([Agent]) references cat.[Agents]([Id]);
 go
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Items' and CONSTRAINT_NAME = N'FK_Items_Unit_Units')
@@ -752,16 +864,36 @@ if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TAB
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Items' and CONSTRAINT_NAME = N'FK_Items_VatRate_VatRates')
     alter table cat.[Items] add
         constraint FK_Items_VatRate_VatRates foreign key ([VatRate]) references enm.[VatRates]([Id]);
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Items' and CONSTRAINT_NAME = N'FK_Items_UserCreated_Users')
+    alter table cat.[Items] add
+        constraint FK_Items_UserCreated_Users foreign key ([UserCreated]) references a2security.Users([Id]);
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Items' and CONSTRAINT_NAME = N'FK_Items_UserModified_Users')
+    alter table cat.[Items] add
+        constraint FK_Items_UserModified_Users foreign key ([UserModified]) references a2security.Users([Id]);
 go
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Stores' and CONSTRAINT_NAME = N'FK_Stores_Agent_Agents')
     alter table cat.[Stores] add
         constraint FK_Stores_Agent_Agents foreign key ([Agent]) references cat.[Agents]([Id]);
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Stores' and CONSTRAINT_NAME = N'FK_Stores_UserCreated_Users')
+    alter table cat.[Stores] add
+        constraint FK_Stores_UserCreated_Users foreign key ([UserCreated]) references a2security.Users([Id]);
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Stores' and CONSTRAINT_NAME = N'FK_Stores_UserModified_Users')
+    alter table cat.[Stores] add
+        constraint FK_Stores_UserModified_Users foreign key ([UserModified]) references a2security.Users([Id]);
 go
 ------------------------------------------------
-if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'StoreAddresses' and CONSTRAINT_NAME = N'FK_StoreAddresses_Owner_Stores')
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'StoreAddresses' and CONSTRAINT_NAME = N'FK_StoreAddresses_Store_Stores')
     alter table cat.[StoreAddresses] add
-        constraint FK_StoreAddresses_Owner_Stores foreign key ([Owner]) references cat.[Stores]([Id]);
+        constraint FK_StoreAddresses_Store_Stores foreign key ([Store]) references cat.[Stores]([Id]);
+go
+------------------------------------------------
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Units' and CONSTRAINT_NAME = N'FK_Units_UserCreated_Users')
+    alter table cat.[Units] add
+        constraint FK_Units_UserCreated_Users foreign key ([UserCreated]) references a2security.Users([Id]);
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'Units' and CONSTRAINT_NAME = N'FK_Units_UserModified_Users')
+    alter table cat.[Units] add
+        constraint FK_Units_UserModified_Users foreign key ([UserModified]) references a2security.Users([Id]);
 go
 ------------------------------------------------
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'jrn' and TABLE_NAME = N'StockJournal' and CONSTRAINT_NAME = N'FK_StockJournal_Document_StockDocuments')
@@ -779,6 +911,14 @@ if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TAB
 if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'jrn' and TABLE_NAME = N'StockJournal' and CONSTRAINT_NAME = N'FK_StockJournal_Item_Items')
     alter table jrn.[StockJournal] add
         constraint FK_StockJournal_Item_Items foreign key ([Item]) references cat.[Items]([Id]);
+go
+------------------------------------------------
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'$Tags' and CONSTRAINT_NAME = N'FK_$Tags_UserCreated_Users')
+    alter table cat.[$Tags] add
+        constraint FK_$Tags_UserCreated_Users foreign key ([UserCreated]) references a2security.Users([Id]);
+if not exists(select * from INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_SCHEMA = N'cat' and TABLE_NAME = N'$Tags' and CONSTRAINT_NAME = N'FK_$Tags_UserModified_Users')
+    alter table cat.[$Tags] add
+        constraint FK_$Tags_UserModified_Users foreign key ([UserModified]) references a2security.Users([Id]);
 go
 
 -- INDEXES
