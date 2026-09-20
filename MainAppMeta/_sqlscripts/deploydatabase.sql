@@ -1,4 +1,4 @@
-﻿/* METADATA SEED. Version: 10.1.8653 */
+﻿/* METADATA SEED. Version: 10.1.8655 */
 begin
     set nocount on;
     declare @tables table([schema] sysname, [table] sysname, [xtra] nvarchar(64),

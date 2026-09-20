@@ -2,18 +2,15 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "$id": "https://a2v10.com/schemas/metadata-endpoint-json-schema.json",
     "title": "A2v10 metadata.json (endpoint)",
-    "description": "One normal endpoint - catalog, document, journal, and the operations of a document. A report declares a different shape and has its own schema; the autonum registry is a third one. The same file is deserialized twice by the platform - into TableMetadata (the shape) and into DeclarationMetadata (what this endpoint declares over it) - so this schema is the union of the two. Enum values are parsed case-insensitively by the loader; both spellings are listed. Command tokens are the exception - Enum.Parse without ignoreCase - so they are case-sensitive.",
+    "description": "One normal endpoint - catalog, document, journal, and the operations of a document. A report has its own schema (metadata-report-json-schema.json), as do the autonum registry, an enum set, a chart of accounts and a ledger. The same file is deserialized twice by the platform - into TableMetadata (the shape) and into DeclarationMetadata (what this endpoint declares over it) - so this schema is the union of the two. Every enum value is written as listed here, in camelCase: the loader also accepts other casings, but one spelling is canonical. Command tokens are the exception - parsed without ignoreCase, they are PascalCase and accept nothing else.",
     "type": "object",
     "additionalProperties": false,
     "anyOf": [
         { "required": [ "table" ] },
-        { "required": [ "storage" ] },
-        { "required": [ "surface" ] }
+        { "required": [ "storage" ] }
     ],
     "allOf": [
-        { "not": { "required": [ "table", "storage" ] } },
-        { "not": { "required": [ "table", "surface" ] } },
-        { "not": { "required": [ "storage", "surface" ] } }
+        { "not": { "required": [ "table", "storage" ] } }
     ],
     "properties": {
         "$schema": { "type": "string" },
@@ -25,13 +22,8 @@
         },
         "storage": {
             "type": "string",
-            "description": "Path to the endpoint that declares the table this one writes into. Documents only. One hop: it must point at an endpoint that declares 'table'."
+            "description": "Path to the endpoint that declares the table this one writes into: an operation of a document, or a catalog/journal with screens of its own over the same rows (a second window; 'fixed' makes it a subset). Document, catalog and journal only. One hop: it must point at an endpoint that declares 'table'."
         },
-        "surface": {
-            "type": "string",
-            "description": "Path to the shape this endpoint only reads. Reports only."
-        },
-
         "kind": { "$ref": "#/definitions/endpointKind" },
         "schema": {
             "type": "string",
@@ -41,9 +33,9 @@
             "type": "string",
             "description": "Base of the generated names (TVP, row type, collection). Defaults to the endpoint folder name in PascalCase."
         },
-        "label": {
+        "presentation": {
             "type": "string",
-            "description": "Column presented when this endpoint is referenced. Defaults to 'Name'."
+            "description": "The column a row is shown by wherever it is referenced - a column name, not a template. Not written: the Name column, else the autonum one; a catalog or document with neither is refused at load."
         },
 
         "fields": { "$ref": "#/definitions/fields" },
@@ -53,17 +45,20 @@
             "type": "array",
             "items": { "$ref": "#/definitions/trait" }
         },
-        "forms": {
-            "type": "object",
-            "additionalProperties": { "$ref": "#/definitions/form" }
-        },
+        "forms": { "$ref": "#/definitions/formSet" },
         "printForms": {
             "type": "array",
-            "description": "The print blanks this endpoint offers, in menu order. Declared per endpoint and never inherited from 'storage': a blank is paper under one act, and two operations over one table print different papers. A non-empty list is what puts the Print command on the toolbars - there is no trait for it.",
+            "description": "Print blanks of this endpoint - a flat list, one entry per blank, in menu order. A blank is not a kind: it has no window of its own and is invoked from inside the endpoint. The blank file is addressed by path and need not sit next to the endpoint; its data model ('Model') is declared inside the blank file, not here. A non-empty list is what puts the Print command on the default toolbars - there is no trait for it. Never inherited from 'storage': a blank is paper under one act.",
             "items": { "$ref": "#/definitions/printForm" }
         },
 
         "initialValues": { "$ref": "#/definitions/initialValues" },
+        "origin": { "$ref": "#/definitions/origin" },
+        "fixed": {
+            "type": "object",
+            "description": "Field -> value this endpoint FIXES: the rows it is about carry these values (the WHERE of the index and of the selector fetch), and a new record starts on them. What makes a second endpoint over one table ('storage') a window on a SUBSET; without it, the same rows. Spelled by the column's type, so a bit is written true, a code \"code\". A field cannot also be in 'initialValues'. Per endpoint, never inherited from 'storage'.",
+            "additionalProperties": { "type": [ "boolean", "string", "number" ] }
+        },
         "rules": { "$ref": "#/definitions/rules" },
         "post": {
             "type": "array",
@@ -86,12 +81,11 @@
         "column": {
             "type": "object",
             "additionalProperties": false,
-            "required": [ "type" ],
             "properties": {
                 "type": { "$ref": "#/definitions/columnType" },
                 "target": {
                     "type": "string",
-                    "description": "For a reference: path of the endpoint it points at, e.g. '/catalog/item'."
+                    "description": "For a reference: path of the endpoint it points at, e.g. '/catalog/item'. Three types name the kind they point at, and the load refuses anything else: for 'enum' a set of values, '/enum/vatrate'; for 'state' a set of states, '/state/order'; for 'account' a chart of accounts, '/accplan/national'."
                 },
                 "length": {
                     "type": "integer",
@@ -99,22 +93,29 @@
                 },
                 "precision": { "type": "integer" },
                 "scale": { "type": "integer" },
-                "unique": { "type": "boolean" }
+                "unique": { "type": "boolean" },
+                "origin": { "$ref": "#/definitions/origin" }
             }
+        },
+
+        "origin": {
+            "type": "string",
+            "description": "The original name of this table, column or value in the system it was carried over from. Written by the model during a transfer from another system; the platform ignores it."
         },
 
         "details": {
             "type": "object",
-            "description": "Collection key -> the rows of that collection. The key is what the generated side composes names from, the SQL table among them: rows live in '<owner model><key>' and there is no key to write it - a row set is not addressable on its own, so its table is the platform's to name.",
+            "description": "Collection key -> the rows of that collection. The key is what the generated side composes names from.",
             "additionalProperties": { "$ref": "#/definitions/detail" }
         },
 
         "detail": {
             "type": "object",
+            "description": "A child table. Its schema is the owner's and its name is composed as <owner model><collection key>, so neither is declared here.",
             "additionalProperties": false,
             "properties": {
                 "model": { "type": "string" },
-                "label": { "type": "string" },
+                "origin": { "$ref": "#/definitions/origin" },
                 "fields": { "$ref": "#/definitions/fields" },
                 "details": { "$ref": "#/definitions/details" },
                 "kinds": { "$ref": "#/definitions/kinds" },
@@ -143,7 +144,10 @@
                 "required": [ "source", "value" ],
                 "properties": {
                     "source": { "$ref": "#/definitions/initialSource" },
-                    "value": { "type": "string" }
+                    "value": {
+                        "description": "For 'Literal' - the scalar itself, in the JSON type of the receiving domain. For every other source - a name or an expression, so a string.",
+                        "type": [ "string", "number", "boolean", "null" ]
+                    }
                 }
             }
         },
@@ -214,8 +218,52 @@
         "post": {
             "oneOf": [
                 { "$ref": "#/definitions/postMapped" },
+                { "$ref": "#/definitions/postLedger" },
                 { "$ref": "#/definitions/postSql" }
             ]
+        },
+
+        "postLedger": {
+            "type": "object",
+            "description": "Posting into a ledger: one declaration, two mirrored legs. Nothing is mapped by name - a name does not know its leg. The platform fills CorrAcc (the other leg's Acc), InOut, Date and the provenance. A leg with no 'row' block collapses to the header: one row per distinct value, the sum summed.",
+            "additionalProperties": false,
+            "required": [ "ledger", "sum", "dt", "ct" ],
+            "properties": {
+                "ledger": {
+                    "type": "string",
+                    "description": "Path of the ledger endpoint, e.g. '/ledger/national'."
+                },
+                "each": { "$ref": "#/definitions/postMapped/properties/each" },
+                "sum": {
+                    "type": "string",
+                    "description": "The sum field - of the iterated row under 'each', of the header otherwise. One for both legs, so debit equals credit by construction."
+                },
+                "dt": { "$ref": "#/definitions/postLeg" },
+                "ct": { "$ref": "#/definitions/postLeg" }
+            }
+        },
+
+        "postLeg": {
+            "type": "object",
+            "description": "One leg: ledger column -> where its value comes from, the source being the key of the block. Exactly one 'Acc' across the blocks. Keys are 'Acc' or the author's columns of the ledger, never the provenance; one column in one block only.",
+            "additionalProperties": false,
+            "properties": {
+                "const": {
+                    "type": "object",
+                    "description": "Ledger column -> literal. An account literal is a code of the chart's seed file, checked at load.",
+                    "additionalProperties": { "type": "string" }
+                },
+                "document": {
+                    "type": "object",
+                    "description": "Ledger column -> field of the document header. Domain and target must match.",
+                    "additionalProperties": { "type": "string" }
+                },
+                "row": {
+                    "type": "object",
+                    "description": "Ledger column -> field of the iterated row. Requires 'each'; a leg that reads the row is not collapsed.",
+                    "additionalProperties": { "type": "string" }
+                }
+            }
         },
 
         "postSql": {
@@ -283,24 +331,95 @@
             }
         },
 
-        "form": {
+        "formSet": {
+            "description": "Three forms and no more: the key set is closed (DeclarationBake.BuildForms refuses a fourth with 'Available: index, browse, edit'). A declared form replaces the default entirely, never node by node. Written per endpoint, so an operation declaring its own 'edit' still shows the storage's 'index'.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "is": { "$ref": "#/definitions/formKind" },
-                "scope": { "type": "string" },
+                "index": { "$ref": "#/definitions/listForm" },
+                "browse": { "$ref": "#/definitions/listForm" },
+                "edit": { "$ref": "#/definitions/editForm" }
+            }
+        },
+
+        "listForm": {
+            "description": "'index' - the page over the collection - and 'browse', the dialog picked from. Which of the two is drawn follows the ACTION (IndexPageXaml.CreateXamlContainer), so there is no root kind to write here.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
                 "body": {
                     "type": "array",
-                    "items": { "$ref": "#/definitions/formElement" }
+                    "items": { "$ref": "#/definitions/formNode" }
                 },
-                "toolbar": { "$ref": "#/definitions/formElement" },
-                "taskPad": { "$ref": "#/definitions/formElement" }
+                "toolbar": { "$ref": "#/definitions/toolbarSlot" },
+                "taskpad": { "$ref": "#/definitions/taskpadSlot" }
             }
+        },
+
+        "editForm": {
+            "description": "The record's own form - the only one whose root kind is a choice, and the only place 'is' is read at all.",
+            "type": "object",
+            "additionalProperties": false,
+            "required": [ "is" ],
+            "$comment": "'is' is required rather than defaulted: FormKind.Unknown is C#'s zero, 'not written', and EditDialogXaml throws on it - so a form leaving it out fails at the first render, not at the load.",
+            "properties": {
+                "is": { "$ref": "#/definitions/formKind" },
+                "body": {
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/formNode" }
+                },
+                "toolbar": { "$ref": "#/definitions/toolbarSlot" },
+                "taskpad": { "$ref": "#/definitions/taskpadSlot" }
+            },
+            "allOf": [
+                {
+                    "$comment": "DeclarationBake: \"form 'edit': 'toolbar' declared on a dialog, which has no command bar.\" Refused here on the key, where the load refuses it on a non-empty 'commands'.",
+                    "if": { "properties": { "is": { "const": "dialog" } }, "required": [ "is" ] },
+                    "then": { "properties": { "toolbar": false } }
+                }
+            ]
+        },
+
+        "formNode": {
+            "description": "A form element anywhere but inside a tab strip - that is, anything but a tab: a tab is drawn only by its strip.",
+            "allOf": [
+                { "$ref": "#/definitions/formElement" },
+                {
+                    "properties": {
+                        "is": {
+                            "enum": [ "group", "tabs", "dataGrid", "treeGrid", "taskpad", "toolbar", "pager", "filters" ]
+                        }
+                    }
+                }
+            ]
+        },
+
+        "formTab": {
+            "description": "A strip shows tabs and nothing else.",
+            "allOf": [
+                { "$ref": "#/definitions/formElement" },
+                { "properties": { "is": { "const": "tab" } } }
+            ]
+        },
+
+        "toolbarSlot": {
+            "allOf": [
+                { "$ref": "#/definitions/formElement" },
+                { "properties": { "is": { "const": "toolbar" } } }
+            ]
+        },
+
+        "taskpadSlot": {
+            "allOf": [
+                { "$ref": "#/definitions/formElement" },
+                { "properties": { "is": { "const": "taskpad" } } }
+            ]
         },
 
         "formElement": {
             "type": "object",
             "additionalProperties": false,
+            "required": [ "is" ],
             "properties": {
                 "is": { "$ref": "#/definitions/formElementKind" },
                 "scope": {
@@ -319,20 +438,103 @@
                     "type": "array",
                     "items": { "type": "string" }
                 },
+                "filters": {
+                    "type": "array",
+                    "description": "References into the endpoint's filter namespace - not fields: most filters have no column. A name the namespace does not have is refused at load.",
+                    "items": { "type": "string" }
+                },
                 "commands": {
                     "type": "array",
                     "items": { "$ref": "#/definitions/commandBarItem" }
                 },
                 "axis": { "$ref": "#/definitions/flowAxis" },
                 "labelAt": { "$ref": "#/definitions/labelAt" }
-            }
+            },
+            "$comment": "The branches below are a second reading of FormElement.ContentKeys and CheckElement and of nothing else: what each kind's render reads, and where it may stand. Refused here in the editor, one step before the load refuses the same thing. 'axis'/'labelAt' are refused off a group as well - only CreateGroupPanel reads them, and a schema, unlike the loader, can tell a written enum from an absent one. 'tab' keeps its list keys: the platform has not described what else a tab may carry, and a schema is not the place to decide it - but a tab inside a tab is placement, which is decided (CheckElement: 'a tab is drawn only by its strip'), so a tab's 'elements' take the same node as a body's. An empty strip is refused for the same reason the load refuses it (StripState: 'tabs: no tab declared'). 'is' is required and never defaulted: FormElementKind.Group is C#'s zero, so a node that leaves it out becomes a group in silence, and this file is the only place that can tell an absent key from a written one.",
+            "allOf": [
+                {
+                    "if": { "properties": { "is": { "const": "group" } }, "required": [ "is" ] },
+                    "then": {
+                        "properties": {
+                            "scope": false, "kind": false, "filters": false, "commands": false,
+                            "elements": { "items": { "$ref": "#/definitions/formNode" } }
+                        }
+                    }
+                },
+                {
+                    "if": { "properties": { "is": { "const": "tabs" } }, "required": [ "is" ] },
+                    "then": {
+                        "properties": {
+                            "scope": false, "kind": false, "fields": false, "filters": false,
+                            "commands": false, "axis": false, "labelAt": false,
+                            "elements": { "minItems": 1, "items": { "$ref": "#/definitions/formTab" } }
+                        }
+                    }
+                },
+                {
+                    "if": { "properties": { "is": { "const": "tab" } }, "required": [ "is" ] },
+                    "then": {
+                        "required": [ "scope" ],
+                        "properties": {
+                            "axis": false, "labelAt": false,
+                            "elements": { "items": { "$ref": "#/definitions/formNode" } }
+                        }
+                    }
+                },
+                {
+                    "if": { "properties": { "is": { "enum": [ "dataGrid", "treeGrid" ] } }, "required": [ "is" ] },
+                    "then": {
+                        "properties": {
+                            "scope": false, "kind": false, "elements": false, "filters": false,
+                            "commands": false, "axis": false, "labelAt": false
+                        }
+                    }
+                },
+                {
+                    "if": { "properties": { "is": { "const": "taskpad" } }, "required": [ "is" ] },
+                    "then": {
+                        "properties": {
+                            "scope": false, "kind": false, "fields": false, "filters": false,
+                            "commands": false, "axis": false, "labelAt": false,
+                            "elements": { "items": { "$ref": "#/definitions/formNode" } }
+                        }
+                    }
+                },
+                {
+                    "if": { "properties": { "is": { "const": "toolbar" } }, "required": [ "is" ] },
+                    "then": {
+                        "properties": {
+                            "scope": false, "kind": false, "elements": false, "fields": false,
+                            "filters": false, "axis": false, "labelAt": false
+                        }
+                    }
+                },
+                {
+                    "if": { "properties": { "is": { "const": "pager" } }, "required": [ "is" ] },
+                    "then": {
+                        "properties": {
+                            "scope": false, "kind": false, "elements": false, "fields": false,
+                            "filters": false, "commands": false, "axis": false, "labelAt": false
+                        }
+                    }
+                },
+                {
+                    "if": { "properties": { "is": { "const": "filters" } }, "required": [ "is" ] },
+                    "then": {
+                        "properties": {
+                            "scope": false, "kind": false, "elements": false, "fields": false,
+                            "commands": false, "axis": false, "labelAt": false
+                        }
+                    }
+                }
+            ]
         },
 
         "commandBarItem": {
             "description": "A command name, or a bar token. Case-sensitive: unlike every other enum here, this one is parsed without ignoreCase.",
             "type": "string",
             "enum": [
-                "$sep", "$toRight",
+                "$sep",
                 "Create", "Edit", "Delete", "Save", "SaveAndClose", "Print", "Copy",
                 "Show", "ShowTrans", "Search", "Reload", "Post", "UnPost", "Attachments"
             ]
@@ -345,7 +547,7 @@
             "properties": {
                 "path": {
                     "type": "string",
-                    "description": "Path of the blank file, relative to the endpoint folder and WITHOUT an extension - named the way a view is; '.json' is appended. A blank has no window of its own and is not an endpoint, so it need not lie next to this file."
+                    "description": "Path of the blank file, relative to the endpoint folder and WITHOUT an extension - named the way a view is; '.json' is appended, never swapped. The last segment is the blank's name: 'print/waybill' answers to 'waybill', and two blanks under one name are refused."
                 },
                 "title": {
                     "type": "string",
@@ -353,7 +555,7 @@
                 },
                 "header": {
                     "type": "string",
-                    "description": "Title of the page that hosts the viewer, as a template over the record: 'Prykhodna nakladna No {Document.Number} vid {Document.Date}'. Every path starts with the model name and is resolved against the shape, so a typo fails like any other; the values are substituted in the browser. Omitted, the menu caption stands in. This is NOT the blank's own heading - the paper draws that in a cell of its layout, which is never read."
+                    "description": "Title of the WINDOW hosting the viewer, as a template over the record: 'Waybill No {Document.Number} of {Document.Date}'. Every path starts with the model name and is resolved against the shape at build, through references only - so no collection, and the model name alone is an error. Values are substituted in the browser. Omitted, 'title' stands in. This is NOT the blank's own heading - the paper draws that in a cell of its layout, which is never read."
                 }
             }
         },
@@ -362,76 +564,69 @@
             "description": "Normally derived from the folder; written only to override it.",
             "type": "string",
             "enum": [
-                "Undefined", "Catalog", "Document", "Operation", "Journal", "Report",
-                "Details", "Folders", "Tags", "TagEntries",
                 "undefined", "catalog", "document", "operation", "journal", "report",
                 "details", "folders", "tags", "tagEntries"
             ]
         },
 
         "trait": {
+            "description": "'Print' is deliberately absent: whether an endpoint prints is answered by 'printForms' being non-empty, and a trait would be a second spelling of that, free to disagree with it.",
             "type": "string",
-            "enum": [
-                "Audit", "Hierarchy", "Folders", "Tags", "Attachments",
-                "audit", "hierarchy", "folders", "tags", "attachments"
-            ]
+            "enum": [ "audit", "hierarchy", "folders", "tags", "attachments" ]
         },
 
         "initialSource": {
             "type": "string",
-            "enum": [
-                "Literal", "Context", "Profile", "Policy", "Sql",
-                "literal", "context", "profile", "policy", "sql"
-            ]
+            "enum": [ "literal", "context", "profile", "policy", "sql" ]
         },
 
         "postDirection": {
-            "description": "'Debit' and 'Credit' are aliases of 'In' and 'Out'.",
+            "description": "'debit' and 'credit' are aliases of 'in' and 'out'.",
             "type": "string",
-            "enum": [
-                "None", "In", "Out", "Debit", "Credit",
-                "none", "in", "out", "debit", "credit"
-            ]
+            "enum": [ "none", "in", "out", "debit", "credit" ]
         },
 
         "formKind": {
+            "description": "Read for 'edit' only, where the same record is edited on a page or in a dialog. 'unknown' is not a spelling: it is the C# zero standing for a key nobody wrote.",
             "type": "string",
-            "enum": [ "Unknown", "Page", "Dialog", "unknown", "page", "dialog" ]
+            "enum": [ "page", "dialog" ]
         },
 
         "formElementKind": {
             "type": "string",
             "enum": [
-                "Group", "Tabs", "Tab", "DataGrid", "Taskpad", "Toolbar", "Pager", "Filters",
-                "group", "tabs", "tab", "dataGrid", "taskpad", "toolbar", "pager", "filters"
+                "group", "tabs", "tab", "dataGrid", "treeGrid", "taskpad", "toolbar", "pager", "filters"
+            ],
+            "enumDescriptions": [
+                "A layout panel: the editors it carries ('fields') and the groups under it ('elements'). The only kind that reads 'axis' and 'labelAt'.",
+                "A tab strip. Holds tabs and nothing else; the tabs of one strip are different row sets.",
+                "One row set inside a strip: 'scope' names the collection, 'kind' one of its kinds. Drawn only by its strip.",
+                "A grid over the collection this form is scoped to. Shows 'fields'.",
+                "A tree over the collection this form is scoped to, read whole. Shows 'fields'.",
+                "The side panel. Holds 'elements'.",
+                "A command bar. Holds 'commands' - the author's own; the standard bar is the template's and no form declares it.",
+                "The pager of the grid. Shows nothing of its own.",
+                "The filter panel. 'filters' are references into the endpoint's filter namespace, not fields."
             ]
         },
 
         "flowAxis": {
             "type": "string",
-            "enum": [ "Columns", "Rows", "columns", "rows" ]
+            "enum": [ "columns", "rows" ]
         },
 
         "labelAt": {
             "type": "string",
-            "enum": [ "Top", "Left", "top", "left" ]
+            "enum": [ "top", "left" ]
         },
 
         "columnType": {
+            "description": "What is stored in the column and how. Not required: not written = default: string (ColumnType.String is the platform's default), so a column declared as {} is a string one.",
             "type": "string",
             "enum": [
-                "String", "Id", "Name", "Memo", "RowNumber", "Done", "Void", "IsSystem",
-                "IsFolder", "Parent", "Folder", "User", "RowKind", "Operation",
-                "Document", "DocumentType", "Row", "RowVersion", "Color", "Enum", "Autonum",
-                "Company", "Direction",
-                "Amount", "Price", "Qty", "Percent", "Factor",
-                "Ref", "Date", "DateTime", "Money", "Boolean",
-                "Stream", "Integer", "Number",
-                "BigInt", "Bit", "NChar", "Decimal", "Float", "VarBinary", "Uniqueidentifier",
-
                 "string", "id", "name", "memo", "rowNumber", "done", "void", "isSystem",
                 "isFolder", "parent", "folder", "user", "rowKind", "operation",
-                "document", "documentType", "row", "rowVersion", "color", "enum", "autonum",
+                "document", "documentType", "row", "rowVersion", "color", "enum", "state", "account", "autonum",
                 "company", "direction",
                 "amount", "price", "qty", "percent", "factor",
                 "ref", "date", "dateTime", "money", "boolean",
