@@ -27,7 +27,7 @@
 	<ItemGroup>
 		<PackageReference Include="A2v10.Infrastructure" Version="10.1.8660" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-		<PackageReference Include="A2v10.App.Assets2026" Version="10.1.8663" />
+		<PackageReference Include="A2v10.App.Assets2026" Version="10.1.8665" />
 		<PackageReference Include="A2v10.AppCompiler2026" Version="10.1.8639" PrivateAssets="All"/>
 		<PackageReference Include="A2v10.Sql.MSBuild" Version="10.1.8220" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.12" />
